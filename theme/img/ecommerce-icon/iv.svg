@@ -1,0 +1,32 @@
+
+<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+  <desc>Created with Sketch for Selly LLC.</desc>
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Selly.gg-E-comerce-Copy" transform="translate(-534.000000, -1819.000000)">
+      <g id="p3" transform="translate(0.000000, 1719.000000)">
+        <g id="Detailed-Statistic" transform="translate(394.000000, 100.000000)">
+          <g id="Ico_Detailed-Statistic" transform="translate(140.000000, 0.000000)">
+            <g id="Group-15">
+              <circle id="Oval" fill="#EDF8FF" cx="36" cy="36" r="36"></circle>
+              <g id="Group-14" transform="translate(13.000000, 17.000000)">
+                <g id="Group">
+                  <rect id="Rectangle-2" fill="#3E9CFA" x="0" y="0" width="46" height="38" rx="3"></rect>
+                  <path d="M4,3 L42,3 C42.5522847,3 43,3.44771525 43,4 L43,34 C43,34.5522847 42.5522847,35 42,35 L4,35 C3.44771525,35 3,34.5522847 3,34 L3,4 C3,3.44771525 3.44771525,3 4,3 Z" id="Rectangle" fill="#EDF8FF"></path>
+                  <g id="Group-3" transform="translate(8.000000, 17.000000)">
+                    <rect id="Rectangle-5" fill="#82C8FA" x="0" y="9" width="6" height="6"></rect>
+                    <polygon id="Rectangle-5" fill="#3E9CFA" points="8 6 14 6 14 15 8 15"></polygon>
+                    <polygon id="Rectangle-5" fill="#82C8FA" points="16 3 22 3 22 15 16 15"></polygon>
+                    <rect id="Rectangle-5" fill="#3E9CFA" x="24" y="0" width="6" height="15"></rect>
+                  </g>
+                </g>
+                <path d="M11.1734533,18.7977498 C10.6569561,18.9933234 10.0797086,18.7331635 9.88413496,18.2166662 C9.68856132,17.700169 9.9487213,17.1229215 10.4652185,16.9273478 L33.7764978,8.10044355 C34.2929951,7.90486992 34.8702426,8.1650299 35.0658162,8.68152713 C35.2613899,9.19802437 35.0012299,9.77527187 34.4847326,9.97084551 L11.1734533,18.7977498 Z" id="Path-39" fill="#3E9CFA" fill-rule="nonzero"></path>
+                <path d="M33,8.71970706 L30,8.71970706 C29.4477153,8.71970706 29,8.27199181 29,7.71970706 C29,7.16742231 29.4477153,6.71970706 30,6.71970706 L34,6.71970706 C34.5522847,6.71970706 35,7.16742231 35,7.71970706 L35,11.7197071 C35,12.2719918 34.5522847,12.7197071 34,12.7197071 C33.4477153,12.7197071 33,12.2719918 33,11.7197071 L33,8.71970706 Z" id="Path-51" fill="#3E9CFA" fill-rule="nonzero" transform="translate(32.000000, 9.719707) rotate(23.000000) translate(-32.000000, -9.719707) "></path>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

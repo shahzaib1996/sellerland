@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <desc>Created with Sketch for Selly LLC.</desc>
+  <g fill="none" fill-rule="evenodd">
+    <g transform="translate(-980 -1511)">
+      <g transform="translate(-2 1511)">
+        <g transform="translate(982)">
+          <circle cx="36" cy="36" r="36" fill="#EDF8FF"/>
+          <g transform="translate(9 8)">
+            <polygon points="13.5 23.333 25.191 30 25.191 43.333 13.5 50 1.8087 43.333 1.8087 30" fill="#3E9CFA"/>
+            <polygon points="40.5 23.333 52.191 30 52.191 43.333 40.5 50 28.809 43.333 28.809 30" fill="#3E9CFA"/>
+            <polygon points="27 0 38.691 6.6667 38.691 20 27 26.667 15.309 20 15.309 6.6667" fill="#82C8FA"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
