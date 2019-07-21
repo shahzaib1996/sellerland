@@ -19,13 +19,33 @@ class Main extends CI_Controller
         return $data;
     }
     public function view($page='index')
-    {
+    {   
+        if($page == 'myqueries') {
+            // $user_id = $this->uri->segment(4);
+            $user_id = $this->session->userdata('web_login')[0]['id'];
+            // die($user_id);
+            $data['myqueries'] = $this->md->fetch_user_query( $user_id );
+            // var_dump($data); die();
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/'.$page);
+            $this->load->view('selly/footer');
+        } else if($page == 'openmyquery') {
+            $query_id = $this->uri->segment(4);
+            $user_id = $this->session->userdata('web_login')[0]['id'];
+            // die($user_id);
+            $data['myqueries'] = $this->md->fetch_query( $user_id );
+            // var_dump($data); die();
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/'.$page);
+            $this->load->view('selly/footer');
+        }
+
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
         }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback'){
             if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
-//                var_dump($data);die;
+               // var_dump($data);die;
                 $this->load->view('selly/header',$data);
                 $this->load->view('selly/'.$page);
                 $this->load->view('selly/footer');
@@ -69,15 +89,22 @@ class Main extends CI_Controller
     }
     public function send_query(){
        // var_dump($this->input->post());
-        print_r($this->session->userdata('web_login')[0]);
-       die();
+        // print_r($this->session->userdata('web_login')[0]['id']);
+       // die();
         $data = $this->input->post();
         $data['vendor_id']= $this->uri->segment(3);
+        $data['user_id']= $this->session->userdata('web_login')[0]['id'];
         $this->md->insert('client_query',$data);
         redirect('Main/view/vendor-contact/'.$this->uri->segment(3));
     }
+
     public function paypal($buy,$id){
         $this->load->view('products/buy/'.$id);
+    }
+
+    public function myqueries($user_id) {
+        echo $user_id;  
+        die();
     }
 
 }

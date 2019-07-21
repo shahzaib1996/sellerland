@@ -15,7 +15,7 @@
         </section>
 
         <section class="container" style="padding-top: 20px;">
-          <a class="btn btn-primary" style="color:#fff;">My Queries</a>
+          <a href="<?= site_url('/Main/view/myqueries')?>" class="btn btn-primary" style="color:#fff;">My Queries</a>
         </section>
         <!-- End banner Area -->	
         <section class="content-section container pb-5">

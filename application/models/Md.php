@@ -119,4 +119,13 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function fetch_user_query( $user_id ) {
+        $this->db->select('cq.*,v.store_name AS "vendor_name"');
+        $this->db->from('client_query as cq');
+        $this->db->join('vendor as v',' cq.vendor_id = v.id ');
+        $this->db->where('user_id',$user_id);  
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }
