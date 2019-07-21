@@ -59,6 +59,7 @@ class Selly extends CI_Controller
     }
     public function dashboard($page='index'){
         $id = $this->uri->segment(4);
+
         $data['admin_message'] =  $this->session->userdata('vender_message');
         $data['store']=$this->md->fetch("store");
         $data['package']=$this->md->fetch("package");
@@ -69,10 +70,12 @@ class Selly extends CI_Controller
         $data['wh_profile']=$this->md->fetch("user",array('id'=>$id));
         $data['vendor']=$this->md->fetch("vendor");
         $data['wh_vendor']=$this->md->fetch("vendor",array('id'=>$id));
-        $data['product']=$this->md->fetch("product");
+        // $data['product']=$this->md->fetch("product");
+        $data['product']=$this->md->fetch_user_products($id);
         $data['week']=$this->md->week_profit();
         $data['month']=$this->md->month_profit();
         $data['year']=$this->md->year_profit();
+        
         if($this->session->userdata('id'))
         {
             $data['login'] = $this->session->userdata('id');

@@ -109,4 +109,14 @@ class Md extends CI_Model
         $query = $this->db->get()->result_array();
         return $query;
     }
+
+    public function fetch_user_products($user_id)
+    {
+        $this->db->select();
+        $this->db->from('product');
+        $this->db->where('user_id',$user_id);  
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }

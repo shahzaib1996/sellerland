@@ -13,6 +13,10 @@
                 </div>
             </div>
         </section>
+
+        <section class="container" style="padding-top: 20px;">
+          <a class="btn btn-primary" style="color:#fff;">My Queries</a>
+        </section>
         <!-- End banner Area -->	
         <section class="content-section container pb-5">
                 <div class="row pt20">

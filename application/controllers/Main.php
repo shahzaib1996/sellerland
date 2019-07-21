@@ -68,7 +68,9 @@ class Main extends CI_Controller
         redirect('Main/view/vendor-brand-item-view/'.$vendor_id.'/'.$pro_id);
     }
     public function send_query(){
-//        var_dump($this->input->post());
+       // var_dump($this->input->post());
+        print_r($this->session->userdata('web_login')[0]);
+       die();
         $data = $this->input->post();
         $data['vendor_id']= $this->uri->segment(3);
         $this->md->insert('client_query',$data);

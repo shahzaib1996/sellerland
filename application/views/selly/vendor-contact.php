@@ -51,17 +51,17 @@
                     <?= form_open('Main/send_query/'.$this->uri->segment(4)) ?>
                     <div class="form-group">
                           <label for="formGroupExampleInput">Title</label>
-                          <input type="text" name="title" class="form-control" id="formGroupExampleInput" placeholder="Title">
+                          <input type="text" name="title" class="form-control" id="formGroupExampleInput" placeholder="Title" required>
                         </div>  
                         <div class="form-group">
                           <label for="formGroupExampleInput2">Email</label>
-                          <input type="text" name="email" class="form-control" id="formGroupExampleInput2" placeholder="Email">
+                          <input type="email" name="email" class="form-control" id="formGroupExampleInput2" placeholder="Email" required>
                         </div>
                         <div class="form-group">
                                 <label for="formGroupExampleInput2">Message</label>
-                                <textarea class="form-control" rows="5" name="message"  placeholder="Write Your Query..."></textarea>
+                                <textarea class="form-control" rows="5" name="message"  placeholder="Write Your Query..." required></textarea>
                         </div>
-                        <button type="submit" class="btn " style="background:#5390ff; color:white; width:100%; padding: 10px;">Send</button typ>
+                        <button type="submit" class="btn " style="background:#5390ff; color:white; width:100%; padding: 10px;">Send</button>
                       <?= form_close(); ?>
                 </div>
                  
