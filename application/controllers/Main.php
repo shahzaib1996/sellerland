@@ -21,7 +21,6 @@ class Main extends CI_Controller
     public function view($page='index')
     {   
         if($page == 'myqueries') {
-            // $user_id = $this->uri->segment(4);
             $user_id = $this->session->userdata('web_login')[0]['id'];
             // die($user_id);
             $data['myqueries'] = $this->md->fetch_user_query( $user_id );
