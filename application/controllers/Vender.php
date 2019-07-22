@@ -52,6 +52,8 @@ class Vender extends CI_Controller
             $data['login'] = $this->session->userdata('login');
             $data['message'] = $this->md->ascending('my_message',array('id'=>'ASC'),array('user_id'=>$this->uri->segment(4)));
             $data['admin_message'] = $this->session->userdata('admin_message');
+            // print_r($data['admin_message']);
+            // die();
             $data['product']=$this->md->fetchh('product');
             $data['wh_product']=$this->md->fetch('product',array('id'=>$id));
             $data['code_product']=$this->md->fetch('product',array('user_id'=>$id));

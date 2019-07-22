@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 21, 2019 at 11:01 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.4
+-- Generation Time: Jul 22, 2019 at 06:55 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.2.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -59,13 +59,6 @@ CREATE TABLE `client_query` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `client_query`
---
-
-INSERT INTO `client_query` (`id`, `title`, `email`, `message`, `vendor_id`, `user_id`) VALUES
-(6, 'adsa', 'adad@gmail.com', 'adasd', '4', 37);
-
 -- --------------------------------------------------------
 
 --
@@ -76,7 +69,9 @@ CREATE TABLE `client_query_reply` (
   `id` int(11) NOT NULL,
   `client_query_id` int(11) NOT NULL,
   `reply` text NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `vendor_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -111,22 +106,23 @@ CREATE TABLE `feedback` (
   `vendor_id` char(100) NOT NULL,
   `pro_id` char(100) NOT NULL,
   `message` varchar(1000) NOT NULL,
-  `client_id` char(100) NOT NULL
+  `client_id` char(100) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`id`, `vendor_id`, `pro_id`, `message`, `client_id`) VALUES
-(3, '4', '10', ' test', '1'),
-(4, '4', '13', ' abc\r\n', '2'),
-(5, '4', '10', ' feebback\r\n', '1'),
-(6, '5', '11', ' abc', '4'),
-(9, '4', '10', ' hello', '8'),
-(10, '4', '25', ' this is user', '3'),
-(11, '15', '31', ' that is very good', '23'),
-(12, '18', '35', ' this is good ', '1');
+INSERT INTO `feedback` (`id`, `vendor_id`, `pro_id`, `message`, `client_id`, `created_at`) VALUES
+(4, '4', '13', ' abc\r\n', '2', '2019-07-22 17:35:37'),
+(5, '4', '10', ' feebback\r\n', '1', '2019-07-22 17:35:37'),
+(6, '5', '11', ' abc', '4', '2019-07-22 17:35:37'),
+(9, '4', '10', ' hello', '8', '2019-07-22 17:35:37'),
+(10, '4', '25', ' this is user', '3', '2019-07-22 17:35:37'),
+(11, '15', '31', ' that is very good', '23', '2019-07-22 17:35:37'),
+(12, '18', '35', ' this is good ', '1', '2019-07-22 17:35:37'),
+(19, '4', '13', ' this is just a feedbackk\r\n', '37', '2019-07-22 17:43:29');
 
 -- --------------------------------------------------------
 
@@ -193,7 +189,7 @@ CREATE TABLE `product` (
   `image` varchar(255) NOT NULL,
   `date` varchar(100) NOT NULL,
   `user_id` char(100) NOT NULL,
-  `des` varchar(1000) NOT NULL,
+  `des` text NOT NULL,
   `account_type` char(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -202,25 +198,25 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `image`, `date`, `user_id`, `des`, `account_type`) VALUES
-(12, 'abccc', 1, 1, 1, '2(1).jpg', '2019-07-03', '4', 'lorem ', 'vender'),
-(13, 'suama2323', 1000, 900, 2, '11.png', '2019-07-03', '4', 'lorem ', 'vender'),
-(14, 'Shoes', 1200, 1000, 3, '2(2).jpg', '2019-07-11', '4', 'lotem', 'vender'),
-(15, 'qwe', 120, 123, 123, '13.jpg', '2019-07-11', '4', 'lotem', 'vender'),
-(17, 'store', 1000, 100, 4, '2(1)1.jpg', '2019-07-11', '1', 'lorem is design ', 'admin'),
-(21, 'abc', 1000, 0, 4, '64679071_107239193895428_4012795800147984384_n2.jpg', '2019-07-11', '4', 'this a product', 'vender'),
-(22, 'abc', 100, 90, 1, 'kari-shea-272383-unsplash1.jpg', '2019-07-11', '1', 'This is test', 'admin'),
-(24, 'shoes', 1000, 1000, 4, '64679071_107239193895428_4012795800147984384_n3.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
-(25, 'tyu', 100, 80, 2, 'Screenshot_15589898426.png', '2019-07-11', '4', 'this is a product', 'vender'),
-(26, 'qwe', 10000, 29999, 1, 'kari-shea-272383-unsplash3.jpg', '2019-07-11', '1', 'This is a store', 'admin'),
-(28, 'bed sheet', 1200, 1000, 12, '1(4).jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(29, 'ALikaram BedSheet', 1500, 1300, 10, '2(1)2.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(30, 'AliSheri Bed Sheet', 2000, 1500, 20, '14.png', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(31, 'T-Shirt', 1200, 1000, 10, '14.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
-(32, 'UnderWare', 1500, 1000, 12, '210.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
-(33, 'mobile', 1000, 8000, 8, '211.jpg', '2019-07-12', '16', '\r\nLorem ipsum dolor sit amet, cnsectetur adipisicing elit. Architecto delectus dicta, distinctio dolore dolores id, iste magni nulla perferendis, possimus quam sapiente tempore temporibus! Deserunt ducimus est facere sint tenetur.', 'vender'),
-(34, 'UnderWare', 1000, 800, 12, '212.jpg', '2019-07-12', '17', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus dicta earum hic quae quisquam tempora totam. Architecto asperiores consectetur cum doloremque, itaque modi non perferendis quam sequi velit voluptate!', 'vender'),
-(35, 'T_Shirt', 1500, 1000, 12, '213.jpg', '2019-07-12', '18', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, at debitis dolor doloribus ducimus earum eius libero molestiae molestias odit officia quae quo sed, vel voluptatem voluptates voluptatum. Obcaecati, placeat.', 'vender'),
-(36, 'Fancy_TShirt', 2000, 1500, 10, '1(3).jpg', '2019-07-12', '19', 'Great Fancy T-Shirt for beautiful girls!', 'vender');
+(12, 'abccc', 1, 1, 1, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
+(13, 'suama2323', 1000, 900, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
+(14, 'Shoes', 1200, 1000, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
+(15, 'qwe', 120, 123, 123, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
+(17, 'store', 1000, 100, 4, '15.jpg', '2019-07-11', '1', 'lorem is design ', 'admin'),
+(21, 'abc', 1000, 0, 4, '15.jpg', '2019-07-11', '4', 'this a product', 'vender'),
+(22, 'abc', 100, 90, 1, '15.jpg', '2019-07-11', '1', 'This is test', 'admin'),
+(24, 'shoes', 1000, 1000, 4, '15.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
+(25, 'tyu', 100, 80, 2, '15.jpg', '2019-07-11', '4', 'this is a product', 'vender'),
+(26, 'qwe', 10000, 29999, 1, '15.jpg', '2019-07-11', '1', 'This is a store', 'admin'),
+(28, 'bed sheet', 1200, 1000, 12, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
+(29, 'ALikaram BedSheet', 1500, 1300, 10, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
+(30, 'AliSheri Bed Sheet', 2000, 1500, 20, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
+(31, 'T-Shirt', 1200, 1000, 10, '15.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
+(32, 'UnderWare', 1500, 1000, 12, '15.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
+(33, 'mobile', 1000, 8000, 8, '15.jpg', '2019-07-12', '16', '\r\nLorem ipsum dolor sit amet, cnsectetur adipisicing elit. Architecto delectus dicta, distinctio dolore dolores id, iste magni nulla perferendis, possimus quam sapiente tempore temporibus! Deserunt ducimus est facere sint tenetur.', 'vender'),
+(34, 'UnderWare', 1000, 800, 12, '15.jpg', '2019-07-12', '17', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus dicta earum hic quae quisquam tempora totam. Architecto asperiores consectetur cum doloremque, itaque modi non perferendis quam sequi velit voluptate!', 'vender'),
+(35, 'T_Shirt', 1500, 1000, 12, '15.jpg', '2019-07-12', '18', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, at debitis dolor doloribus ducimus earum eius libero molestiae molestias odit officia quae quo sed, vel voluptatem voluptates voluptatum. Obcaecati, placeat.', 'vender'),
+(36, 'Fancy_TShirt', 2000, 1500, 10, '15.jpg', '2019-07-12', '19', 'Great Fancy T-Shirt for beautiful girls!', 'vender');
 
 -- --------------------------------------------------------
 
@@ -258,7 +254,7 @@ CREATE TABLE `store` (
   `price` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
   `stock` int(11) NOT NULL,
-  `description` varchar(200) NOT NULL,
+  `description` text NOT NULL,
   `date` char(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -290,8 +286,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`, `status`, `ip_address`) VALUES
 (35, 'Bilal', 'mohammedbilalmansoor@gmail.com', 'bilal123456', 'Active', '185.89.250.131'),
-(37, 'xyz', 'xyz@gmail.com', '1', 'Active', '202.47.35.83'),
-(38, 'laskalsk', 'usamaasif8809@gmail.com', '1234567890', 'Active', '202.47.35.83'),
+(37, 'xyz', 'xyz@gmail.com', '111111', 'Inactive', '202.47.35.83'),
+(38, 'user', 'usamaasif8809@gmail.com', '111111', 'Active', '202.47.35.83'),
 (39, 'usasjaksj', 'abc@gmail.com', '1234567890', 'Active', '202.47.35.83'),
 (40, 'saosaiso', 'omer@gmail.com', '1234567890', 'Active', '202.47.35.83'),
 (41, 'Slacker', 'slackerisinsane@gmail.com', 'slacker12345678', 'Active', '202.47.35.83'),
@@ -328,7 +324,7 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`) VALUES
-(4, 'ken', 'usamaasif4190@gmail.com', 'lora', '', '', '203923092303920', 'male', '', 'premium', 'inactive', 'khan', 'img.png'),
+(4, 'ken', 'usamaasif4190@gmail.com', 'lora', '', '', '203923092303920', 'male', '', 'premium', 'active', 'khan', 'img.png'),
 (6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', 'free', 'active', 'abc', 'img.png'),
 (8, 'faboloso', 'faboloso@gmail.com', 'Abc123456789', '', '', '14185649890', 'male', '', '', 'active', 'faboloso', 'img.png'),
 (9, 'rbrown', 'rachelbrown1976@gmail.com', 'FuckThisShit', '', '', '18881111111', 'male', '', '', 'active', 'rbrown', 'img.png'),
@@ -440,13 +436,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `client_query`
 --
 ALTER TABLE `client_query`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `client_query_reply`
 --
 ALTER TABLE `client_query_reply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `coupons`
@@ -458,13 +454,13 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `my_message`
 --
 ALTER TABLE `my_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `orders`

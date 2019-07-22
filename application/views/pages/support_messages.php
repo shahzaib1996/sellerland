@@ -1,6 +1,12 @@
 <?php //var_dump($vendor);die; ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style class="cp-pen-styles">
+.v-msg {
+        height: 40px;width: 40px;border-radius: 50%;text-align:center;line-height: 40px;font-weight: bold;border:1px solid grey;float:left;margin-right: 10px; 
+    }
+    .a-msg {
+        height: 40px;width: 40px;border-radius: 50%;text-align:center;line-height: 40px;font-weight: bold;border:1px solid grey;float:right;margin-left: 10px; 
+    }
     #frame {
         /*width: 95%;*/
         /*min-width: 360px;*/
@@ -746,7 +752,7 @@ Website: http://emilcarlsson.se/
                 <!--                <div class="card-body">-->
                 <div id="frame">
                     <div id="sidepanel">
-                        <div id="profile">
+                        <!-- <div id="profile">
                             <div class="wrap">
                                 <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
                                 <p>Mike Ross</p>
@@ -764,58 +770,36 @@ Website: http://emilcarlsson.se/
                         <div id="search">
                             <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
                             <input type="text" placeholder="Search contacts..." />
-                        </div>
+                        </div> -->
+                        <div id="profile">Vendors</div>
                         <div id="contacts">
                             <ul style="padding-left: 0px">
                                 <?php $id = array(); foreach($my_message as $k=>$v){
-                                    if(empty($id)){
-//                                        if($v['account_type']=='admin'){?>
-                                    <a style="color: #fff;text-decoration: none" href="<?= site_url('Selly/dashboard/support_messages/'.$v['user_id']) ?>">
-                                        <li class="contact ">
-                                            <div class="wrap">
-                                                <span class="contact-status busy"></span>
-                                                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                                                <div class="meta">
-                                                    <p class="name"><?= $v['username']  ?></p>
-<!--                                          <p class="preview text-right">--><?//= $v['message'] ?><!--</p>-->
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </a>
-                                <?php $id[] = $v['user_id']; }else{
-                                        foreach($id as $k1=>$v1){
-                                        if($v1 != $v['user_id']){
-//                                            if($v['account_type']=='admin') { ?>
-                                            <a style="color: #fff;text-decoration: none"
-                                               href="<?= site_url('Selly/dashboard/support_messages/' . $v['user_id']) ?>">
+                                    if( $v['account_type'] == 'vendor' ) {
+                                        if( !(in_array($v['user_id'], $id)) ) {
+
+                                            ?>
+                                            <a style="color: #fff;text-decoration: none" href="<?= site_url('Selly/dashboard/support_messages/'.$v['user_id' ]) ?>">
                                                 <li class="contact ">
                                                     <div class="wrap">
-                                                        <span class="contact-status busy"></span>
-                                                        <img src="http://emilcarlsson.se/assets/harveyspecter.png"
-                                                             alt=""/>
+                                                        <!-- <span class="contact-status busy"></span> -->
+                                                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                                                         <div class="meta">
-                                                            <p class="name"><?= $v['username'] ?></p>
-                                                            <!--<p class="preview text-right">-->
-                                                            <? //= $v['message'] ?><!--</p>-->
+                                                            <p class="name"><?= $v['username']  ?></p>
+        <!--                                          <p class="preview text-right">--><?//= $v['message'] ?><!--</p>-->
                                                         </div>
-
                                                     </div>
-                                                    <!--                                                <span class="text-right">-->
-                                                    <? //= 'usmaa' ?><!--</span>-->
                                                 </li>
                                             </a>
-                                            <?php $id[] = $v['user_id'];
-                                            break;
-                                        }else{
-                                            break;
-                                        }} ?>
-                                    <?php }} ?>
+                                            <?php
+                                            $id[] = $v['user_id'];
+                                        }
+                                    }
+                                      
+                                } ?>
                             </ul>
                         </div>
-                        <div id="bottom-bar">
-                            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                             <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-                        </div>
+                        
                     </div>
                     <script>
                         $(document).ready(function(){
@@ -834,12 +818,14 @@ Website: http://emilcarlsson.se/
                                     <?php foreach($message as $k=>$v){
                                         if($v['account_type']=='vendor'){?>
                                     <li class="sent">
-                                        <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                        <!-- <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /> -->
+                                        <div class="v-msg">V</div>
                                         <p><?= $v['message'] ?></p>
                                     </li>
                                         <?php }else{ ?>
                                             <li class="replies">
-                                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                        <!-- <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /> -->
+                                        <div class="a-msg">A</div>
                                         <p><?= $v['message'] ?></p>
                                     </li>
                                     <?php }} ?>

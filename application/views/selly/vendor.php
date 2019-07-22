@@ -18,8 +18,10 @@
                     <?php foreach ($vendor_product as $k=>$v){ ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 vdp-plr">
                             <div class="card">
-                              <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$v['user_id'].'/'.$v['id']) ?>">
-                                  <img class="card-img-top vendor-product-img" src="<?= base_url() ?>theme/img/<?= $v['image'] ?>" alt="Card image cap">
+                              <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$v['user_id'].'/'.$v['id']) ?>" >
+                                <center>
+                                  <img class="card-img-top vendor-product-img" style="width: auto;" src="<?= base_url() ?>image/<?= $v['image'] ?>" alt="Card image cap">
+                                </center>
                                   <div class="card-body">
                                     <p class="card-text vendor-product-details" style="font-size: 13px; color:black;"><?= $v['title'] ?></p>
                                     <span class="vendor-product-price" style="color:black; font-size:13px">$<?= $v['price'] ?></span>

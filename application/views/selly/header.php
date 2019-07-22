@@ -32,7 +32,7 @@
     <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">
             <div id="logo">
-                <a href="index.php"><img src="<?= base_url() ?>theme/img/logo.png" alt="your logo" title="" /></a>
+                <a href="<?= site_url('main/view/all-products') ?>"><img src="<?= base_url() ?>theme/img/logo.png" alt="your logo" title="" ></a>
             </div>
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
@@ -44,9 +44,11 @@
                         </ul>
                     </li>
                     <li><a href="<?= site_url('main/view/prices') ?>">Pricing</a></li>
-                    <li><a href="<?= site_url('main/view/signin') ?>" class="btn btn-light btn-large text-dark">Sign in </a></li>
+                    <?php if(empty($web_login)){ ?>
+                    <li><a href="<?= site_url('main/view/signin') ?>" class="btn btn-light btn-large text-dark">Sign in</a></li>
                     <li><a href="<?= site_url('main/view/signup') ?>" class="btn">Sign up </a></li>
-                    <?php if(!empty($web_login)){ ?>
+                    <?php } else { ?>
+                    <li><a href="<?= site_url('main/view/all-products') ?>">Products</a></li>
                     <li><a href="<?= site_url('main/destroy') ?>">Logout</a></li>
                     <?php } ?>
             </nav><!-- #nav-menu-container -->

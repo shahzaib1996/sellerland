@@ -146,4 +146,13 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function fetch_vender_feedback( $vendor_id ) {
+        $this->db->select('fb.*,p.title AS "product_title"');
+        $this->db->from('feedback fb');
+        $this->db->join('product as p',' fb.pro_id = p.id ');
+        $this->db->where('fb.vendor_id',$vendor_id);  
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }

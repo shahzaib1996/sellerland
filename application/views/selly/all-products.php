@@ -23,8 +23,10 @@
                     <?php $x=0; foreach ($product as $k=>$v){ if($vendor[$x]['id']== $v['user_id']){?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 vdp-plr">
                             <div class="card">
-                              <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$vendor[$x]['id'].'/'.$v['id']) ?>">
-                                  <img class="card-img-top vendor-product-img" src="<?= base_url() ?>theme/img/banner-img.svg" alt="Card image cap">
+                              <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$vendor[$x]['id'].'/'.$v['id']) ?>" style="">
+                                <center>
+                                  <img class="card-img-top vendor-product-img" style="width: auto;" src="<?= base_url() ?>image/<?= $v['image'] ?>" alt="Card image cap">
+                                </center>
                                   <div class="card-body">
                                       <h3 class="card-text vendor-product-details text-center" style="color: #1f82f7"><?= $v['title'] ?></h3>
                                     <p class="card-text vendor-product-details" style="font-size: 13px; color:black;">Terms of service(Read before buying)</p>

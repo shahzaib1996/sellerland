@@ -2,6 +2,12 @@
 <?php //var_dump($_SESSION);die; ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style class="cp-pen-styles">
+    .v-msg {
+        height: 40px;width: 40px;border-radius: 50%;text-align:center;line-height: 40px;font-weight: bold;border:1px solid grey;float:right;margin-left: 10px; 
+    }
+    .a-msg {
+        height: 40px;width: 40px;border-radius: 50%;text-align:center;line-height: 40px;font-weight: bold;border:1px solid grey;float:left;margin-right: 10px; 
+    }
     #frame {
         /*width: 95%;*/
         /*min-width: 360px;*/
@@ -751,7 +757,7 @@ Website: http://emilcarlsson.se/
                 <!--                <div class="card-body">-->
                 <div id="frame">
                     <div id="sidepanel">
-                        <div id="profile">
+                        <!-- <div id="profile">
                             <div class="wrap">
                                 <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
                                 <p><?= $user_info[0]['username'] ?></p>
@@ -765,17 +771,14 @@ Website: http://emilcarlsson.se/
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div id="search">
-                            <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                            <input type="text" placeholder="Search contacts..." />
-                        </div>
+                        </div> -->
+                        <div id="profile">Admins</div>
+                        
                         <div id="contacts">
                             <ul style="padding-left: 0px">
                                     <a style="color: #fff;text-decoration: none;" href="<?= site_url('Vender/view/support_messages1/'.$user_info[0]['id']) ?>">
                                         <li class="contact ">
                                             <div class="wrap">
-                                                <span class="contact-status busy"></span>
                                                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                                                 <div class="meta">
                                                     <p class="name">Admin</p>
@@ -785,10 +788,7 @@ Website: http://emilcarlsson.se/
                                     </a>
                             </ul>
                         </div>
-                        <div id="bottom-bar">
-                            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                            <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-                        </div>
+                        
                     </div>
                     <div class="content">
                         <div class="contact-profile">
@@ -799,13 +799,15 @@ Website: http://emilcarlsson.se/
                             <ul id="show">
                                 <?php foreach($message as $k=>$v){
                                     if($v['account_type']=='vendor'){?>
-                                        <li class="sent">
-                                            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                        <li class="replies">
+                                            <!-- <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /> -->
+                                            <div class="v-msg">V</div>
                                             <p><?= $v['message'] ?></p>
                                         </li>
                                     <?php }else{ ?>
-                                        <li class="replies">
-                                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                        <li class="sent">
+                                            <!-- <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /> -->
+                                            <div class="a-msg">A</div>
                                             <p><?= $v['message'] ?></p>
                                         </li>
                                     <?php }} ?>

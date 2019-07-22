@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="d-flex bd-highlight">
                                         <div class="p-2 w-100 bd-highlight">Feedback:</div>
-                                        <div class="p-2 flex-shrink-1 bd-highlight seller-feedback"><a href="vendor-feedback.php" class="text-success"><?= count($single_feedback) ?></a></div>
+                                        <div class="p-2 flex-shrink-1 bd-highlight seller-feedback"><a href="<?= site_url('Main/view/vendor-feedback/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>" class="text-success"><?= count($single_feedback) ?></a></div>
                                 </div>
                                 
                                    <p class="text-center coupon-area"><a href="<?= site_url('Main/view/vendor-contact/'.$this->uri->segment(4)) ?>" style="font-size:12px;">Contact Seller</a> </p>
@@ -121,7 +121,11 @@
                         <div class="card-body">
                                 <textarea class="form-control" name="message" rows="3" style="font-size: 14px; resize:none;"> </textarea>
                         </div>
-                       <p class="text-center"><button type="submit" class="btn text-light post-btn">Post</button></p>
+                        <?php if($web_login[0]['id'] != 'active') { ?>
+                            <p class="text-center"><button class="btn text-light post-btn" disabled>You cannot post feedback</button></p>
+                        <?php } else { ?>
+                            <p class="text-center"><button type="submit" class="btn text-light post-btn">Post</button></p>
+                        <?php } ?>
                 </div>
             <?= form_close(); ?>
         </div>
