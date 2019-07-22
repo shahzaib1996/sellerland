@@ -128,4 +128,22 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function fetch_query_detail( $query_id ) {
+        $this->db->select('cq.*,v.store_name,u.username,u.email');
+        $this->db->from('client_query cq');
+        $this->db->join('vendor as v',' cq.vendor_id = v.id ');
+        $this->db->join('user as u',' cq.user_id = u.id ');
+        $this->db->where('cq.id',$query_id);  
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    public function fetch_query_reply( $query_id ) {
+        $this->db->select();
+        $this->db->from('client_query_reply');
+        $this->db->where('client_query_id',$query_id);  
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }

@@ -39,11 +39,13 @@
                         <td><?= $v['email'] ?></td>
                         <td><?= $v['message'] ?></td>
                         <td>
-<!--                            <a href="--><?//= site_url('Vender/feed_back_del/'.$v['id']) ?><!--" class="btn btn-danger btn-sm"><i class="fa fa-trash"> </i></a>-->
-                            <button class="btn btn-success btn-sm form-control"  data-toggle="modal" data-target="#reply<?= $x ?>"><i class="fa fa-reply"> </i> reply</button>
+<!--                            <a href="--><?//= site_url('Vender/feed_back_del/'.$v['id']) ?><!--" class="btn btn-danger btn-sm"><i class="fa fa-trash"> </i></a>-->  
+                            <a href="<?= site_url('vender/view/client_query_reply/'.$v['id'])?>"><span class="btn btn-success btn-sm form-control" ><i class="fa fa-reply"></i> reply</span></a>
+                            <!-- <button class="btn btn-success btn-sm form-control"  data-toggle="modal" data-target="#reply<?= $x ?>"><i class="fa fa-reply"> </i> reply</button> -->
                         </td>
                     </tr>
-                        <div class="modal" id="reply<?= $x ?>" tabindex="-1" role="dialog">
+                    
+                       <!--  <div class="modal" id="reply<?= $x ?>" tabindex="-1" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -68,7 +70,8 @@
                                     <?= form_close(); ?>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+
                   <?php } ?>
                   </tbody>
                 </table>

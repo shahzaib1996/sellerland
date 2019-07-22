@@ -28,9 +28,24 @@ class Vender extends CI_Controller
     public function view($page = 'index'){
         if($page=='login'){ // goto login
             $this->login();
-        }elseif($page=='signup'){ // goto signup
+        } elseif($page=='signup'){ // goto signup
             $this->signup();
-        }else{ // else if there is session go to index
+        } else if($page=='client_query_reply'){
+
+            //required by vender header
+            $data['user_info']  = $this->session->userdata('login');
+            $data['login'] = $this->session->userdata('login');
+
+            $query_id = $this->uri->segment(4);
+            $data['client_query_detail'] = $this->md->fetch_query_detail( $query_id );
+            $data['query_reply'] = $this->md->fetch_query_reply( $query_id );
+            if(!empty($this->session->userdata('login'))){ // if start
+                $this->load->view('vender/header',$data);
+                $this->load->view('vender/'.$page);
+                $this->load->view('vender/footer');
+            }else{ $this->login(); }
+
+        } else{ // else if there is session go to index
 //            var_dump($this->session->userdata('login'));die;
             $id=$this->uri->segment(4);
             $data['user_info']  = $this->session->userdata('login');
@@ -193,6 +208,20 @@ class Vender extends CI_Controller
         $data['vender_id'] = $this->uri->segment(3);
         $this->md->insert('coupons',$data);
         redirect('vender/view/add_coupons/'.$this->uri->segment(3));
+    }
+
+    public function add_vendor_reply() {
+        $data = $this->input->post();
+        
+        if( $this->uri->segment(3) != '' ) {
+
+            $data_insert['vendor_id'] = $this->session->userdata('login')[0]['id'];
+            $data_insert['user_id'] = '';
+            $data_insert['client_query_id'] = $this->uri->segment(3);
+            $data_insert['reply'] = $data['reply'];
+            $this->md->insert('client_query_reply',$data_insert);
+        }
+        redirect('vender/view/client_query_reply/'.$this->uri->segment(3));
     }
 
 }

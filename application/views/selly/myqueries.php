@@ -74,7 +74,7 @@
                             <td><?=$v['email']?></td>
                             <td><?=$v['vendor_name']?></td>
                             <td style="text-align: center;">
-                                <a href="<?= site_url('Main/openmyquery/'.$v['id'])?>"><span class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete Account"><i class="fa fa-reply"></i></span>&nbsp;</a>
+                                <a href="<?= site_url('Main/view/openmyquery/'.$v['id'])?>"><span class="btn btn btn-success btn-sm form-control" ><i class="fa fa-reply"></i> reply</span></a>
                             </td>
 
                         </tr>

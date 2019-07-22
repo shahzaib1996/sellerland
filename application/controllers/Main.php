@@ -20,24 +20,27 @@ class Main extends CI_Controller
     }
     public function view($page='index')
     {   
-        if($page == 'myqueries') {
-            $user_id = $this->session->userdata('web_login')[0]['id'];
-            // die($user_id);
-            $data['myqueries'] = $this->md->fetch_user_query( $user_id );
-            // var_dump($data); die();
-            $this->load->view('selly/header',$data);
-            $this->load->view('selly/'.$page);
-            $this->load->view('selly/footer');
-        } else if($page == 'openmyquery') {
-            $query_id = $this->uri->segment(4);
-            $user_id = $this->session->userdata('web_login')[0]['id'];
-            // die($user_id);
-            $data['myqueries'] = $this->md->fetch_query( $user_id );
-            // var_dump($data); die();
-            $this->load->view('selly/header',$data);
-            $this->load->view('selly/'.$page);
-            $this->load->view('selly/footer');
-        }
+        // if($page == 'myqueries') {
+        //     $user_id = $this->session->userdata('web_login')[0]['id'];
+        //     // die($user_id);
+        //     $data['myqueries'] = $this->md->fetch_user_query( $user_id );
+        //     // var_dump($data); die();
+        //     $this->load->view('selly/header',$data);
+        //     $this->load->view('selly/'.$page);
+        //     $this->load->view('selly/footer');
+
+        // } else if($page == 'openmyquery') {
+        //     $query_id = $this->uri->segment(4);
+        //     // $user_id = $this->session->userdata('web_login')[0]['id'];
+        //     // die($user_id);
+        //     $data['client_query'] = $this->md->fetch_query_detail( $query_id );
+        //     $data['query_reply'] = $this->md->fetch_query_reply( $query_id );
+        //     // var_dump($data); die();
+        //     $this->load->view('selly/header',$data);
+        //     $this->load->view('selly/'.$page);
+        //     $this->load->view('selly/footer');
+            
+        // }
 
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
@@ -51,7 +54,28 @@ class Main extends CI_Controller
             }else{
                 redirect('Main/view/signin');
             }
-        }else{
+        } else if($page == 'myqueries') {
+            $user_id = $this->session->userdata('web_login')[0]['id'];
+            // die($user_id);
+            $data['myqueries'] = $this->md->fetch_user_query( $user_id );
+            // var_dump($data); die();
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/'.$page);
+            $this->load->view('selly/footer');
+
+        } else if($page == 'openmyquery') {
+            $query_id = $this->uri->segment(4);
+            // $user_id = $this->session->userdata('web_login')[0]['id'];
+            // die($user_id);
+            $data['client_query'] = $this->md->fetch_query_detail( $query_id );
+            $data['query_reply'] = $this->md->fetch_query_reply( $query_id );
+            // var_dump($data); die();
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/'.$page);
+            $this->load->view('selly/footer');
+            
+        }
+        else{
             $this->load->view('selly/header');
             $this->load->view('selly/'.$page);
             $this->load->view('selly/footer');
@@ -101,9 +125,18 @@ class Main extends CI_Controller
         $this->load->view('products/buy/'.$id);
     }
 
-    public function myqueries($user_id) {
-        echo $user_id;  
-        die();
+    public function add_user_reply() {
+        $data = $this->input->post();
+ 
+        if( $this->uri->segment(3) != '' ) {
+
+            $data_insert['user_id'] = $this->session->userdata('web_login')[0]['id'];
+            $data_insert['vendor_id'] = '';
+            $data_insert['client_query_id'] = $this->uri->segment(3);
+            $data_insert['reply'] = $data['reply'];
+            $this->md->insert('client_query_reply',$data_insert);
+        }
+        redirect('Main/view/openmyquery/'.$this->uri->segment(3));
     }
 
 }
