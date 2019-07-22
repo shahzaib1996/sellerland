@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2019 at 06:55 PM
+-- Generation Time: Jul 22, 2019 at 07:19 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -59,6 +59,14 @@ CREATE TABLE `client_query` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `client_query`
+--
+
+INSERT INTO `client_query` (`id`, `title`, `email`, `message`, `vendor_id`, `user_id`) VALUES
+(8, 'Title', 'xyz@gmail.com', 'This is my message', '4', 37),
+(9, 'This is NEW Query Title', 'xyzxyz@gmail.com', 'This is message new', '4', 37);
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +81,16 @@ CREATE TABLE `client_query_reply` (
   `vendor_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `client_query_reply`
+--
+
+INSERT INTO `client_query_reply` (`id`, `client_query_id`, `reply`, `user_id`, `vendor_id`, `created_at`) VALUES
+(13, 8, 'This is vender reply', 0, 4, '2019-07-22 22:05:36'),
+(14, 8, 'This is user reply', 37, 0, '2019-07-22 22:05:50'),
+(15, 9, 'This is my reply\r\n', 37, 0, '2019-07-22 22:10:33'),
+(16, 9, 'This is vender Reply', 0, 4, '2019-07-22 22:10:55');
 
 -- --------------------------------------------------------
 
@@ -122,7 +140,8 @@ INSERT INTO `feedback` (`id`, `vendor_id`, `pro_id`, `message`, `client_id`, `cr
 (10, '4', '25', ' this is user', '3', '2019-07-22 17:35:37'),
 (11, '15', '31', ' that is very good', '23', '2019-07-22 17:35:37'),
 (12, '18', '35', ' this is good ', '1', '2019-07-22 17:35:37'),
-(19, '4', '13', ' this is just a feedbackk\r\n', '37', '2019-07-22 17:43:29');
+(19, '4', '13', ' this is just a feedbackk\r\n', '37', '2019-07-22 17:43:29'),
+(21, '4', '12', ' You can post feedback', '38', '2019-07-22 22:11:54');
 
 -- --------------------------------------------------------
 
@@ -137,6 +156,14 @@ CREATE TABLE `my_message` (
   `message` varchar(1000) NOT NULL,
   `username` char(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `my_message`
+--
+
+INSERT INTO `my_message` (`id`, `user_id`, `account_type`, `message`, `username`) VALUES
+(22, 4, 'vendor', 'This is vender abc here need admin support', 'ken'),
+(23, 4, 'admin', 'Admin Here...', '');
 
 -- --------------------------------------------------------
 
@@ -436,13 +463,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `client_query`
 --
 ALTER TABLE `client_query`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `client_query_reply`
 --
 ALTER TABLE `client_query_reply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `coupons`
@@ -454,13 +481,13 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `my_message`
 --
 ALTER TABLE `my_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `orders`

@@ -121,7 +121,7 @@
                         <div class="card-body">
                                 <textarea class="form-control" name="message" rows="3" style="font-size: 14px; resize:none;"> </textarea>
                         </div>
-                        <?php if($web_login[0]['id'] != 'active') { ?>
+                        <?php if($web_login[0]['status'] != 'Active') { ?>
                             <p class="text-center"><button class="btn text-light post-btn" disabled>You cannot post feedback</button></p>
                         <?php } else { ?>
                             <p class="text-center"><button type="submit" class="btn text-light post-btn">Post</button></p>

@@ -1,22 +1,13 @@
 <?php
 //var_dump($feedback);
 
-echo '<br>';
-echo '<br>';
-echo '<br>';
-
-//var_dump($user);
-
-echo '<br>';
-echo '<br>';
-echo '<br>';
 //var_dump($product);
 //die; ?>
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">View Order</h1>
+          <h1 class="h3 mb-2 text-gray-800">Feedbacks</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -47,10 +38,10 @@ echo '<br>';
                         <td><?= $v['message'] ?></td>
                         <td>
                             <a href="<?= site_url('Vender/feed_back_del/'.$v['id']) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"> </i></a>
-                            <button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#reply<?= $x ?>"><i class="fa fa-reply"> </i> reply</button>
+                            <!-- <button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#reply<?= $x ?>"><i class="fa fa-reply"> </i> reply</button> -->
                         </td>
                     </tr>
-                        <div class="modal" id="reply<?= $x ?>" tabindex="-1" role="dialog">
+                        <!-- <div class="modal" id="reply<?= $x ?>" tabindex="-1" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -76,7 +67,7 @@ echo '<br>';
                                     <?= form_close(); ?>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                   <?php } ?>
                   </tbody>
                 </table>
