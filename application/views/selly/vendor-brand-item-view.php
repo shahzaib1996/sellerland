@@ -14,7 +14,11 @@
                 <div class="card product-item-description">
                         <h5 class="card-header text-light p-4" style="background:#5390ff; "><?= $single_product[0]['title'] ?></h5>
                         <div class="card-body">
-                          <p class="card-text">
+                            <div class="" style="text-align: center;">
+                                <img src="<?= base_url();?>image/<?= $single_product[0]['image'] ?>" class="img-responsive" style="width: 80%;">
+                            </div>
+                          <p class="card-text" style="margin-top: 20px;">
+                            <h3>Description</h3>
                                <?= $single_product[0]['des'] ?>
                           </p>
                         </div>
@@ -92,7 +96,7 @@
                         <div class="card-footer">
                                 <div class="d-flex bd-highlight">
                                         <div class="p-2 w-100 bd-highlight">Seller: </div>
-                                        <div class="p-2 flex-shrink-1 bd-highlight seller-name"><a href="<?= site_url('Main/view/vendor/'.$this->uri->segment(4)) ?>"><?= $single_vendor[0]['store_name'] ?></a></div>
+                                        <div class="p-2 flex-shrink-1 bd-highlight seller-name"><a href="<?= site_url('Main/view/vendor/'.$this->uri->segment(4)) ?>"><?= $single_product[0]['store_name'] ?></a></div>
                                 </div>
                                 <div class="d-flex bd-highlight">
                                         <div class="p-2 w-100 bd-highlight">Stock:</div>

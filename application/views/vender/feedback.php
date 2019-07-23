@@ -20,14 +20,16 @@
                   <thead>
                     <tr>
                       <th>No#</th>
-                      <th>Message</th>
+                      <th>Product</th>
+                      <th>Feedback</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                   <tr>
                       <th>No#</th>
-                      <th>Message</th>
+                      <th>Product</th>
+                      <th>Feedback</th>
                       <th>Action</th>
                   </tr>
                   </tfoot>
@@ -35,6 +37,7 @@
                     <?php $x=1; foreach ($feedback as $k=>$v){  ?>
                     <tr>
                         <td><?= $x;$x++; ?></td>
+                        <td><?= $v['product_title'] ?></td>
                         <td><?= $v['message'] ?></td>
                         <td>
                             <a href="<?= site_url('Vender/feed_back_del/'.$v['id']) ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"> </i></a>

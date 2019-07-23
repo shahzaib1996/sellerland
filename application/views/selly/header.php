@@ -14,7 +14,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Your Site</title>
+    <title>Seller Land</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--    CSS    ============================================= -->
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/linearicons.css">
@@ -49,7 +49,12 @@
                     <li><a href="<?= site_url('main/view/signup') ?>" class="btn">Sign up </a></li>
                     <?php } else { ?>
                     <li><a href="<?= site_url('main/view/all-products') ?>">Products</a></li>
-                    <li><a href="<?= site_url('main/destroy') ?>">Logout</a></li>
+                    <li class="menu-has-children"><a href="#"><?= $web_login[0]['username'] ?></a>
+                        <ul>
+                            <li> <a href="<?= site_url('/Main/view/myqueries')?>" >My Queries</a> </li>
+                            <li><a href="<?= site_url('main/destroy') ?>">Logout</a></li>
+                        </ul>
+                    </li>
                     <?php } ?>
             </nav><!-- #nav-menu-container -->
         </div>

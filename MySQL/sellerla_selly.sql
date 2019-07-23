@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2019 at 07:19 PM
+-- Generation Time: Jul 23, 2019 at 06:20 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -216,7 +216,7 @@ CREATE TABLE `product` (
   `image` varchar(255) NOT NULL,
   `date` varchar(100) NOT NULL,
   `user_id` char(100) NOT NULL,
-  `des` text NOT NULL,
+  `des` varchar(1000) NOT NULL,
   `account_type` char(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -225,7 +225,6 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `image`, `date`, `user_id`, `des`, `account_type`) VALUES
-(12, 'abccc', 1, 1, 1, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
 (13, 'suama2323', 1000, 900, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
 (14, 'Shoes', 1200, 1000, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
 (15, 'qwe', 120, 123, 123, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
@@ -290,7 +289,8 @@ CREATE TABLE `store` (
 --
 
 INSERT INTO `store` (`id`, `title`, `price`, `image`, `stock`, `description`, `date`) VALUES
-(5, 'iop', 200, '361.jpg', 11, '11', '2019-06-25');
+(5, 'iop', 200, '361.jpg', 11, '11', '2019-06-25'),
+(6, 'test', 1001, 'user-default.png', 999, 'This is test', '2019-07-23');
 
 -- --------------------------------------------------------
 
@@ -313,7 +313,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`, `status`, `ip_address`) VALUES
 (35, 'Bilal', 'mohammedbilalmansoor@gmail.com', 'bilal123456', 'Active', '185.89.250.131'),
-(37, 'xyz', 'xyz@gmail.com', '111111', 'Inactive', '202.47.35.83'),
+(37, 'xyz', 'xyz@gmail.com', '111111', 'Active', '202.47.35.83'),
 (38, 'user', 'usamaasif8809@gmail.com', '111111', 'Active', '202.47.35.83'),
 (39, 'usasjaksj', 'abc@gmail.com', '1234567890', 'Active', '202.47.35.83'),
 (40, 'saosaiso', 'omer@gmail.com', '1234567890', 'Active', '202.47.35.83'),
@@ -321,8 +321,7 @@ INSERT INTO `user` (`id`, `username`, `email`, `password`, `status`, `ip_address
 (42, 'Jawwy', 'muhammadjawad0090@gmail.com', 'jawwy12345678', 'Active', '185.205.204.159'),
 (43, 'Jawwy123', 'muhammadjawad00@yahoo.com', 'jawwy12345678', 'Active', '185.205.204.159'),
 (44, 'Jawwad123', 'muhammadjawwad00@hotmail.com', 'jawwad12345678', 'Active', '136.0.99.239'),
-(45, 'Codegasm', 'info@codegasm.co.uk', 'codegasm123', 'Active', '136.0.99.239'),
-(46, '', '', '', '', '');
+(45, 'Codegasm', 'info@codegasm.co.uk', 'codegasm123', 'Active', '136.0.99.239');
 
 -- --------------------------------------------------------
 
@@ -357,15 +356,25 @@ INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, 
 (9, 'rbrown', 'rachelbrown1976@gmail.com', 'FuckThisShit', '', '', '18881111111', 'male', '', '', 'active', 'rbrown', 'img.png'),
 (10, 'ken', 'ken@gmail.com', 'qwerty1234', '', '', '12345678912', 'male', '', '', 'active', 'ken', 'img.png'),
 (11, 'terry', 'terry@gmail.com', 'terry12345', '', '', '1234567890789', 'male', '', '', 'active', 'chocalate', 'img.png'),
-(12, 'ken', 'kim@gmail.com', '1234567890123', '', '', '1234567890123', 'male', '', '', 'active', 'kim', 'img.png'),
+(12, 'kene', 'kim@gmail.com', '1234567890123', '', '', '1234567890123', 'male', '', '', 'active', 'kim', 'img.png'),
 (13, 'jado', 'jadi@gmail.com', 'jadi1234567890', '', '', '03456413071', 'male', '', '', 'active', 'jadi', 'img.png'),
 (14, 'Sammay', 'sammay@gmail.com', 'sammay1234567890', '', '', '03456413071', '', '', '', 'active', 'Sammay', 'img.png'),
-(15, 'alicashi', 'alicashi@gmail.com', '1234567890', '', '', '03456413071', '', '', '', 'active', 'chiaWala', 'img.png'),
-(16, 'teawala', 'teawala@gmail.com', '1234567890', '', '', '12345678901', '', '', '', 'active', 'teawala', 'img.png'),
-(17, 'fypes', 'fypes@gmail.com', '1234567890', '', '', '12345678901', '', '', '', 'active', 'fyp', 'img.png'),
-(18, 'milli', 'milli@gmail.com', '1234567890', '', '', '12345678901', '', '', '', 'active', 'milli_Shop', 'img.png'),
-(19, 'code', 'code@gmail.com', '1234567890', '', '', '12345678901', '', '', '', 'active', 'Codegasm', 'img.png'),
-(20, 'owais', 'owaisa976@gmail.com', '12345678901', '', '', '12345678901', '', '', '', 'active', 'owais', '');
+(15, 'alicashi', 'alicashi@gmail.com', '1234567890', '', '', '03456413071', '', '', '', 'active', 'chiaWala', 'img.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendor_payment_details`
+--
+
+CREATE TABLE `vendor_payment_details` (
+  `id` int(11) NOT NULL,
+  `vendor_id` int(11) NOT NULL,
+  `coinpayment_merchant_id` varchar(191) NOT NULL,
+  `paypal_email` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -450,6 +459,13 @@ ALTER TABLE `vendor`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `vendor_payment_details`
+--
+ALTER TABLE `vendor_payment_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `vendor_id` (`vendor_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -517,19 +533,25 @@ ALTER TABLE `purchase`
 -- AUTO_INCREMENT for table `store`
 --
 ALTER TABLE `store`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `vendor_payment_details`
+--
+ALTER TABLE `vendor_payment_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

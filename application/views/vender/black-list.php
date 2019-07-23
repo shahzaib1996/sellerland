@@ -3,12 +3,12 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Blacklist Users</h1>
+          <h1 class="h3 mb-2 text-gray-800">Blacklist User</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Users </h6>
+              <h6 class="m-0 font-weight-bold text-primary">Users</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -34,8 +34,7 @@
                   </tr>
                   </tfoot>
                   <tbody>
-<!--                  --><?php //$x=1; for($i=0;$i<count($feedback);$i++) { if($feedback[$i]['vendor_id']==$user[$i]['id']){?>
-                    <!-- <?php $x=1; foreach ($feedback as $k=>$v){ ?>
+                    <?php $x=1; foreach ($user as $k=>$v){ ?>
                     <tr>
                         <td><?= $x;$x++; ?></td>
                         <td><?= $v['username'] ?></td>
@@ -43,13 +42,13 @@
                         <td><?= $v['status'] ?></td>
                         <td>
                             <?php if($v['status']=='Active'){ ?>
-                            <a href="#" class="btn btn-success btn-sm"><i class="fa fa-lock"> </i> Blacklist</a>
-                      <?php }else{ ?>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-unlock"> </i> Un-Blacklist</a>
+                              <a href="<?= site_url('Selly/blacklist/user/'.$v['id'])?>" class="btn btn-success btn-sm"><i class="fa fa-lock"> </i> Blacklist</a>
+                            <?php }else{ ?>
+                              <a href="<?= site_url('Selly/unblacklist/user/'.$v['id'])?>" class="btn btn-danger btn-sm"><i class="fa fa-unlock"> </i> Un-Blacklist</a>
                             <?php } ?>
                         </td>
                     </tr>
-                  <?php } ?> -->
+                  <?php } ?> 
                   </tbody>
                 </table>
               </div>

@@ -217,4 +217,22 @@ class Selly extends CI_Controller
         $this->md->insert('my_message',$x);
         redirect('Selly/dashboard/support_messages/'.$this->uri->segment(3));
     }
+
+    public function blacklist() {
+        $user_id = $this->uri->segment(4); 
+        $this->md->blacklist_user($user_id);
+        redirect('vender/view/black-list');
+    }
+
+    public function unblacklist() {
+        $user_id = $this->uri->segment(4); 
+        $this->md->unblacklist_user($user_id);
+        redirect('vender/view/black-list');
+    }
+
+    public function update_vendor_merchant_id() {
+        $this->session->set_flashdata('coinpayment','Update Password');
+        $this->md->update(array('password'=>$this->input->post('cur_password')),'user',array('password'=>$this->input->post('password')));
+    }
+
 }

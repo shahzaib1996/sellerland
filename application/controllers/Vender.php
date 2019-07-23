@@ -52,14 +52,15 @@ class Vender extends CI_Controller
             $data['login'] = $this->session->userdata('login');
             $data['message'] = $this->md->ascending('my_message',array('id'=>'ASC'),array('user_id'=>$this->uri->segment(4)));
             $data['admin_message'] = $this->session->userdata('admin_message');
-            // print_r($data['admin_message']);
+            // print_r($data['login']);
             // die();
             $data['product']=$this->md->fetchh('product');
             $data['wh_product']=$this->md->fetch('product',array('id'=>$id));
             $data['code_product']=$this->md->fetch('product',array('user_id'=>$id));
             $data['user']=$this->md->fetch('user');
             $data['product']=$this->md->fetch('product',array('user_id'=>$data['login'][0]['id']));
-            $data['feedback']=$this->md->fetch('feedback',array('vendor_id'=>$data['login'][0]['id']));
+            // $data['feedback']=$this->md->fetch('feedback',array('vendor_id'=>$data['login'][0]['id']));
+            $data['feedback']=$this->md->feedback_join_product($data['login'][0]['id']); //arg vendor_id
             $data['week']=$this->md->week_profit();
             $data['month']=$this->md->month_profit();
             $data['year']=$this->md->year_profit();
@@ -96,6 +97,23 @@ class Vender extends CI_Controller
         $this->session->unset_userdata('login');
         $this->login();
     }
+//     public function add_store(){
+//         $this->form_validation->set_rules('username', 'Username', 'required');
+//         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[vendor.email]');
+//         $this->form_validation->set_rules('password', 'Password', 'required|min_length[10]');
+//         $this->form_validation->set_rules('phone', 'Number', 'required|min_length[11]');
+//         $this->form_validation->set_rules('store_name', 'Store Name', 'required|is_unique[vendor.store_name]');
+// //        $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+//         if($this->form_validation->run() == true){
+//             $data= $this->input->post();
+//             $data['status'] = 'active';
+//             $this->md->insert('vendor',$data);
+//             $this->login();
+//         }else{
+//             $this->signup();
+//         }
+//     }
+
     public function add_store(){
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[vendor.email]');
@@ -107,11 +125,14 @@ class Vender extends CI_Controller
             $data= $this->input->post();
             $data['status'] = 'active';
             $this->md->insert('vendor',$data);
+            $v_id = $this->db->insert_id();
+            $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_merchant_id'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );
             $this->login();
-        }else{
+        } else{
             $this->signup();
         }
     }
+
     public function signup(){
         $this->load->view('vender/signup');
     }

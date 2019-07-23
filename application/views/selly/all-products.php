@@ -1,4 +1,9 @@
 <?php //var_dump($single_vendor);die; ?>
+
+<style>
+  
+</style>
+
         <section class="banner-area relative banner-vendor" id="home">	
             <div class="overlay overlay-bg"></div>
             <div class="container">				
@@ -15,32 +20,60 @@
         </section>
 
         <section class="container" style="padding-top: 20px;">
-          <a href="<?= site_url('/Main/view/myqueries')?>" class="btn btn-primary" style="color:#fff;">My Queries</a>
+          <div class="row">
+            <!-- <div class="col-md-4">
+              <a href="<?= site_url('/Main/view/myqueries')?>" class="btn btn-primary" style="color:#fff;">My Queries</a>
+            </div> -->
+            <div class="col-md-12" style="text-align: center;">
+              
+              <form action="" style="text-align: center;" method="GET">
+                <select class="form-control" name="vendor" style="width: 20%;float: left;">
+                  <option value="">Search By Vendor</option>
+                  <?php
+                  foreach ($vendor as $key => $value) {
+                    ?>
+                    <option value="<?= $value['id'] ?>"> <?= $value['store_name'] ?> </option>
+                    <?php
+                  }
+                  ?>
+                </select>
+                <input type="text" class="form-control" name="search" value="" placeholder="enter here to search . . ." style="float: left;width: 50%;margin-left: 10px;"> 
+                <input type="submit" class="btn btn-primary" name="submit" value="Search" style="color:#fff;float: left;margin-left: 10px;" />
+              </form>
+            
+            </div>
+            
+          </div>
         </section>
         <!-- End banner Area -->	
         <section class="content-section container pb-5">
                 <div class="row pt20">
-                    <?php $x=0; foreach ($product as $k=>$v){ if($vendor[$x]['id']== $v['user_id']){?>
+                  <div class="col-lg-12" style="margin-bottom: 10px;"> <span style="border: 1px solid grey;border-radius: 10px;padding: 5px;">  <?php echo count($product); ?> Products Found </span> </div>
+                    <?php $x=0; 
+                    if( count($product) != 0 ) {
+                    foreach ($product as $k=>$v){ ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 vdp-plr">
-                            <div class="card">
-                              <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$vendor[$x]['id'].'/'.$v['id']) ?>" style="">
+                            <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$v['user_id'].'/'.$v['id']) ?>" style="">
+                              <div class="card">
                                 <center>
-                                  <img class="card-img-top vendor-product-img" style="width: auto;" src="<?= base_url() ?>image/<?= $v['image'] ?>" alt="Card image cap">
+                                  <img class="card-img-top vendor-product-img" style="width: auto;height: 200px;" src="<?= base_url() ?>image/<?= $v['image'] ?>" alt="Card image cap">
                                 </center>
                                   <div class="card-body">
-                                      <h3 class="card-text vendor-product-details text-center" style="color: #1f82f7"><?= $v['title'] ?></h3>
-                                    <p class="card-text vendor-product-details" style="font-size: 13px; color:black;">Terms of service(Read before buying)</p>
+                                      <h3 class="card-text vendor-product-details text-center" style="font-size:18px;color: #1f82f7"><?= $v['title'] ?></h3>
+                                    <p class="card-text vendor-product-details text-center" style="margin-top: 10px;font-size: 13px; color:black;">Vendor <?= $v['store_name'] ?> </p>
                                     <span class="vendor-product-price" style="color:black; font-size:13px">$<?= $v['price'] ?></span>
                                     <span class="vendor-product-stock" style="float:right;  font-size:13px"><?= $v['quantity'] ?> in stock</span>
                                   </div>
                                 </div>
                               </a>
                     </div>
-                    <?php }} ?>
+                    <?php } } else {
+                      echo "<div class'col-md-12' style='text-align:center;width:100%;'> No Result Found! </div>";
+                    } ?>
                 </div>
 
                 <!-- pagination for pages-->
-                <nav aria-label="...">
+                <!-- <nav aria-label="...">
                         <ul class="pagination">
                           <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -54,7 +87,7 @@
                             <a class="page-link" href="#">Next</a>
                           </li>
                         </ul>
-                      </nav>    
+                      </nav>  -->   
 
         </section>
 

@@ -7,50 +7,44 @@ class Main extends CI_Controller
         $this->view();
     }
     public function data(){
+
+        if(isset($_GET['search']) || isset($_GET['vendor'])) {
+            // print_r($_GET['search']);
+            // die();
+            $data['product'] = $this->md->search_products($_GET['search'],$_GET['vendor']); 
+        } else {
+            $data['product'] = $this->md->products_with_vendor();
+        }
+
         $data['web_login'] = $this->session->userdata('web_login');
         $data['vendor'] = $this->md->fetch('vendor');
-        $data['product'] = $this->md->fetch('product');
+        // $data['product'] = $this->md->fetch('product');
+        // $data['product'] = $this->md->products_with_vendor(); // this is moved to search conditions
         $data['single_vendor'] = $this->md->fetch('vendor',array('id'=>$this->uri->segment(4)));
         // $data['feedback'] = $this->md->fetch('feedback',array('vendor_id'=>$this->uri->segment(4)));
         $data['feedback'] = $this->md->fetch_vender_feedback( $this->uri->segment(4) ); //args vender_id
         $data['vendor_product'] = $this->md->fetch('product',array('user_id'=>$this->uri->segment(4)));
         $data['single_coupons'] = $this->md->fetch('coupons',array('vender_id'=>$this->uri->segment(4)));
-        $data['single_product'] = $this->md->fetch('product',array('id'=>$this->uri->segment(5),'user_id'=>$this->uri->segment(4)));
+        // $data['single_product'] = $this->md->fetch('product',array('id'=>$this->uri->segment(5),'user_id'=>$this->uri->segment(4)));
+        $data['single_product'] = $this->md->single_product_with_vendor($this->uri->segment(5) ); //args(productID)
+        // print_r($data['single_product']);
+        // die();
         $data['single_feedback'] = $this->md->fetch('feedback',array('pro_id'=>$this->uri->segment(5),'vendor_id'=>$this->uri->segment(4)));
         return $data;
     }
     public function view($page='index')
     {   
-        // if($page == 'myqueries') {
-        //     $user_id = $this->session->userdata('web_login')[0]['id'];
-        //     // die($user_id);
-        //     $data['myqueries'] = $this->md->fetch_user_query( $user_id );
-        //     // var_dump($data); die();
-        //     $this->load->view('selly/header',$data);
-        //     $this->load->view('selly/'.$page);
-        //     $this->load->view('selly/footer');
-
-        // } else if($page == 'openmyquery') {
-        //     $query_id = $this->uri->segment(4);
-        //     // $user_id = $this->session->userdata('web_login')[0]['id'];
-        //     // die($user_id);
-        //     $data['client_query'] = $this->md->fetch_query_detail( $query_id );
-        //     $data['query_reply'] = $this->md->fetch_query_reply( $query_id );
-        //     // var_dump($data); die();
-        //     $this->load->view('selly/header',$data);
-        //     $this->load->view('selly/'.$page);
-        //     $this->load->view('selly/footer');
-            
-        // }
 
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
         }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback'){
             if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
-                // print_r($data);
-                // die();
-               // var_dump($data);die;
+                
+                if( count( $data['single_product'] ) == 0  && $page == 'vendor-brand-item-view') {
+                    redirect('Main/view/all-products');
+                }
+
                 $this->load->view('selly/header',$data);
                 $this->load->view('selly/'.$page);
                 $this->load->view('selly/footer');
@@ -62,10 +56,13 @@ class Main extends CI_Controller
 
             $data['web_login'] = $this->session->userdata('web_login');
             $data['myqueries'] = $this->md->fetch_user_query( $user_id );
-            
-            $this->load->view('selly/header',$data);
-            $this->load->view('selly/'.$page);
-            $this->load->view('selly/footer');
+            if(!empty($this->session->userdata('web_login'))) {
+                $this->load->view('selly/header',$data);
+                $this->load->view('selly/'.$page);
+                $this->load->view('selly/footer');
+            }else{
+                redirect('Main/view/signin');
+            }
 
         } else if($page == 'openmyquery') {
             $query_id = $this->uri->segment(4);
@@ -73,10 +70,13 @@ class Main extends CI_Controller
 
             $data['client_query'] = $this->md->fetch_query_detail( $query_id );
             $data['query_reply'] = $this->md->fetch_query_reply( $query_id );
-            // var_dump($data); die();
-            $this->load->view('selly/header',$data);
-            $this->load->view('selly/'.$page);
-            $this->load->view('selly/footer');
+            if(!empty($this->session->userdata('web_login'))) {
+                $this->load->view('selly/header',$data);
+                $this->load->view('selly/'.$page);
+                $this->load->view('selly/footer');
+            }else{
+                redirect('Main/view/signin');
+            }
             
         }
         else{

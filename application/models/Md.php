@@ -155,4 +155,64 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function feedback_join_product($vendor_id)
+    {
+        $this->db->select('fb.*, p.title as "product_title"');
+        $this->db->from('feedback fb');
+        $this->db->join('product as p',' fb.pro_id = p.id ');
+        $this->db->where('vendor_id',$vendor_id);
+        
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    public function blacklist_user($user_id)
+    {
+        $this->db->where('id',$user_id);
+        $this->db->update('user',[ 'status'=>'Inactive' ]);
+    }
+
+    public function unblacklist_user($user_id)
+    {
+        $this->db->where('id',$user_id);
+        $this->db->update('user',[ 'status'=>'Active' ]);
+    }
+
+    public function single_product_with_vendor($productID)
+    {
+        $this->db->select('p.*,v.username,v.email,v.store_name');
+        $this->db->from('product p');
+        $this->db->join('vendor as v',' p.user_id = v.id ');
+        $this->db->where('p.id',$productID);
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    public function products_with_vendor()
+    {
+        $this->db->select('p.*,v.store_name');
+        $this->db->from('product p');
+        $this->db->join('vendor as v',' p.user_id = v.id ');
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    public function search_products($search='',$vendor='')
+    {
+        $this->db->select('p.*,v.store_name');
+        $this->db->from('product p');
+        $this->db->join('vendor as v',' p.user_id = v.id ');
+        if( $vendor != '' && $search != '' ) {
+            $this->db->where('p.user_id', $vendor);
+            $this->db->like('p.title', $search , 'both');
+        } else if( $vendor != '' && $search == '' ) {
+            $this->db->where('p.user_id', $vendor);
+        } else if( $vendor == '' && $search != '' ) {
+            $this->db->like('p.title', $search , 'both');
+        }
+        
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }
