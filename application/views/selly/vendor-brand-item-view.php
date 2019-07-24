@@ -43,7 +43,7 @@
                                            <li class="list-group-item disabled"><a href="<?= site_url('Products/buy/'.$single_product[0]['id']) ?>">Paypal</a></li>
 <!--                                           <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#paypal">Paypal</a></li>-->
 <!--                                             <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#coin">Coins Payment</a></li>-->
-                                             <li class="list-group-item disabled"><a href="<?= site_url('Main/view/coin_payment/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>">Coins Payment</a></li>
+                                             <li class="list-group-item disabled"><a href="<?= site_url('Main/view/payment_coin/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>">Coins Payment</a></li>
                                         </ul>
                                           </div>
                                           </div>

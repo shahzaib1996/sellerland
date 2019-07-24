@@ -78,8 +78,9 @@ class Main extends CI_Controller
                 redirect('Main/view/signin');
             }
             
-        }
-        else{
+        } else if ($page == 'payment_coin') {
+            $this->load->view('selly/'.$page);
+        } else{
             $this->load->view('selly/header');
             $this->load->view('selly/'.$page);
             $this->load->view('selly/footer');

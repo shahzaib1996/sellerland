@@ -16,9 +16,9 @@
             </div>
             <div class="card-body">
                 
-              <?php if(!empty($this->session->flashdata('coinpayment')) OR !empty($this->session->flashdata('paypal'))){ ?>
+              <?php if(!empty($this->session->flashdata('coinpayment')) ){ ?>
                   <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-lg-6">
                           <div class="alert alert-info">
                               <?= $this->session->flashdata('coinpayment') ?>
                               <?= $this->session->flashdata('paypal') ?>
@@ -35,13 +35,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label >Coinpayment Merchant ID</label>
-                                <input type="text" class="form-control" name="vendor_merchant_id" placeholder="Enter your merchant ID">
+                                <input type="text" class="form-control" name="vendor_merchant_id" placeholder="Enter your merchant ID" value="<?= $vendor_payment[0]['coinpayment_merchant_id'] ?>" required>
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group col-md-8">
-                                <input type="submit" class="form-control btn btn-success" value="Update Email">
+                                <input type="submit" class="form-control btn btn-success" value="Update">
                             </div>
                         </div>
                         <!--container ended-->
@@ -66,6 +66,15 @@
             </div>
             <div class="card-body">
                 
+                <?php if( !empty($this->session->flashdata('paypal')) ){ ?>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="alert alert-info">
+                              <?= $this->session->flashdata('paypal') ?>
+                          </div>
+                      </div>
+                  </div>
+              <?php } ?>
 
             <div class="row">
                 <div class="col-md-6">
@@ -75,13 +84,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label >Paypal Email</label>
-                                <input type="text" class="form-control" name="paypal_email" placeholder="Enter your paypal email">
+                                <input type="email" class="form-control" name="paypal_email" placeholder="Enter your paypal email" value="<?= $vendor_payment[0]['paypal_email'] ?>">
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group col-md-8">
-                                <input type="submit" class="form-control btn btn-success" value="Update Paypal Email">
+                                <input type="submit" class="form-control btn btn-success" value="Update">
                             </div>
                         </div>
                         <!--container ended-->

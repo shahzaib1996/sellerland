@@ -45,6 +45,19 @@ class Vender extends CI_Controller
                 $this->load->view('vender/footer');
             }else{ $this->login(); }
 
+        }else if( $page=='vender_settings' ) {
+            //required by vender header
+            $data['user_info']  = $this->session->userdata('login');
+            $data['login'] = $this->session->userdata('login');
+            $data['vendor_payment']=$this->md->fetch('vendor_payment_details',array('vendor_id'=>$data['login'][0]['id'] ));
+            // print_r($data['vendor_payment']);
+            // die();
+            if(!empty($this->session->userdata('login'))){ // if start
+                $this->load->view('vender/header',$data);
+                $this->load->view('vender/'.$page);
+                $this->load->view('vender/footer');
+            }else{ $this->login(); } // end if close
+
         } else{ // else if there is session go to index
 //            var_dump($this->session->userdata('login'));die;
             $id=$this->uri->segment(4);

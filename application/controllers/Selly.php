@@ -231,8 +231,27 @@ class Selly extends CI_Controller
     }
 
     public function update_vendor_merchant_id() {
-        $this->session->set_flashdata('coinpayment','Update Password');
-        $this->md->update(array('password'=>$this->input->post('cur_password')),'user',array('password'=>$this->input->post('password')));
+        // print_r($this->session->userdata('login')[0]['id']);
+        // die();
+        $this->session->set_flashdata('coinpayment','Coinpayment Merchant ID Updated!');
+        $this->md->update( 
+            [ 'vendor_id'=> $this->session->userdata('login')[0]['id'] ] ,
+            'vendor_payment_details', 
+            [ 'coinpayment_merchant_id'=>$this->input->post('vendor_merchant_id')] 
+        );
+        redirect('vender/view/vender_settings');
+    }
+
+    public function update_paypal_email() {
+        // print_r($this->session->userdata('login')[0]['id']);
+        // die();
+        $this->session->set_flashdata('paypal','Paypal Email Updated!');
+        $this->md->update( 
+            [ 'vendor_id'=> $this->session->userdata('login')[0]['id'] ] ,
+            'vendor_payment_details', 
+            [ 'paypal_email'=>$this->input->post('paypal_email')] 
+        );
+        redirect('vender/view/vender_settings');
     }
 
 }
