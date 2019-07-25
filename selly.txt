@@ -1,0 +1,13 @@
+- Create Client queries page and reply page
+- create vender view queries and reply page
+- Master Admin Panel ( Show products by vender )
+- Fix Selly Website Header Menu
+- Fix Product Image in whole website
+- banned user cannot post feedback
+- Ability to add 10000 lines in product description
+
+- Create Product Search and search by Vendor
+- Create Vendor Payment Method setting page
+
+- Fix Vendor Package in vendor table
+- Create Package Set Default option

@@ -31,6 +31,15 @@
                   <option value="Premium">Premium</option>
                 </select>
               </div>
+
+
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Is Default &nbsp;</label>
+                <input type="checkbox" class="" name="is_default">
+              </div>
             </div>
 
             <div class="row ">

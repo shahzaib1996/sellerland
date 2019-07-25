@@ -51,10 +51,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-<!--        <!-- Heading -->
-<!--        <div class="sidebar-heading">-->
-<!--            Interface-->
-<!--        </div>-->
+
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
@@ -94,7 +91,8 @@
                     <h6 class="collapse-header">Change Option:</h6>
                     <a class="collapse-item" href="<?= site_url('selly/dashboard/add_package')?>">Add Packages</a>
                     <a class="collapse-item" href="<?=site_url('selly/dashboard/view_package')?>">View Packages</a>
-                    <a class="collapse-item" href="<?=site_url('selly/dashboard/reset')?>">Reset Email <Passowrd></Passowrd></a>
+                    <a class="collapse-item" href="<?=site_url('selly/dashboard/reset')?>">Profile Settings</a>
+                    <a class="collapse-item" href="<?=site_url('selly/dashboard/admin_settings')?>">Payment Settings</a>
                 </div>
             </div>
         </li>
@@ -150,21 +148,12 @@
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?= $login_data['username'] ?> </span>
+                            <img class="img-profile rounded-circle" src="<?= base_url();?>/image/profile_image/<?= $login_data['img'] ?>">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="<?= site_url('selly/dashboard/profile/')?>">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            
-                            <div class="dropdown-divider"></div>
+                                                     
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout

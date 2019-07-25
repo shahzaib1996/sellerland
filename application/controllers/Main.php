@@ -78,8 +78,15 @@ class Main extends CI_Controller
                 redirect('Main/view/signin');
             }
             
-        } else if ($page == 'payment_coin') {
-            $this->load->view('selly/'.$page);
+        } else if ($page == 'coin_checkout') {
+            $data['single_product'] = $this->md->single_product_with_vendor($this->uri->segment(5) );
+            if(!empty($this->session->userdata('web_login'))) {
+                $this->load->view('selly/header',$data);
+                $this->load->view('selly/'.$page);
+                $this->load->view('selly/footer');
+            }else{
+                redirect('Main/view/signin');
+            }
         } else{
             $this->load->view('selly/header');
             $this->load->view('selly/'.$page);

@@ -15,7 +15,7 @@
 
 <!--          --><?php //} ?>
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Reset Email</h1>
+            <h1 class="h3 mb-2 text-gray-800">Profile Settings</h1>
             <div class="row">
                 <div class="col-md-6">
                     <?= form_open('selly/up_email')?>
@@ -69,6 +69,28 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <input type="submit" class="form-control btn btn-success" value="Update Password">
+                            </div>
+                        </div>
+                        <!--container ended-->
+                    </div>
+                    <?=form_close()?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <?= form_open_multipart('selly/update_admin_profile_picture')?>
+                    <div class="container">
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="inputEmail4">Update Profile Image</label>
+                                <input type="file" class="form-control" name="profile_image" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input type="submit" class="form-control btn btn-success" value="Update Profile Image">
                             </div>
                         </div>
                         <!--container ended-->
