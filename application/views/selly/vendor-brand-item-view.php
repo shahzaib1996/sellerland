@@ -42,8 +42,11 @@
 
                                            <li class="list-group-item disabled"><a href="<?= site_url('Products/buy/'.$single_product[0]['id']) ?>">Paypal</a></li>
 <!--                                           <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#paypal">Paypal</a></li>-->
-<!--                                             <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#coin">Coins Payment</a></li>-->
-                                             <li class="list-group-item disabled"><a href="<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>">Coins Payment</a></li>
+<!--                                             <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#coin">Coins Payment</a></li>-->                         
+                                            <form action="<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>" method="" id="coin_checkout_form">
+                                                <input type="hidden" id="qty" name="qty" pattern="[0-9]*" value="1" > 
+                                            </form>
+                                            <li class="list-group-item disabled"><a href="#" id="cpBtn">Coins Payment</a></li>
                                         </ul>
                                           </div>
                                           </div>
@@ -62,15 +65,22 @@
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                             <script>
                                 $(document).ready(function () {
+
+                                    $('#cpBtn').click(function(){
+                                        $("#coin_checkout_form").submit();
+                                    })
+
                                     $('.add-btn').click(function () {
                                         var x = parseInt($('#no').val())+1;
                                         $('#no').val(x);
+                                        $('#qty').val(x);
                                     });
                                     $('.sub-btn').click(function () {
                                         var x = parseInt($('#no').val());
                                         if(x>1){
                                             x--;
                                             $('#no').val(x);
+                                            $('#qty').val(x);
                                         }
                                     });
                                     $('#click_coupon').click(function () {

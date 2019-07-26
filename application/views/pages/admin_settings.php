@@ -30,7 +30,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label >Wallet Code</label>
-                                <input type="text" class="form-control" name="admin_wallet_address" placeholder="Enter your wallet address" value="<?= $admin_data[0]['coinpayment_wallet_address'] ?>" required>
+                                <input type="text" class="form-control" name="admin_wallet_address" placeholder="Enter your wallet address" value="<?= $admin_data[0]['coinpayment_merchant'] ?>" required>
                             </div>
                         </div>
 

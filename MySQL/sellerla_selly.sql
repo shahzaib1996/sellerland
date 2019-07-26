@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2019 at 06:37 PM
+-- Generation Time: Jul 26, 2019 at 01:44 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -35,7 +35,7 @@ CREATE TABLE `admin` (
   `contact` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `img` varchar(500) NOT NULL,
-  `coinpayment_wallet_address` varchar(256) DEFAULT NULL,
+  `coinpayment_merchant` varchar(256) DEFAULT NULL,
   `coin` varchar(10) DEFAULT NULL,
   `paypal_email` varchar(256) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -44,8 +44,8 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`, `coinpayment_wallet_address`, `coin`, `paypal_email`) VALUES
-(1, 'ben', 'ben', 123, 'ben@gmail.com', 'smfc.png', 'ssasasasasasasasasasasas', 'BTC', 'example@paypal.com');
+INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`, `coinpayment_merchant`, `coin`, `paypal_email`) VALUES
+(1, 'ben', 'ben', 123, 'ben@gmail.com', 'smfc.png', 'a2bd0cfbe250ab62ed52037588ad5936', 'LTCT', 'example@paypal.com');
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,8 @@ CREATE TABLE `coinpayment_accept_coins` (
 
 INSERT INTO `coinpayment_accept_coins` (`id`, `acronym`, `name`) VALUES
 (1, 'BTC', 'Bitcoin'),
-(2, 'LTC', 'Litecoin');
+(2, 'LTC', 'Litecoin'),
+(3, 'LTCT', 'Litecoin Test');
 
 -- --------------------------------------------------------
 
@@ -196,13 +197,28 @@ INSERT INTO `my_message` (`id`, `user_id`, `account_type`, `message`, `username`
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
   `qty` int(11) NOT NULL,
+  `vendor_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status` varchar(20) NOT NULL,
-  `date` varchar(100) NOT NULL
+  `date` varchar(100) NOT NULL,
+  `transaction_id` varchar(256) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `coupon_used` varchar(100) DEFAULT NULL,
+  `cp_coin_amount` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `product_id`, `title`, `price`, `qty`, `vendor_id`, `user_id`, `status`, `date`, `transaction_id`, `created_at`, `updated_at`, `coupon_used`, `cp_coin_amount`) VALUES
+(1, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG6WZPYUZRVDYXC1ZS86QS2G', '2019-07-26 10:53:34', NULL, NULL, '0.20458176'),
+(2, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG1VSHVIFOATU4M2US2GKIB1', '2019-07-26 10:53:52', NULL, NULL, '0.20458176');
 
 -- --------------------------------------------------------
 
@@ -515,7 +531,7 @@ ALTER TABLE `client_query_reply`
 -- AUTO_INCREMENT for table `coinpayment_accept_coins`
 --
 ALTER TABLE `coinpayment_accept_coins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `coupons`
@@ -539,7 +555,7 @@ ALTER TABLE `my_message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `package`

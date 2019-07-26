@@ -1,5 +1,7 @@
 <?php
 
+require('coinpayments/coinpayments.inc.php');
+
 class Main extends CI_Controller
 {
     public function index()
@@ -37,7 +39,7 @@ class Main extends CI_Controller
 
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
-        }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback'){
+        }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback' OR $page=='coin_checkout'){
             if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
                 
@@ -79,7 +81,24 @@ class Main extends CI_Controller
             }
             
         } else if ($page == 'coin_checkout') {
+            $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $vendor = $this->md->fetch('vendor',[ 'id'=>$this->uri->segment(4) ])[0];
+            $product = $this->md->fetch('product',[ 'id'=>$this->uri->segment(5) ])[0];
+            $user = $this->md->fetch('user',[ 'id'=>$this->session->userdata('web_login')[0]['id'] ])[0];
+             $this->md->insert('orders',
+                [
+                    'title' => $product['title'].' - '.$vendor['store_name'],
+                    'price' => $data['total_price'],
+                    'qty'   => $data['quantity'],
+                    'product_id' => $product['id'],    
+                    'vendor_id' => $vendor['id'],
+                    'status' => "pending"
+                ]
+
+            );
+
             $data['single_product'] = $this->md->single_product_with_vendor($this->uri->segment(5) );
+            $data['cp_details'] = $this->md->fetch('admin',[ 'id'=>1 ])[0];
             if(!empty($this->session->userdata('web_login'))) {
                 $this->load->view('selly/header',$data);
                 $this->load->view('selly/'.$page);
@@ -150,5 +169,77 @@ class Main extends CI_Controller
         }
         redirect('Main/view/openmyquery/'.$this->uri->segment(3));
     }
+
+
+    public function coin_transaction_complete() {
+
+        // print_r($this->input->post());
+        // die();
+
+        // $data =  $this->input->post();
+
+        // $cps = new CoinPaymentsAPI();
+        // $cps->Setup('407f4DE7bebb09b6FF8aA1f64cfcfD0DDF3751Bd44D22Cace9981d9F8c99C33e', 'aafa971b38e64a1e3af868e86fd9ea8c3476f14f352e0f7ec9313b952b9951a5');
+
+        // $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+        // $vendor = $this->md->fetch('vendor',[ 'id'=>$data['vendor_id'] ])[0];
+        // $product = $this->md->fetch('product',[ 'id'=>$data['product_id'] ])[0];
+        // $user = $this->md->fetch('user',[ 'id'=>$this->session->userdata('web_login')[0]['id'] ])[0];
+
+        // // print_r($cp_details);
+        // // die();
+
+        // $req = array(
+        //     'amount' => $data['total_price'],
+        //     'currency1' => 'USD',
+        //     'currency2' => $cp_details['coin'],
+        //     'buyer_email' => $user['email'],
+        //     'item_name' => $product['title'].' - '.$vendor['store_name'],
+        //     'item_number' => $product['id'],
+        //     'address' => $cp_details['coinpayment_merchant'], // leave blank send to follow your settings on the Coin Settings page
+        //     'ipn_url' => site_url('/Main/cp_ipn_script'),
+        // );
+
+        
+        // // print_r($req);
+        // // die();
+
+        // // See https://www.coinpayments.net/apidoc-create-transaction for all of the available fields            
+        // $result = $cps->CreateTransaction($req);
+        // if ($result['error'] == 'ok') {
+        //     $le = php_sapi_name() == 'cli' ? "\n" : '<br />';
+            
+        //     $this->md->insert('orders',
+        //         [
+        //             'title' => $product['title'].' - '.$vendor['store_name'],
+        //             'price' => $data['total_price'],
+        //             'qty'   => $data['quantity'],
+        //             'product_id' => $data['product_id'],    
+        //             'vendor_id' => $data['vendor_id'],
+        //             'transaction_id' => $result['result']['txn_id'],
+        //             'cp_coin_amount' => $result['result']['amount'],
+        //             'status' => "pending"
+        //         ]
+
+        //     );
+
+        //     print 'Transaction created with ID: '.$result['result']['txn_id'].$le;
+        //     print 'Buyer should send '.sprintf('%.08f', $result['result']['amount']).' BTC'.$le;
+        //     print 'Status URL: '.$result['result']['status_url'].$le;
+
+
+
+        // } else {
+        //     print 'Error: '.$result['error']."\n";
+        // }
+        echo "Complete";
+
+    }
+
+    public function cp_ipn_script() {
+        echo "CP IPN SCRIPT FUNCTION";
+    }
+
+
 
 }
