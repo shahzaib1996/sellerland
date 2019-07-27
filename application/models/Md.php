@@ -8,12 +8,39 @@ class Md extends CI_Model
     }
 
 
-    public function update($where,$tablename,$updatedata)
+    public function update($where,$tablename,$updatedata,$email = null)
     {
         foreach ($where as $k=>$v) {
-            $this->db->where($k,$v);
+            if($email != null){
+                $Where =  " password = '$v' AND email = '$email'";
+                 $this->db->where($Where);
+                //var_dump($Where);die();
+        //   $this->db->query("UPDATE "  $tablename" SET "."'$k'"." = "."'$v'". " WHERE "."'$k'". " = ". $updatedata['password']. " AND  email = "."'$email'");
+            }
+            else{
+                //var_dump($this->db->where($k,$v));die();
+                $this->db->where($k,$v);               
+            }
+            $this->db->update($tablename,$updatedata);
         }
-        $this->db->update($tablename,$updatedata);
+
+    }
+    //'orders.vendor_id',$user_id,'orders.status',"paid"
+    public function productSoldPerDay($user_id)
+    {
+        $this->db->select('product.title,product.price,orders.qty');
+        $this->db->from("orders");
+        $this->db->join('product', 'orders.product_id = product.id','join');
+        $where = 'orders.status ="pending" AND orders.vendor_id = "$user_id"';
+       // $array = array('orders.vendor_id' => $user_id, 'emp_dept' => $dept);
+
+        $this->db->where('orders.vendor_id',$user_id);
+        $this->db->where('orders.status',"paid");
+        $query = $this->db->get()->result_array();
+        // $query= "SELECT p.title,p.price,o.qty FROM orders o join product p ON o.product_id = p.id WHERE o.status ='pending' AND o.vendor_id = '$user_id'";
+        // $this->db->query($query);
+        // $query =$query = $this->db->get()->result_array();
+        return $query;
     }
     public function delete($where,$tablename)
     {
@@ -25,13 +52,14 @@ class Md extends CI_Model
 
     public function week_profit()
     {
-      $query=  "SELECT SUM(price) as price FROM `purchase` where `date` > DATE_SUB(NOW(),INTERVAL  1 WEEK )";
+      $query=  "SELECT SUM(price) as price FROM `purchase` where `date` > DATE_SUB(NOW(),INTERVAL  1 WEEK ) and now()";
       $result=$this->db->query($query);
+    //   var_dump($result->row()->price);
       return $result->row()->price;
     }
     public function month_profit()
     {
-      $query=  "SELECT SUM(price) as price FROM `purchase` where `date` > DATE_SUB(NOW(),INTERVAL  1 MONTH )";
+      $query=  "SELECT SUM(price) as price FROM `purchase` where `date` > DATE_SUB(NOW(),INTERVAL  1 MONTH )and now() ";
       $result=$this->db->query($query);
       return $result->row()->price;
     }

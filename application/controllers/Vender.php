@@ -72,6 +72,7 @@ class Vender extends CI_Controller
             $data['code_product']=$this->md->fetch('product',array('user_id'=>$id));
             $data['user']=$this->md->fetch('user');
             $data['product']=$this->md->fetch('product',array('user_id'=>$data['login'][0]['id']));
+            // var_dump($data['login'][0]['id']);
             // $data['feedback']=$this->md->fetch('feedback',array('vendor_id'=>$data['login'][0]['id']));
             $data['feedback']=$this->md->feedback_join_product($data['login'][0]['id']); //arg vendor_id
             $data['week']=$this->md->week_profit();
@@ -81,6 +82,8 @@ class Vender extends CI_Controller
             $data['wh_orders']=$this->md->fetch('orders',array('id'=>$id));
             $data['report']=$this->md->report();
             $data['orders']=$this->md->user();
+            $data['soldperday']=$this->md->productSoldPerDay($data['login'][0]['id']);
+            $data['wh_vendor']=$this->md->fetch("vendor",array('id'=>$data['login'][0]['id']));
             $data['client_query'] = $this->md->fetch('client_query',array('vendor_id'=>$data['login'][0]['id']));
             if(!empty($this->session->userdata('login'))){ // if start
                 $this->load->view('vender/header',$data);
@@ -158,7 +161,7 @@ class Vender extends CI_Controller
         $data=$this->input->post();
         $images['image'] = $this->do_upload('image');
         $data['image'] = $images['image']['upload_data']['file_name'] ;
-        $data['date'] = date('Y-m-d');
+        $data['date'] = date('Y-m-d h:i:s');
         $this->md->insert("product",$data);
         redirect('vender/view/view_product');
     }
@@ -186,7 +189,7 @@ class Vender extends CI_Controller
     public function add_order()
     {
         $data=$this->input->post();
-        $data['date'] = date('Y-m-d');
+        $data['date'] = date('Y-m-d h:i:s');
 //        var_dump($data);die;
         $this->md->insert("orders",$data);
 //        die;

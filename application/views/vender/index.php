@@ -7,11 +7,13 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
           </div>
 
           <!-- Content Row -->
           <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
@@ -19,8 +21,15 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Weekly Profit</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$<?=$week?></div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Weekly)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">   $<?php
+                      if($week != null){
+                        echo $week;
+                      }
+                      else{
+                       echo " Opps no weekly earning ";
+                      }
+                        ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -36,8 +45,17 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Monthly Profit</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$<?=$month?></div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Monthly)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      $<?php
+                      if($month != null){
+                        echo $month;
+                      }
+                      else{
+                       echo " Opps no monthly earning ";
+                      }
+                        ?>
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -48,21 +66,31 @@
             </div>
 
               <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Yearly Profit</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$<?=$year?></div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
+                  <div class="card border-left-success shadow h-100 py-2">
+                      <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                              <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Yearly)</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                  $<?php
+                      if($year != null){
+                        echo $year;
+                      }
+                      else{
+                       echo " Opps no year earning ";
+                      }
+                        ?>
+                                  </div>
+                              </div>
+                              <div class="col-auto">
+                                  <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
-            </div>
 
+              
             <!-- Earnings (Monthly) Card Example -->
 <!--            <div class="col-xl-3 col-md-6 mb-4">-->
 <!--              <div class="card border-left-info shadow h-100 py-2">-->
@@ -112,72 +140,144 @@
           <div class="row">
 
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <!-- Pie Chart -->
+
+          </div>
+          <?php //var_dump($wh_vendor);die; ?>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Sold Products Store</h1>
+          </div>
+
+          <!-- Content Row -->
+
+          <!-- Content Row -->
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-5 mx-auto">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Store Profile</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
                   </div>
                 </div>
+
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
+                    <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Package Name<span class="float-right text-info"><?=$wh_vendor[0]['account_type']?></span></h6>
+                    <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Status<span class="float-right text-info"><?=$wh_vendor[0]['status']?></span></h6>
+
                 </div>
               </div>
             </div>
 
             <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
+            
+
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Content Column -->
+            <div class="col-lg-12 mb-12">
+
+              <!-- Project Card Example -->
               <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">View All Today Sold Products</h6>
                 </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Week
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Month
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Year
-                    </span>
-                  </div>
-                </div>
+                  <div class="container">
+                  <br>
+                  <input id="myInput"  class="form-control" type="text" placeholder="Search..">
+                        <br> 
+                <table class="table table-striped table-bordered" id="datatable" cellspacing="0" style="margin-top: 20px;">
+                    <tr>
+                        <th>No#</th>
+                        <th>Product Title</th>
+                        <th>Product Price</th>
+                        <th>Product Quantity</th>
+                    </tr>
+                    <?php $x=1; if(count($soldperday) != 0) { foreach ($soldperday as $k=>$v) {?>
+                        <tr>
+                            <td><?=$x; $x++?></td>
+                            <td><?=$v['title']?></td>
+                            <td><?=$v['price']?></td>
+                            <td><?=$v['qty']?></td>
+                                <!-- <td>
+                                    <span class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#myModal" data-placement="bottom" title="View All"><i class="fa fa-eye"></i></span>&nbsp;
+
+                                </td> -->
+
+                        </tr>
+
+                    <?php } } else { echo "<tr><td colspan='5' style='text-align:center;'> No Products Found! </td></tr> "; } ?>
+
+
+                </table>
               </div>
+              </div>
+
+              <!-- Color System -->
+
             </div>
           </div>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+
+<!--        Modal -->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Product Title</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <img src="<?= site_url('Selly/image/15.jpg')?>" alt="">
+                        <p>Lorem ipsum dolor sit amet, </p>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script>
+        $(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#datatable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 
           <!-- Content Row -->
 <!--          <div class="row">-->
@@ -270,7 +370,7 @@
 <!---->
 <!--            <div class="col-lg-6 mb-4">-->
 <!---->
-<!--              <!-- Illustrations -->
+<!--               Illustrations -->
 <!--              <div class="card shadow mb-4">-->
 <!--                <div class="card-header py-3">-->
 <!--                  <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>-->

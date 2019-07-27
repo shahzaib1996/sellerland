@@ -13,33 +13,33 @@
   <div class="form-row">
     <div class="form-group col-md-8">
       <label for="inputEmail4">Title</label>
-      <input type="text" class="form-control" name="title" placeholder="Title">
+      <input type="text" class="form-control" name="title" placeholder="Title" required>
     </div>
     </div>
 
       <div class="form-row">
     <div class="form-group col-md-8">
       <label for="inputEmail4">Image</label>
-      <input type="file" class="form-control" name="image">
+      <input type="file" class="form-control" name="image" required>
     </div>
         </div>
             
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Price</label>
-                <input type="number" class="form-control" name="price" placeholder="Price">
+                <input type="number" class="form-control" name="price" placeholder="Price" required>
               </div>
 
               <div class="form-group col-md-4">
                 <label for="inputEmail4">Stock</label>
-                <input type="number" class="form-control" name="stock" placeholder="Stock">
+                <input type="number" class="form-control" name="stock" placeholder="Stock" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-5">
                 <label for="inputEmail4">Description</label>
-                <textarea name="description" id="" cols="88" rows="10" style="resize: none"></textarea>
+                <textarea name="description" id="" cols="88" rows="10" style="resize: none" required></textarea>
               </div>
             </div>
 

@@ -32,18 +32,18 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="inputEmail4">Current Email</label>
-                                <input type="email" class="form-control" name="cur_email" placeholder="Current Email">
+                                <input type="email" class="form-control" name="cur_email" placeholder="Current Email" required >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="inputEmail4">New Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="New Email">
+                                <input type="email" class="form-control" name="email" placeholder="New Email" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-8">
-                                <input type="submit" class="form-control btn btn-success" value="Update Email">
+                                <input type="submit" class="form-control btn btn-success" value="Update Email" >
                             </div>
                         </div>
                         <!--container ended-->
@@ -57,13 +57,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="inputEmail4">Current Password</label>
-                                <input type="password" class="form-control" name="cur_password" placeholder="Current Password">
+                                <input type="password" class="form-control" name="cur_password" placeholder="Current Password" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="inputEmail4">New Password</label>
-                                <input type="password" class="form-control" name="password" placeholder="New Password">
+                                <input type="password" class="form-control" name="password" placeholder="New Password" required>
                             </div>
                         </div>
                         <div class="form-row">

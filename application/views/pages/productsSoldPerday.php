@@ -10,8 +10,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">View Products</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h1 class="h3 mb-0 text-gray-800">Sold Products Store</h1>
           </div>
 
           <!-- Content Row -->
@@ -25,7 +24,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Profile</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Store Profile</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -37,7 +36,6 @@
                 <div class="card-body">
                     <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> User Name<span class="float-right text-info"><?=$wh_vendor[0]['username']?></span></h6>
                     <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Email<span class="float-right text-info"><?=$wh_vendor[0]['email']?></span></h6>
-                    <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Passord<span class="float-right text-info"><?=$wh_vendor[0]['password']?></span></h6>
                     <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Store Name<span class="float-right text-info"><?=$wh_vendor[0]['store_name']?></span></h6>
                     <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Package Name<span class="float-right text-info"><?=$wh_vendor[0]['account_type']?></span></h6>
                     <h6 class=" font-weight-bold"  style="box-shadow: 0 0 0 1px #ddd;padding-left: 10px;padding-right:10px;border: 1px solid #ddd;margin-top: 15px;margin-bottom: 15px;padding-top: 15px;padding-bottom: 15px"><i class="fa fa-user" style="padding-left: 10px;padding-right: 10px"> </i> Status<span class="float-right text-info"><?=$wh_vendor[0]['status']?></span></h6>
@@ -59,7 +57,7 @@
               <!-- Project Card Example -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">View All Products</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">View All Today Sold Products</h6>
                 </div>
 <!--                <div class="card-body">-->
 <!--                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>-->
@@ -84,25 +82,26 @@
 <!--                  </div>-->
 <!--                </div>-->
                   <div class="container">
-                <table class="table table-bordered" cellspacing="0" style="margin-top: 20px;">
+                  <br>
+                  <input id="myInput"  class="form-control" type="text" placeholder="Search..">
+                        <br> 
+                <table class="table table-striped table-bordered" id="datatable" cellspacing="0" style="margin-top: 20px;">
                     <tr>
                         <th>No#</th>
                         <th>Product Title</th>
                         <th>Product Price</th>
                         <th>Product Quantity</th>
-                        <th>Action</th>
                     </tr>
-                    <?php $x=1; if(count($product) != 0) { foreach ($product as $k=>$v) {?>
+                    <?php $x=1; if(count($soldperday) != 0) { foreach ($soldperday as $k=>$v) {?>
                         <tr>
                             <td><?=$x; $x++?></td>
                             <td><?=$v['title']?></td>
                             <td><?=$v['price']?></td>
-                            <td><?=$v['quantity']?></td>
-                            <td>
-                                <a href="<?= site_url('Selly/del_product/id/'.$v['id'])?>"><span class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete Account"><i class="fa fa-trash"></i></span>&nbsp;</a>
-                                <span class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#myModal" data-placement="bottom" title="View All"><i class="fa fa-eye"></i></span>&nbsp;
+                            <td><?=$v['qty']?></td>
+                                <!-- <td>
+                                    <span class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#myModal" data-placement="bottom" title="View All"><i class="fa fa-eye"></i></span>&nbsp;
 
-                            </td>
+                                </td> -->
 
                         </tr>
 
@@ -149,3 +148,13 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#datatable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

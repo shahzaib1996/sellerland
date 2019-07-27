@@ -59,7 +59,7 @@ class Selly extends CI_Controller
     }
     public function dashboard($page='index'){
         $id = $this->uri->segment(4);
-
+        // var_dump($this->session->userdata()['id']);
         $data['admin_message'] =  $this->session->userdata('vender_message');
         $data['store']=$this->md->fetch("store");
         $data['package']=$this->md->fetch("package");
@@ -75,7 +75,7 @@ class Selly extends CI_Controller
         $data['week']=$this->md->week_profit();
         $data['month']=$this->md->month_profit();
         $data['year']=$this->md->year_profit();
-        
+        $data['soldperday']=$this->md->productSoldPerDay($id);
         if($this->session->userdata('id'))
         {
             $data['login'] = $this->session->userdata('id');
@@ -177,9 +177,17 @@ class Selly extends CI_Controller
         $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
         if($this->form_validation->run()==true){
         $this->session->set_flashdata('email','Update Email');
-        $this->md->update(array('email'=>$this->input->post('cur_email')),'user',array('email'=>$this->input->post('email')));
-        redirect('selly/dashboard/reset');
+        //  echo var_dump( $this->session->userdata('id')); die();
+         if($this->session->userdata('id') != null){
+            $this->md->update(array('email'=>$this->input->post('cur_email')),'admin',array('email'=>$this->input->post('email')));
+            redirect('selly/dashboard/reset');
+         }
+         else{
+            $this->md->update(array('email'=>$this->input->post('cur_email')),'user',array('email'=>$this->input->post('email')));
+            redirect('selly/dashboard/reset');         
+         }
         }else{
+            $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
             redirect('selly/dashboard/reset');
         }
     }
@@ -189,8 +197,15 @@ class Selly extends CI_Controller
         $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
         if($this->form_validation->run()==true){
         $this->session->set_flashdata('password','Update Password');
-        $this->md->update(array('password'=>$this->input->post('cur_password')),'user',array('password'=>$this->input->post('password')));
-        redirect('selly/dashboard/reset');
+        if($this->session->userdata('id') != null){
+          //  echo var_dump( $this->session->userdata('id')[0]['email']); die();
+            $this->md->update(array('password'=>$this->input->post('cur_password')),'admin',array('password'=>$this->input->post('password')),$this->session->userdata('id')[0]['email']);
+            redirect('selly/dashboard/reset');
+         }
+         else{
+            $this->md->update(array('password'=>$this->input->post('cur_password')),'user',array('password'=>$this->input->post('password')));
+            redirect('selly/dashboard/reset');        
+         }
     }else{
             redirect('selly/dashboard/reset');
         }
