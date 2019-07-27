@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2019 at 01:44 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: Jul 28, 2019 at 12:29 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
   `email` varchar(100) NOT NULL,
   `img` varchar(500) NOT NULL,
   `coinpayment_merchant` varchar(256) DEFAULT NULL,
-  `coin` varchar(10) DEFAULT NULL,
+  `ipn_secret` varchar(10) DEFAULT NULL,
   `paypal_email` varchar(256) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -44,8 +44,8 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`, `coinpayment_merchant`, `coin`, `paypal_email`) VALUES
-(1, 'ben', 'ben', 123, 'ben@gmail.com', 'smfc.png', 'a2bd0cfbe250ab62ed52037588ad5936', 'LTCT', 'example@paypal.com');
+INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`, `coinpayment_merchant`, `ipn_secret`, `paypal_email`) VALUES
+(1, 'ben', 'ben', 123, 'shahzaibmehfooz420@gmail.com', 'smfc.png', 'a2bd0cfbe250ab62ed52037588ad5936', 'sellyadmin', 'example@paypal.com');
 
 -- --------------------------------------------------------
 
@@ -199,26 +199,34 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
-  `price` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
   `qty` int(11) NOT NULL,
   `vendor_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `user_email` varchar(191) DEFAULT NULL,
   `status` varchar(20) NOT NULL,
   `date` varchar(100) NOT NULL,
   `transaction_id` varchar(256) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `coupon_used` varchar(100) DEFAULT NULL,
-  `cp_coin_amount` varchar(50) DEFAULT NULL
+  `note` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `product_id`, `title`, `price`, `qty`, `vendor_id`, `user_id`, `status`, `date`, `transaction_id`, `created_at`, `updated_at`, `coupon_used`, `cp_coin_amount`) VALUES
-(1, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG6WZPYUZRVDYXC1ZS86QS2G', '2019-07-26 10:53:34', NULL, NULL, '0.20458176'),
-(2, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG1VSHVIFOATU4M2US2GKIB1', '2019-07-26 10:53:52', NULL, NULL, '0.20458176');
+INSERT INTO `orders` (`id`, `product_id`, `title`, `total`, `qty`, `vendor_id`, `user_id`, `user_email`, `status`, `date`, `transaction_id`, `created_at`, `updated_at`, `coupon_used`, `note`) VALUES
+(1, 13, 'suama2323 - khan', 12, 1, 4, 37, NULL, 'pending', '', NULL, '2019-07-27 15:25:17', NULL, NULL, NULL),
+(2, 13, 'suama2323 - khan', 12, 1, 4, 37, NULL, 'pending', '', NULL, '2019-07-27 15:51:03', NULL, NULL, NULL),
+(3, 13, 'suama2323 - khan', 12, 1, 4, 37, NULL, 'pending', '', NULL, '2019-07-27 16:01:32', NULL, NULL, NULL),
+(6, 13, 'suama2323 - khan', 36, 3, 4, 37, 'shahzaibmehfooz420@gmail.com', 'pending', '', NULL, '2019-07-27 16:08:35', NULL, NULL, NULL),
+(7, 13, 'suama2323 - khan', 12, 1, 4, 37, 'shahzaibmehfooz420@gmail.com', 'pending', '', NULL, '2019-07-27 16:17:59', NULL, NULL, NULL),
+(8, 13, 'suama2323 - khan', 12, 1, 4, 37, 'shahzaibmehfooz420@gmail.comx', 'pending', '', NULL, '2019-07-27 16:19:31', NULL, NULL, NULL),
+(14, 14, 'Shoes - khan', 12, 1, 4, NULL, 'sadad@ggg.com', 'pending', '', NULL, '2019-07-27 22:11:28', NULL, NULL, NULL),
+(15, 14, 'Shoes - khan', 12, 1, 4, NULL, 'sadad@ggg.com', 'pending', '', NULL, '2019-07-27 22:19:08', NULL, NULL, NULL),
+(26, 14, 'Shoes - khan', 12, 1, 4, NULL, 'sadad@ggg.com', 'pending', '', NULL, '2019-07-27 22:27:26', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -244,6 +252,23 @@ INSERT INTO `package` (`id`, `title`, `type`, `price`, `is_default`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `id` int(11) NOT NULL,
+  `item_number` varchar(255) NOT NULL,
+  `payer_email` varchar(255) NOT NULL,
+  `payment_status` varchar(255) NOT NULL,
+  `payment_amount` double(10,2) NOT NULL,
+  `payment_currency` varchar(255) NOT NULL,
+  `txn_id` varchar(255) NOT NULL,
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product`
 --
 
@@ -265,14 +290,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `image`, `date`, `user_id`, `des`, `account_type`) VALUES
-(13, 'suama2323', 1000, 900, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
-(14, 'Shoes', 1200, 1000, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
+(13, 'suama2323', 12, 10, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
+(14, 'Shoes', 12, 10, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
 (15, 'qwe', 120, 123, 123, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
 (21, 'abc', 1000, 0, 4, '15.jpg', '2019-07-11', '4', 'this a product', 'vender'),
 (24, 'shoes', 1000, 1000, 4, '15.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
 (25, 'tyu', 100, 80, 2, '15.jpg', '2019-07-11', '4', 'this is a product', 'vender'),
-(38, 'sssssdsdsdsds', 12121221, 2147483647, 121212, 'frame.png', '2019-07-25', '4', '', ''),
-(39, 'test vendor id', 101, 202, 303, 'smfc.png', '2019-07-25', '4', '', '');
+(38, 'sssssdsdsdsds', 12121221, 2147483647, 121212, '15.jpg', '2019-07-25', '4', '', ''),
+(39, 'test vendor id', 101, 202, 303, '15.jpg', '2019-07-25', '4', '', '');
 
 -- --------------------------------------------------------
 
@@ -469,6 +494,12 @@ ALTER TABLE `package`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `payment`
+--
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
@@ -555,13 +586,19 @@ ALTER TABLE `my_message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `package`
 --
 ALTER TABLE `package`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `payment`
+--
+ALTER TABLE `payment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -591,7 +628,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `vendor_payment_details`

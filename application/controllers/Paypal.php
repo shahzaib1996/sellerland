@@ -13,6 +13,9 @@ class Paypal extends CI_Controller{
 
     function success(){
         // Get the transaction data
+
+        $order_id = $this->uri->segment(3);
+
         $paypalInfo = $this->input->get();
 
         $data['item_name']      = $paypalInfo['item_name'];
@@ -21,6 +24,16 @@ class Paypal extends CI_Controller{
         $data['payment_amt']    = $paypalInfo["amt"];
         $data['currency_code']  = $paypalInfo["cc"];
         $data['status']         = $paypalInfo["st"];
+
+        $this->md->update( 
+            [ 'id'=> $order_id ] ,
+            'orders', 
+            [ 
+                'transaction_id' => $data['txn_id'],
+                'status' => 'pending',
+                'note' => 'paid using paypal (Payment Amt: '.$data['payment_amt'].')'
+            ] 
+        );
 
         // Pass the transaction data to view
         $this->load->view('paypal/success', $data);
@@ -42,13 +55,29 @@ class Paypal extends CI_Controller{
             // Check whether the transaction is valid
             if($ipnCheck){
                 // Insert the transaction data in the database
-                $data['user_id']        = $paypalInfo["custom"];
-                $data['product_id']        = $paypalInfo["item_number"];
+                $order_id        = $paypalInfo["custom"];
+                $data['item_number']        = $paypalInfo["item_number"];
                 $data['txn_id']            = $paypalInfo["txn_id"];
-                $data['payment_gross']    = $paypalInfo["mc_gross"];
-                $data['currency_code']    = $paypalInfo["mc_currency"];
+                $data['payment_amount']    = $paypalInfo["mc_gross"];
+                $data['payment_currency']    = $paypalInfo["mc_currency"];
                 $data['payer_email']    = $paypalInfo["payer_email"];
                 $data['payment_status'] = $paypalInfo["payment_status"];
+
+                if( $data['payment_status'] == 'Completed' ) {
+                    $ps = 'paid';
+                } else {
+                    $ps = 'pending';
+                }
+
+                $this->md->update( 
+                    [ 'id'=> $order[0]['id'] ] ,
+                    'orders', 
+                    [ 
+                        'transaction_id' => $order_id ,
+                        'status' => $ps,
+                        'note' => $data['payment_status']
+                    ] 
+                );
 
                 $this->product->insertTransaction($data);
             }

@@ -45,8 +45,8 @@ class Paypal_lib{
         $this->button_path = $this->CI->config->item('paypal_lib_button_path');
 
         // populate $fields array with a few default values.
-        $businessEmail = $this->CI->config->item('business');
-        $this->add_field('business',$businessEmail);
+        // $businessEmail = $this->CI->config->item('business');
+        // $this->add_field('business',$businessEmail);
         $this->add_field('rm','2');
         $this->add_field('cmd','_xclick');
 
@@ -75,9 +75,13 @@ class Paypal_lib{
 
         echo '<html>' . "\n";
         echo '<head><title>Processing Payment...</title></head>' . "\n";
-        echo '<body style="text-align:center;" onLoad="document.forms[\'paypal_auto_form\'].submit();">' . "\n";
+        echo '<body style="text-align:center;" >' . "\n";
+        echo "<div class='container' style='text-align:center;padding:100px;'>";
+        echo '<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_200x51.png" alt="PayPal Logo">';
         echo '<p style="text-align:center;">Please wait, your order is being processed and you will be redirected to the paypal website.</p>' . "\n";
         echo $this->paypal_form('paypal_auto_form');
+        echo '<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppppcmcvdam.png" alt="Credit Card Badges">';
+        echo '</div>';
         echo '</body></html>';
     }
 
