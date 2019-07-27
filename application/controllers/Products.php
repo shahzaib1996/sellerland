@@ -21,6 +21,7 @@ class Products extends CI_Controller{
     }
 
     function buy($id){
+        $post_data = $this->input->post();
         // Set variables for paypal form
         $returnURL = base_url().'paypal/success';
         $cancelURL = base_url().'paypal/cancel';
@@ -28,6 +29,8 @@ class Products extends CI_Controller{
 
         // Get product data from the database
         $product = $this->product->getRows($id);
+        print_r($post_data);
+        die();
 //        var_dump($product);die;
         // Get current user ID from the session
 //        $userID = $_SESSION['userID'];
@@ -43,6 +46,8 @@ class Products extends CI_Controller{
         $this->paypal_lib->add_field('custom', $userID);
         $this->paypal_lib->add_field('item_number',  $product['id']);
         $this->paypal_lib->add_field('amount',  $product['price']);
+        $this->paypal_lib->add_field('quantity', '1');
+
 
         // Render paypal form
         $this->paypal_lib->paypal_auto_form();

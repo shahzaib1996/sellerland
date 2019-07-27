@@ -4,13 +4,31 @@ class Product extends CI_Model{
 
     function __construct() {
         $this->proTable   = 'product';
-        $this->transTable = 'payments';
+        $this->transTable = 'payment';
     }
 
     /*
      * Fetch products data from the database
      * @param id returns a single record if specified, otherwise all records
      */
+    // public function getRows($id = ''){
+    //     $this->db->select('*');
+    //     $this->db->from($this->proTable);
+    //     $this->db->where('id', $id);
+    //     if($id){
+    //         $this->db->where('id', $id);
+    //         $query  = $this->db->get();
+    //         $result = $query->row_array();
+    //     }else{
+    //         $this->db->order_by('name', 'asc');
+    //         $query  = $this->db->get();
+    //         $result = $query->result_array();
+    //     }
+
+    //     // return fetched data
+    //     return !empty($result)?$result:false;
+    // }
+
     public function getRows($id = ''){
         $this->db->select('*');
         $this->db->from($this->proTable);
@@ -20,7 +38,7 @@ class Product extends CI_Model{
             $query  = $this->db->get();
             $result = $query->row_array();
         }else{
-            $this->db->order_by('name', 'asc');
+            $this->db->order_by('title', 'asc');
             $query  = $this->db->get();
             $result = $query->result_array();
         }

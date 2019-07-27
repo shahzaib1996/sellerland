@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row">
+                        <!-- <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label >Coin Accept</label>
                                 <select name="coin" class="form-control" required>
@@ -44,6 +44,13 @@
                                   <?php } } ?>
 
                                 </select>
+                            </div>
+                        </div> -->
+
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label >IPN Secret</label>
+                                <input type="text" class="form-control" name="ipn_secret" placeholder="Max length 10" value="<?= $admin_data[0]['ipn_secret'] ?>" required>
                             </div>
                         </div>
                         

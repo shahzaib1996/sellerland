@@ -315,7 +315,7 @@ class Selly extends CI_Controller
         $this->md->update( 
             [ 'id'=> $this->session->userdata('id')[0]['id'] ] ,
             'admin', 
-            [ 'coinpayment_merchant'=>$this->input->post('admin_wallet_address'), 'coin'=>$this->input->post('coin')] 
+            [ 'coinpayment_merchant'=>$this->input->post('admin_wallet_address'), 'ipn_secret'=>$this->input->post('ipn_secret')] 
         );
         redirect('selly/dashboard/admin_settings');
     }

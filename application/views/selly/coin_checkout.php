@@ -30,7 +30,7 @@
                           <hr>
 
                           <p class="text-right coupon-area"><a href="#" id="apply" data-toggle="modal" data-target="#myModal">Apply a Coupon</a> </p>
-                          <p >Quantity <span style="float: right;" id="s_qty"> <?php if( isset($_GET['qty']) && $_GET['qty'] > 0  ) echo $_GET['qty']; else echo '1'; ?> </span></p>
+                          <p >Quantity <span style="float: right;" id="s_qty"> <?php if( isset($_POST['qty']) && $_POST['qty'] > 0  ) echo $_POST['qty']; else echo '1'; ?> </span></p>
                           <p >Total <span style="float: right;" id="s_total"> $ <?= $single_product[0]['price'] ?> </span></p>
                           <hr>
                           
@@ -38,26 +38,29 @@
                             <input type="hidden" name="product_id" value="<?= $this->uri->segment(5) ?>">
                             <input type="hidden" name="vendor_id" value="<?= $this->uri->segment(4) ?>">
                             <input type="hidden" name="price" id="price" value="<?= $single_product[0]['price'] ?>">
-                            <input type="hidden" name="quantity" id="quantity" value="<?php if( isset($_GET['qty']) && $_GET['qty'] > 0  ) echo $_GET['qty']; else echo '1'; ?>">
+                            <input type="hidden" name="quantity" id="quantity" value="<?php if( isset($_POST['qty']) && $_POST['qty'] > 0  ) echo $_POST['qty']; else echo '1'; ?>">
                             <input type="hidden" name="total_price" id="total_price" value="">
                               <input type="submit" name="checkout" class="btn btn-primary" value="Checkout">
                           </form> -->
 
+                          <input type="hidden" name="price" id="price" value="<?= $single_product[0]['price'] ?>">
+                          <input type="hidden" name="quantity" id="quantity" value="<?php if( isset($_POST['qty']) && $_POST['qty'] > 0  ) echo $_POST['qty']; else echo '1'; ?>">
+
                           <form action="https://www.coinpayments.net/index.php" method="post">
-  <input type="hidden" name="cmd" value="_pay_simple">
-  <input type="hidden" name="reset" value="1">
-  <input type="hidden" name="merchant" value="<?= $cp_details[0]['coinpayment_merchant'] ?>">
-  <input type="hidden" name="item_name" value="<?= $single_product[0]['price'] ?>">
-  <input type="hidden" name="item_number" value="<?= $this->uri->segment(5) ?>">
-  <input type="hidden" name="invoice" value="1">
-  <input type="hidden" name="currency" value="USD">
-  <input type="hidden" name="amountf" value="" id="total_price">
-  <input type="hidden" name="want_shipping" value="0">
-  <input type="hidden" name="success_url" value="<?= site_url('Main/coin_transaction_complete') ?>">
-  <input type="hidden" name="cancel_url" value="http://localhost/sellerland/cancel">
-  <input type="hidden" name="ipn_url" value="http://localhost/sellerland/ipn">
-  <input type="image" src="https://www.coinpayments.net/images/pub/buynow-wide-blue.png" alt="Buy Now with CoinPayments.net">
-</form>
+                            <input type="hidden" name="cmd" value="_pay_simple">
+                            <input type="hidden" name="reset" value="1">
+                            <input type="hidden" name="merchant" value="<?= $cp_details['coinpayment_merchant'] ?>">
+                            <input type="hidden" name="item_name" value="<?= $single_product[0]['title'] ?> - <?= $vendor['store_name'] ?>">
+                            <input type="hidden" name="item_number" value="<?= $this->uri->segment(5) ?>">
+                            <input type="hidden" name="invoice" value="1">
+                            <input type="hidden" name="currency" value="USD">
+                            <input type="hidden" name="amountf" value="" id="total_price">
+                            <input type="hidden" name="want_shipping" value="0">
+                            <input type="hidden" name="success_url" value="<?= site_url('Main/coin_transaction_complete') ?>">
+                            <input type="hidden" name="cancel_url" value="<?= site_url('Main/view/vendor-brand-item-view') ?>/<?= $this->uri->segment(4)?>/<?= $this->uri->segment(5) ?>">
+                            <input type="hidden" name="ipn_url" value="<?= site_url('Main/coin_ipn_handler') ?>/<?= $order_id ?>">
+                            <input type="image" src="https://www.coinpayments.net/images/pub/buynow-wide-blue.png" alt="Buy Now with CoinPayments.net">
+                          </form>
 
                         </div>
 

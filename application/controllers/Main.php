@@ -39,7 +39,7 @@ class Main extends CI_Controller
 
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
-        }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback' OR $page=='coin_checkout'){
+        }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback' ){
             if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
                 
@@ -81,24 +81,33 @@ class Main extends CI_Controller
             }
             
         } else if ($page == 'coin_checkout') {
+            $post_data = $this->input->post();
             $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
             $vendor = $this->md->fetch('vendor',[ 'id'=>$this->uri->segment(4) ])[0];
             $product = $this->md->fetch('product',[ 'id'=>$this->uri->segment(5) ])[0];
             $user = $this->md->fetch('user',[ 'id'=>$this->session->userdata('web_login')[0]['id'] ])[0];
+            $total_price = $post_data['qty']*$product['price'];
+            //creating order
              $this->md->insert('orders',
                 [
                     'title' => $product['title'].' - '.$vendor['store_name'],
-                    'price' => $data['total_price'],
-                    'qty'   => $data['quantity'],
+                    'total' => $total_price,
+                    'qty'   => $post_data['qty'],
                     'product_id' => $product['id'],    
                     'vendor_id' => $vendor['id'],
+                    'user_id' => $user['id'],
+                    'user_email' => $post_data['user_email'],
                     'status' => "pending"
                 ]
 
             );
+            $data['order_id'] = $this->db->insert_id();
 
             $data['single_product'] = $this->md->single_product_with_vendor($this->uri->segment(5) );
-            $data['cp_details'] = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $data['cp_details'] = $cp_details;
+            $data['vendor'] = $vendor;
+            // print_r($data);
+            // die();
             if(!empty($this->session->userdata('web_login'))) {
                 $this->load->view('selly/header',$data);
                 $this->load->view('selly/'.$page);
@@ -236,8 +245,123 @@ class Main extends CI_Controller
 
     }
 
-    public function cp_ipn_script() {
-        echo "CP IPN SCRIPT FUNCTION";
+    function errorAndDie($error_msg,$cp_debug_email) { 
+        // global $cp_debug_email; 
+        if (!empty($cp_debug_email)) { 
+            $report = 'Error: '.$error_msg."\n\n"; 
+            $report .= "POST Data\n\n"; 
+            foreach ($_POST as $k => $v) { 
+                $report .= "|$k| = |$v|\n"; 
+            } 
+            // mail($cp_debug_email, 'CoinPayments IPN Error', $report); 
+            // print_r($report);
+        } 
+        die('IPN Error: '.$error_msg); 
+    } 
+
+    public function coin_ipn_handler() {
+        // echo $this->uri->segment(3);die();
+    $order = $this->md->fetch('orders',[ 'id'=>$this->uri->segment(3) ] );
+    $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+    $cp_merchant_id = $cp_details['coinpayment_merchant']; 
+    $cp_ipn_secret = $cp_details['ipn_secret']; 
+    // $cp_debug_email = 'shahzaibmehfooz420@gmail.com'; //for testing   
+    $cp_debug_email = $cp_details['email'];   
+
+    if( count($order) != 1 ) {
+       $this->errorAndDie('No Order found!',$cp_debug_email);
+    }
+
+    // $this->md->update( 
+    //         [ 'id'=> $order[0]['id'] ] ,
+    //         'orders', 
+    //         [ 
+    //             'transaction_id' => '',
+    //             'status' => 'test',
+    //             'note' => ''
+    //         ] 
+    //     );
+
+    // print_r($order[0]);
+
+    // die();
+
+    // These would normally be loaded from your database, the most common way is to pass the Order ID through the 'custom' POST field. 
+    $order_currency = 'USD'; 
+    $order_total = $order[0]['total']; 
+
+
+    if (!isset($_POST['ipn_mode']) || $_POST['ipn_mode'] != 'hmac') { 
+        $this->errorAndDie('IPN Mode is not HMAC',$cp_debug_email); 
+    } 
+
+    if (!isset($_SERVER['HTTP_HMAC']) || empty($_SERVER['HTTP_HMAC'])) { 
+        $this->errorAndDie('No HMAC signature sent.',$cp_debug_email); 
+    } 
+
+    $request = file_get_contents('php://input'); 
+    if ($request === FALSE || empty($request)) { 
+        $this->errorAndDie('Error reading POST data',$cp_debug_email); 
+    } 
+
+    if (!isset($_POST['merchant']) || $_POST['merchant'] != trim($cp_merchant_id)) { 
+        $this->errorAndDie('No or incorrect Merchant ID passed',$cp_debug_email); 
+    } 
+
+    $hmac = hash_hmac("sha512", $request, trim($cp_ipn_secret)); 
+    if (!hash_equals($hmac, $_SERVER['HTTP_HMAC'])) { 
+    //if ($hmac != $_SERVER['HTTP_HMAC']) { <-- Use this if you are running a version of PHP below 5.6.0 without the hash_equals function 
+        $this->errorAndDie('HMAC signature does not match',$cp_debug_email); 
+    } 
+     
+    // HMAC Signature verified at this point, load some variables. 
+
+    $txn_id = $_POST['txn_id']; 
+    $item_name = $_POST['item_name']; 
+    $item_number = $_POST['item_number']; 
+    $amount1 = floatval($_POST['amount1']); 
+    $amount2 = floatval($_POST['amount2']); 
+    $currency1 = $_POST['currency1']; 
+    $currency2 = $_POST['currency2']; 
+    $status = intval($_POST['status']); 
+    $status_text = $_POST['status_text']; 
+
+    //depending on the API of your system, you may want to check and see if the transaction ID $txn_id has already been handled before at this point 
+
+    // Check the original currency to make sure the buyer didn't change it. 
+    if ($currency1 != $order_currency) { 
+        $this->errorAndDie('Original currency mismatch!',$cp_debug_email); 
+    }     
+     
+    // Check amount against order total 
+    if ($amount1 < $order_total) { 
+        $this->errorAndDie('Amount is less than order total!',$cp_debug_email); 
+    } 
+   
+    if ($status >= 100 || $status == 2) { 
+        // payment is complete or queued for nightly payout, success 
+        $order_status = "Paid";
+    } else if ($status < 0) { 
+        //payment error, this is usually final but payments will sometimes be reopened if there was no exchange rate conversion or with seller consent 
+        $order_status = "Pending 1";
+    } else { 
+        //payment is pending, you can optionally add a note to the order page
+        $order_status = "Pending 2";
+
+    }
+
+    $this->md->update( 
+            [ 'id'=> $order[0]['id'] ] ,
+            'orders', 
+            [ 
+                'transaction_id' => $txn_id,
+                'status' => $order_status,
+                'note' => $status_text
+            ] 
+        );
+
+    die('IPN OK'); 
+
     }
 
 
