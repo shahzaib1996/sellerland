@@ -9,6 +9,7 @@
           <!-- DataTales Example -->
 <!--          --><?php //$attributes = array('class' => 'form-row', 'id' => 'myform'); ?>
           <?= form_open_multipart('vender/add_product')?>
+          <input type="hidden" name="user_id" value="<?= $login[0]['id'] ?>">
           <div class="container">
   <div class="form-row">
     <div class="form-group col-md-8">

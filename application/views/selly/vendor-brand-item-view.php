@@ -40,10 +40,25 @@
                                           <div class="collapse multi-collapse" id="multiCollapseExample1">
                                          <ul class="list-group">
 
-                                           <li class="list-group-item disabled"><a href="<?= site_url('Products/buy/'.$single_product[0]['id']) ?>">Paypal</a></li>
 <!--                                           <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#paypal">Paypal</a></li>-->
-<!--                                             <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#coin">Coins Payment</a></li>-->
-                                             <li class="list-group-item disabled"><a href="<?= site_url('Main/view/payment_coin/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>">Coins Payment</a></li>
+<!--                                             <li class="list-group-item disabled"><a href="#" data-toggle="modal" data-target="#coin">Coins Payment</a></li>-->                         
+                                            
+                                            <!-- "<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>" -->
+                                            <form action="" method="POST" id="coin_checkout_form">
+                                                <input type="hidden" id="qty" name="qty" pattern="[0-9]*" value="1" > 
+                                                <input type="email" name="user_email" class="form-control" id="user_email" style="font-size: 12px;" placeholder="Enter your email to proceed." required>
+                                            </form>
+
+
+                                            <!-- <form action="<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>" method="POST" id="paypal_checkout_form">
+                                                <input type="hidden" id="qty" name="qty" pattern="[0-9]*" value="1" > 
+                                                <input type="email" name="user_email" class="form-control" id="user_email" style="font-size: 12px;" placeholder="Enter your email to proceed." required>
+                                            </form> -->
+
+
+                                           <li class="list-group-item disabled"><a href="#" id="payBtn">Paypal</a></li>
+                                           <!-- <li class="list-group-item disabled"><a href="<?= site_url('Products/buy/'.$single_product[0]['id']) ?>">Paypal</a></li> -->
+                                            <li class="list-group-item disabled"><a href="#" id="cpBtn">Coins Payment</a></li>
                                         </ul>
                                           </div>
                                           </div>
@@ -62,15 +77,49 @@
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                             <script>
                                 $(document).ready(function () {
+
+                                    function validateEmail(email) {
+                                      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                      return re.test(email);
+                                    }
+
+                                    $('#cpBtn').click(function(){
+
+                                        var form_action = "<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>";
+                                        $('#coin_checkout_form').attr('action', form_action);
+
+                                        if( $('#user_email').val() != '' && validateEmail($('#user_email').val()) ) {
+                                            $("#coin_checkout_form").submit();
+                                        } else {
+                                            alert('Please! Enter valid email.');
+                                        }
+                                    })
+
+
+                                    $('#payBtn').click(function(){
+
+                                        var form_action = "<?= site_url('Products/buy/'.$single_product[0]['id']) ?>";
+                                        $('#coin_checkout_form').attr('action', form_action);
+
+                                        if( $('#user_email').val() != '' && validateEmail($('#user_email').val()) ) {
+                                            $("#coin_checkout_form").submit();
+                                        } else {
+                                            alert('Please! Enter valid email.');
+                                        }
+                                    })
+
+
                                     $('.add-btn').click(function () {
                                         var x = parseInt($('#no').val())+1;
                                         $('#no').val(x);
+                                        $('#qty').val(x);
                                     });
                                     $('.sub-btn').click(function () {
                                         var x = parseInt($('#no').val());
                                         if(x>1){
                                             x--;
                                             $('#no').val(x);
+                                            $('#qty').val(x);
                                         }
                                     });
                                     $('#click_coupon').click(function () {

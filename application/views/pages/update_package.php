@@ -11,7 +11,7 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Update Store</h1>
+          <h1 class="h3 mb-2 text-gray-800">Update Package</h1>
 
           <!-- DataTales Example -->
           <?= form_open_multipart('selly/update_package/'.$this->uri->segment(4))?>
@@ -30,13 +30,24 @@
               </div>
 
               <div class="form-group col-md-4">
-                <label for="inputEmail4">Stock</label>
-                <select name="type" id="">
+                <label for="inputEmail4">Type</label>
+                <select name="type" id="" class="form-control">
                   <option hidden><?=$wh_package[0]['type']?></option>
                   <option value="Free">Free</option>
                   <option value="Paid">Paid</option>
                   <option value="Premium">Premium</option>
                 </select>
+              </div>
+
+
+
+              
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Is Default &nbsp;</label>
+                <input type="checkbox" class="" name="is_default" <?php if($wh_package[0]['is_default'] == 1){ echo "checked"; } ?> >
               </div>
             </div>
 

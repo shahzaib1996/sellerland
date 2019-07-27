@@ -22,6 +22,27 @@ class Selly extends CI_Controller
         }
 
     }
+
+    public function profile_picture_upload($file)
+    {
+        $config['upload_path']          = './image/profile_image';
+        $config['allowed_types']        = 'JPEG|PNG|JPG|jpg|png|jpeg';
+
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload($file))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            return $error;
+        }
+        else
+        {
+            $data = array('upload_data' => $this->upload->data());
+            return $data;
+        }
+
+    }
+
     public function lock($id,$redir,$status){
         $this->md->update(array('id'=>$id),'vendor',array('status'=>$status));
         redirect('selly/dashboard/view_store');
@@ -68,19 +89,33 @@ class Selly extends CI_Controller
         $data['wh_store']=$this->md->fetch("store",array('id'=>$id));
         $data['wh_package']=$this->md->fetch("package",array('id'=>$id));
         $data['wh_profile']=$this->md->fetch("user",array('id'=>$id));
-        $data['vendor']=$this->md->fetch("vendor");
-        $data['wh_vendor']=$this->md->fetch("vendor",array('id'=>$id));
+        // $data['vendor']=$this->md->fetch("vendor");
+        $data['vendor']=$this->md->vendor_with_package();
+        // print_r($data['vendor']);die();
+        // $data['wh_vendor']=$this->md->fetch("vendor",array('id'=>$id));
+        $data['wh_vendor']=$this->md->single_vendor($id); //arg vendor_id
         // $data['product']=$this->md->fetch("product");
         $data['product']=$this->md->fetch_user_products($id);
         $data['week']=$this->md->week_profit();
         $data['month']=$this->md->month_profit();
         $data['year']=$this->md->year_profit();
         $data['soldperday']=$this->md->productSoldPerDay($id);
+        $data['vendor_coin']=$this->md->fetch('coinpayment_accept_coins');
+
+        $data['admin_data'] = $this->md->fetch('admin',['id'=>$this->session->userdata('id')[0]['id']]);
+
+        $data['login_data'] = $this->session->userdata('id')[0];
+
+
+        // print_r($data['login_data']['username']);
+        // die();
+        
         if($this->session->userdata('id'))
         {
             $data['login'] = $this->session->userdata('id');
-            $this->load->view('pages/header');
-            $this->load->view('pages/'.$page,$data);
+            $this->load->view('pages/header',$data);
+            // $this->load->view('pages/'.$page,$data);
+            $this->load->view('pages/'.$page);
             $this->load->view('pages/footer');
         }
         else
@@ -129,6 +164,15 @@ class Selly extends CI_Controller
     public function insert_package()
     {
         $data=$this->input->post();
+        if( isset($data['is_default']) ) {
+            $data['is_default'] = 1;
+            $this->md->remove_package_default();
+        } else {
+            $data['is_default'] = 0;
+        }
+        // print_r($data);
+        // print_r($isDefault);
+        // die();
         $this->md->insert("package",$data);
         redirect('selly/dashboard/view_package');
 
@@ -248,11 +292,18 @@ class Selly extends CI_Controller
     public function update_vendor_merchant_id() {
         // print_r($this->session->userdata('login')[0]['id']);
         // die();
+        if( !empty($this->input->post('coinpayment_status')) ) {
+            $enableCP = 1;
+        } else {
+            $enableCP = 0;
+        }
+        // print_r($enableCP);
+        // die();
         $this->session->set_flashdata('coinpayment','Coinpayment Merchant ID Updated!');
         $this->md->update( 
             [ 'vendor_id'=> $this->session->userdata('login')[0]['id'] ] ,
             'vendor_payment_details', 
-            [ 'coinpayment_merchant_id'=>$this->input->post('vendor_merchant_id')] 
+            [ 'coinpayment_wallet_address'=>$this->input->post('vendor_merchant_id'), 'coinpayment_status'=> $enableCP, 'coin'=>$this->input->post('coin')] 
         );
         redirect('vender/view/vender_settings');
     }
@@ -260,13 +311,53 @@ class Selly extends CI_Controller
     public function update_paypal_email() {
         // print_r($this->session->userdata('login')[0]['id']);
         // die();
+        if( !empty($this->input->post('paypal_status')) ) {
+            $enableCP = 1;
+        } else {
+            $enableCP = 0;
+        }
         $this->session->set_flashdata('paypal','Paypal Email Updated!');
         $this->md->update( 
             [ 'vendor_id'=> $this->session->userdata('login')[0]['id'] ] ,
             'vendor_payment_details', 
-            [ 'paypal_email'=>$this->input->post('paypal_email')] 
+            [ 'paypal_email'=>$this->input->post('paypal_email'), 'paypal_status'=> $enableCP, ] 
         );
         redirect('vender/view/vender_settings');
+    }
+
+    
+    public function admin_update_coinpayment() {
+        $this->session->set_flashdata('coinpayment','Coinpayment Merchant ID Updated!');
+        $this->md->update( 
+            [ 'id'=> $this->session->userdata('id')[0]['id'] ] ,
+            'admin', 
+            [ 'coinpayment_merchant'=>$this->input->post('admin_wallet_address'), 'ipn_secret'=>$this->input->post('ipn_secret')] 
+        );
+        redirect('selly/dashboard/admin_settings');
+    }
+
+    public function admin_update_paypal() {
+        $this->session->set_flashdata('paypal','Paypal Email Updated!');
+        $this->md->update( 
+            [ 'id'=> $this->session->userdata('id')[0]['id'] ] ,
+            'admin', 
+            [ 'paypal_email'=>$this->input->post('paypal_email') ] 
+        );
+        redirect('selly/dashboard/admin_settings');
+    }
+
+    public function update_admin_profile_picture() {
+        $this->session->set_flashdata('profile_picture','Picture Updated!');
+
+        $images['image'] = $this->profile_picture_upload('profile_image');
+        $imageName = $images['image']['upload_data']['file_name'] ;
+        print_r($imageName);
+        $this->md->update( 
+            [ 'id'=> $this->session->userdata('id')[0]['id'] ] ,
+            'admin', 
+            [ 'img'=>$imageName ] 
+        );
+        redirect('selly/dashboard/reset');
     }
 
 }

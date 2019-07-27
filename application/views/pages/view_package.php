@@ -20,6 +20,7 @@
                       <th>Title</th>
                       <th>Price</th>
                       <th>Type</th>
+                      <th>Is Default</th>
                       <th>Action</th>
 
                     </tr>
@@ -30,6 +31,7 @@
                       <th>Title</th>
                       <th>Price</th>
                       <th>Type</th>
+                      <th>Is Default</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
@@ -40,6 +42,7 @@
                       <td><?= $item['title']?></td>
                       <td><?= $item['price']?></td>
                       <td><?= $item['type']?></td>
+                      <td> <?php if($item['is_default'] == 0 ) { echo "NO"; } else { echo "YES"; } ?> </td>
                       <td>
                         <a href="<?= site_url('selly/dashboard/update_package/'.$item['id'])?>"><span class="btn btn-success">Update</span>&nbsp;</a>
                         <a href="<?= site_url('selly/delete_package/'.$item['id'])?>"><span class="btn btn-danger">Delete </span>&nbsp;</a>

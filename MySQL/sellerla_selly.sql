@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2019 at 06:20 PM
+-- Generation Time: Jul 26, 2019 at 01:44 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -34,15 +34,18 @@ CREATE TABLE `admin` (
   `password` varchar(100) NOT NULL,
   `contact` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `img` varchar(500) NOT NULL
+  `img` varchar(500) NOT NULL,
+  `coinpayment_merchant` varchar(256) DEFAULT NULL,
+  `coin` varchar(10) DEFAULT NULL,
+  `paypal_email` varchar(256) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`) VALUES
-(1, 'ben', 'ben', 123, 'ben@gmail.com', '64679071_107239193895428_4012795800147984384_n.jpg');
+INSERT INTO `admin` (`id`, `username`, `password`, `contact`, `email`, `img`, `coinpayment_merchant`, `coin`, `paypal_email`) VALUES
+(1, 'ben', 'ben', 123, 'ben@gmail.com', 'smfc.png', 'a2bd0cfbe250ab62ed52037588ad5936', 'LTCT', 'example@paypal.com');
 
 -- --------------------------------------------------------
 
@@ -91,6 +94,27 @@ INSERT INTO `client_query_reply` (`id`, `client_query_id`, `reply`, `user_id`, `
 (14, 8, 'This is user reply', 37, 0, '2019-07-22 22:05:50'),
 (15, 9, 'This is my reply\r\n', 37, 0, '2019-07-22 22:10:33'),
 (16, 9, 'This is vender Reply', 0, 4, '2019-07-22 22:10:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `coinpayment_accept_coins`
+--
+
+CREATE TABLE `coinpayment_accept_coins` (
+  `id` int(11) NOT NULL,
+  `acronym` varchar(10) NOT NULL,
+  `name` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `coinpayment_accept_coins`
+--
+
+INSERT INTO `coinpayment_accept_coins` (`id`, `acronym`, `name`) VALUES
+(1, 'BTC', 'Bitcoin'),
+(2, 'LTC', 'Litecoin'),
+(3, 'LTCT', 'Litecoin Test');
 
 -- --------------------------------------------------------
 
@@ -173,13 +197,28 @@ INSERT INTO `my_message` (`id`, `user_id`, `account_type`, `message`, `username`
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
   `qty` int(11) NOT NULL,
+  `vendor_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status` varchar(20) NOT NULL,
-  `date` varchar(100) NOT NULL
+  `date` varchar(100) NOT NULL,
+  `transaction_id` varchar(256) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `coupon_used` varchar(100) DEFAULT NULL,
+  `cp_coin_amount` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `product_id`, `title`, `price`, `qty`, `vendor_id`, `user_id`, `status`, `date`, `transaction_id`, `created_at`, `updated_at`, `coupon_used`, `cp_coin_amount`) VALUES
+(1, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG6WZPYUZRVDYXC1ZS86QS2G', '2019-07-26 10:53:34', NULL, NULL, '0.20458176'),
+(2, 13, 'suama2323 - khan', 2000, 2, 4, 0, 'pending', '', 'CPDG1VSHVIFOATU4M2US2GKIB1', '2019-07-26 10:53:52', NULL, NULL, '0.20458176');
 
 -- --------------------------------------------------------
 
@@ -191,15 +230,16 @@ CREATE TABLE `package` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
-  `price` int(11) NOT NULL
+  `price` int(11) NOT NULL,
+  `is_default` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `package`
 --
 
-INSERT INTO `package` (`id`, `title`, `type`, `price`) VALUES
-(4, 'basic', 'Paid', 4);
+INSERT INTO `package` (`id`, `title`, `type`, `price`, `is_default`) VALUES
+(1, 'basic', 'Free', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -228,21 +268,11 @@ INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `i
 (13, 'suama2323', 1000, 900, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
 (14, 'Shoes', 1200, 1000, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
 (15, 'qwe', 120, 123, 123, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
-(17, 'store', 1000, 100, 4, '15.jpg', '2019-07-11', '1', 'lorem is design ', 'admin'),
 (21, 'abc', 1000, 0, 4, '15.jpg', '2019-07-11', '4', 'this a product', 'vender'),
-(22, 'abc', 100, 90, 1, '15.jpg', '2019-07-11', '1', 'This is test', 'admin'),
 (24, 'shoes', 1000, 1000, 4, '15.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
 (25, 'tyu', 100, 80, 2, '15.jpg', '2019-07-11', '4', 'this is a product', 'vender'),
-(26, 'qwe', 10000, 29999, 1, '15.jpg', '2019-07-11', '1', 'This is a store', 'admin'),
-(28, 'bed sheet', 1200, 1000, 12, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(29, 'ALikaram BedSheet', 1500, 1300, 10, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(30, 'AliSheri Bed Sheet', 2000, 1500, 20, '15.jpg', '2019-07-12', '14', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'vender'),
-(31, 'T-Shirt', 1200, 1000, 10, '15.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
-(32, 'UnderWare', 1500, 1000, 12, '15.jpg', '2019-07-12', '15', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore magni sed ut. Aliquid deserunt distinctio doloremque iste odio quod rem unde voluptate? Accusantium aliquid aspernatur dolore iusto molestiae molestias, quae!', 'vender'),
-(33, 'mobile', 1000, 8000, 8, '15.jpg', '2019-07-12', '16', '\r\nLorem ipsum dolor sit amet, cnsectetur adipisicing elit. Architecto delectus dicta, distinctio dolore dolores id, iste magni nulla perferendis, possimus quam sapiente tempore temporibus! Deserunt ducimus est facere sint tenetur.', 'vender'),
-(34, 'UnderWare', 1000, 800, 12, '15.jpg', '2019-07-12', '17', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus dicta earum hic quae quisquam tempora totam. Architecto asperiores consectetur cum doloremque, itaque modi non perferendis quam sequi velit voluptate!', 'vender'),
-(35, 'T_Shirt', 1500, 1000, 12, '15.jpg', '2019-07-12', '18', '\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, at debitis dolor doloribus ducimus earum eius libero molestiae molestias odit officia quae quo sed, vel voluptatem voluptates voluptatum. Obcaecati, placeat.', 'vender'),
-(36, 'Fancy_TShirt', 2000, 1500, 10, '15.jpg', '2019-07-12', '19', 'Great Fancy T-Shirt for beautiful girls!', 'vender');
+(38, 'sssssdsdsdsds', 12121221, 2147483647, 121212, 'frame.png', '2019-07-25', '4', '', ''),
+(39, 'test vendor id', 101, 202, 303, 'smfc.png', '2019-07-25', '4', '', '');
 
 -- --------------------------------------------------------
 
@@ -350,16 +380,8 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`) VALUES
-(4, 'ken', 'usamaasif4190@gmail.com', 'lora', '', '', '203923092303920', 'male', '', 'premium', 'active', 'khan', 'img.png'),
-(6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', 'free', 'active', 'abc', 'img.png'),
-(8, 'faboloso', 'faboloso@gmail.com', 'Abc123456789', '', '', '14185649890', 'male', '', '', 'active', 'faboloso', 'img.png'),
-(9, 'rbrown', 'rachelbrown1976@gmail.com', 'FuckThisShit', '', '', '18881111111', 'male', '', '', 'active', 'rbrown', 'img.png'),
-(10, 'ken', 'ken@gmail.com', 'qwerty1234', '', '', '12345678912', 'male', '', '', 'active', 'ken', 'img.png'),
-(11, 'terry', 'terry@gmail.com', 'terry12345', '', '', '1234567890789', 'male', '', '', 'active', 'chocalate', 'img.png'),
-(12, 'kene', 'kim@gmail.com', '1234567890123', '', '', '1234567890123', 'male', '', '', 'active', 'kim', 'img.png'),
-(13, 'jado', 'jadi@gmail.com', 'jadi1234567890', '', '', '03456413071', 'male', '', '', 'active', 'jadi', 'img.png'),
-(14, 'Sammay', 'sammay@gmail.com', 'sammay1234567890', '', '', '03456413071', '', '', '', 'active', 'Sammay', 'img.png'),
-(15, 'alicashi', 'alicashi@gmail.com', '1234567890', '', '', '03456413071', '', '', '', 'active', 'chiaWala', 'img.png');
+(4, 'ken', 'usamaasif4190@gmail.com', 'lora', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png'),
+(6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', '1', 'active', 'abc', 'img.png');
 
 -- --------------------------------------------------------
 
@@ -370,11 +392,23 @@ INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, 
 CREATE TABLE `vendor_payment_details` (
   `id` int(11) NOT NULL,
   `vendor_id` int(11) NOT NULL,
-  `coinpayment_merchant_id` varchar(191) NOT NULL,
-  `paypal_email` int(11) NOT NULL,
+  `coinpayment_wallet_address` varchar(256) DEFAULT NULL,
+  `coin` varchar(10) DEFAULT NULL,
+  `coinpayment_status` int(11) NOT NULL DEFAULT '1',
+  `paypal_status` int(11) NOT NULL DEFAULT '1',
+  `paypal_email` varchar(191) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `vendor_payment_details`
+--
+
+INSERT INTO `vendor_payment_details` (`id`, `vendor_id`, `coinpayment_wallet_address`, `coin`, `coinpayment_status`, `paypal_status`, `paypal_email`, `created_at`, `updated_at`) VALUES
+(2, 4, 'thisIsWalletAddress', 'BTC', 1, 1, 'examplesss@paypal.com', '2019-07-24 09:10:15', '2019-07-25 09:43:46'),
+(3, 19, 'abadbadbasdad', NULL, 1, 1, 'myemail@paypal.com', '2019-07-24 14:09:26', '2019-07-24 14:09:57'),
+(4, 20, 'asbdadabdadadasda', NULL, 1, 1, 'myemail@paypal.com', '2019-07-24 14:11:47', '2019-07-24 14:12:02');
 
 --
 -- Indexes for dumped tables
@@ -396,6 +430,12 @@ ALTER TABLE `client_query`
 -- Indexes for table `client_query_reply`
 --
 ALTER TABLE `client_query_reply`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `coinpayment_accept_coins`
+--
+ALTER TABLE `coinpayment_accept_coins`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -488,6 +528,12 @@ ALTER TABLE `client_query_reply`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT for table `coinpayment_accept_coins`
+--
+ALTER TABLE `coinpayment_accept_coins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
@@ -509,19 +555,19 @@ ALTER TABLE `my_message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `package`
 --
 ALTER TABLE `package`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `purchase`
@@ -545,13 +591,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `vendor_payment_details`
 --
 ALTER TABLE `vendor_payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

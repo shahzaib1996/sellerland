@@ -26,7 +26,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <?php $x=1; foreach ($vendor as $k=>$v) {
+                  <?php $x=1; if(count($vendor) != 0) { foreach ($vendor as $k=>$v) {
 //                    if($v['status']!='active'){
                       ?>
                     <tr style="<?php if($v['status']!='active'){ ?>background-color: #696969;color: #fff<?php } ?>">
@@ -35,7 +35,7 @@
                       <td><?= $v['username']?></td>
                       <td><?= $v['email']?></td>
                       <td><?= $v['password']?></td>
-                      <td><button class="btn btn-success btn-sm"><?= $v['account_type']?></button></td>
+                      <td><button class="btn btn-success btn-sm"><?= $v['package_title']?></button></td>
                       <td>
                         <?php if($v['status']=='active'){ ?>
                                       <a href="<?= site_url('Selly/lock/'.$v['id'].'/view_store/inactive')?>"><span class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="bottom" title="lock Account"><i class="fa fa-lock"></i></span>&nbsp;</a>
@@ -46,7 +46,7 @@
                         <a href="<?= site_url('Selly/dashboard/view_all/'.$v['id'])?>"><span class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="bottom" title="View All"><i class="fa fa-eye"></i></span>&nbsp;</a>
                       </td>
                     </tr>
-                  <?php }?>
+                  <?php } } else { echo "<tr><td align='center' colspan='7'>No Vendor Found!</td></tr>"; } ?>
                   </tbody>
                 </table>
               </div>

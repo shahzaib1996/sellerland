@@ -56,7 +56,7 @@
                             <a href="<?= site_url('Main/view/vendor-brand-item-view/'.$v['user_id'].'/'.$v['id']) ?>" style="">
                               <div class="card">
                                 <center>
-                                  <img class="card-img-top vendor-product-img" style="width: auto;height: 200px;" src="<?= base_url() ?>image/<?= $v['image'] ?>" alt="Card image cap">
+                                  <img class="card-img-top vendor-product-img" style="width: 100%;height: auto;max-height: 300px;" src="<?= base_url() ?>image/product_image/<?= $v['image'] ?>" alt="Card image cap">
                                 </center>
                                   <div class="card-body">
                                       <h3 class="card-text vendor-product-details text-center" style="font-size:18px;color: #1f82f7"><?= $v['title'] ?></h3>

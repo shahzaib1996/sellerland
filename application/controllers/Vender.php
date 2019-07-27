@@ -5,7 +5,7 @@ class Vender extends CI_Controller
 
     public function do_upload($file)
     {
-        $config['upload_path']          = './image';
+        $config['upload_path']          = './image/product_image';
         $config['allowed_types']        = 'JPEG|PNG|JPG|jpg|png|jpeg';
 
         $this->load->library('upload', $config);
@@ -50,6 +50,7 @@ class Vender extends CI_Controller
             $data['user_info']  = $this->session->userdata('login');
             $data['login'] = $this->session->userdata('login');
             $data['vendor_payment']=$this->md->fetch('vendor_payment_details',array('vendor_id'=>$data['login'][0]['id'] ));
+            $data['vendor_coin']=$this->md->fetch('coinpayment_accept_coins');
             // print_r($data['vendor_payment']);
             // die();
             if(!empty($this->session->userdata('login'))){ // if start
@@ -137,9 +138,11 @@ class Vender extends CI_Controller
         $this->form_validation->set_rules('phone', 'Number', 'required|min_length[11]');
         $this->form_validation->set_rules('store_name', 'Store Name', 'required|is_unique[vendor.store_name]');
 //        $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+        $default_package = $this->md->fetch('package', [ 'is_default'=>1 ]);
         if($this->form_validation->run() == true){
             $data= $this->input->post();
             $data['status'] = 'active';
+            $data['account_type'] = $default_package[0]['id'];
             $this->md->insert('vendor',$data);
             $v_id = $this->db->insert_id();
             $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_merchant_id'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );

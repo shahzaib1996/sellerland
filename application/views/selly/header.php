@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/animate.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/owl.carousel.css">
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body style="overflow-x:hidden">
 <header id="header" id="home">

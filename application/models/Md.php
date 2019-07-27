@@ -243,4 +243,28 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function remove_package_default()
+    {
+        $this->db->update('package',['is_default'=>0]);
+    }
+
+    public function vendor_with_package()
+    {
+        $this->db->select('v.*,p.title AS "package_title" ');
+        $this->db->from('vendor v');
+        $this->db->join('package as p',' v.account_type = p.id ','LEFT');
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    public function single_vendor($vendor_id)
+    {
+        $this->db->select('v.*,p.title AS "package_title" ');
+        $this->db->from('vendor v');
+        $this->db->join('package as p',' v.account_type = p.id ','LEFT');
+        $this->db->where('v.id',$vendor_id);
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }

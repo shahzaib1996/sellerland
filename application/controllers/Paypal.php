@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+ <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Paypal extends CI_Controller{
 
@@ -8,6 +8,7 @@ class Paypal extends CI_Controller{
         // Load paypal library & product model
         $this->load->library('paypal_lib');
         $this->load->model('product');
+        $this->load->model('Md');
     }
 
     function success(){
