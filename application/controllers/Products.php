@@ -42,17 +42,37 @@ class Products extends CI_Controller{
         $this->md->insert('orders',
                 [
                     'title' => $product['title'].' - '.$vendor['store_name'],
+                    'price' => $product['price'],
                     'total' => $total_price,
                     'qty'   => $post_data['qty'],
                     'product_id' => $product['id'],    
                     'vendor_id' => $product['user_id'],
                     'user_email' => $post_data['user_email'],
-                    'status' => "pending"
+                    'status' => "pending",
+                    'payment_type' => 'paypal'
                 ]
 
             );
 
         $order_id = $this->db->insert_id();
+
+            $msg = "Dear Sir,<br>";
+            $msg .= "You have Order ".$product['title']." From ".$vendor['store_name']." Store<br>";
+            $msg .= "You order ID: ".$order_id." <br>";
+            $msg .= "<table> <tr> <td> Product </td> <td> Price </td> <td> Quantity </td> <td> Total </td> <td> Payment Method </td> </tr> </table>";
+            $msg .= "<table> <tr> <td> ".$product['title']." </td> <td> $".$product['price']." </td> <td> ".$post_data['qty']." </td> <td> $".$total_price." </td> <td> paypal </td> </tr> </table>";
+
+
+            $this->load->library('email');
+            $this->email->from($vendor['email'], $vendor['store_name']);
+            $this->email->to($post_data['user_email']);
+            $this->email->cc($pay_details['email']);
+            // $this->email->bcc('them@their-example.com');
+            $this->email->subject('You bought at Selly - '.$product['title'].' - '.$vendor['store_name']);
+            $this->email->message($msg);
+            $this->email->send();
+
+
         $returnURL = base_url().'paypal/success/'.$order_id;
         // print_r($post_data);
         // die();

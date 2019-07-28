@@ -303,7 +303,7 @@ class Selly extends CI_Controller
         $this->md->update( 
             [ 'vendor_id'=> $this->session->userdata('login')[0]['id'] ] ,
             'vendor_payment_details', 
-            [ 'coinpayment_wallet_address'=>$this->input->post('vendor_merchant_id'), 'coinpayment_status'=> $enableCP, 'coin'=>$this->input->post('coin')] 
+            [ 'coinpayment_wallet_address'=>$this->input->post('vendor_merchant_id'), 'coinpayment_status'=> $enableCP, 'ipn_secret'=>$this->input->post('ipn_secret')] 
         );
         redirect('vender/view/vender_settings');
     }

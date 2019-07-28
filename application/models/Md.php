@@ -80,17 +80,31 @@ class Md extends CI_Model
         $query = $this->db->get()->result_array();
         return $query;
     }
+//     public function user()
+//     {
+// //            $query="SELECT `orders.id`,`orders.title`,`orders.price`,`orders.qty`,`orders.status`,`user.email` From `orders`
+// //            INNER JOIN `user` ON `orders.id`=`user.id`";
+// //        $this->db->select('orders.id,orders.title,user.id,orders.price,orders.qty,orders.status,user.email');
+//         $this->db->select('*');
+//         $this->db->from("orders");
+//         $this->db->join('user', 'orders.user_id = user.id','left');
+//         $query = $this->db->get()->result_array();
+//         return $query;
+//     }
+
+
     public function user()
     {
-//            $query="SELECT `orders.id`,`orders.title`,`orders.price`,`orders.qty`,`orders.status`,`user.email` From `orders`
-//            INNER JOIN `user` ON `orders.id`=`user.id`";
-//        $this->db->select('orders.id,orders.title,user.id,orders.price,orders.qty,orders.status,user.email');
-        $this->db->select('*');
-        $this->db->from("orders");
-        $this->db->join('user', 'orders.user_id = user.id','left');
+        $this->db->select('o.*');
+        $this->db->from("orders o");
+        $this->db->join('user u', 'o.user_id = u.id','left');
+        $this->db->join('product p', 'o.product_id = p.id','left');
+        $this->db->order_by('o.id','desc');
         $query = $this->db->get()->result_array();
         return $query;
     }
+
+
     public function fetch($tablename,$where=NULL)
     {
         $this->db->select();
@@ -242,6 +256,22 @@ class Md extends CI_Model
         $data=$this->db->get()->result_array();
         return $data;
     }
+
+    public function search_vendor_products($search='',$vendor)
+    {
+        $this->db->select('p.*,v.store_name');
+        $this->db->from('product p');
+        $this->db->join('vendor as v',' p.user_id = v.id ');
+        $this->db->where('p.user_id', $vendor);
+        if( $search != '' ) {
+            $this->db->like('p.title', $search , 'both');
+        } 
+        
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+
 
     public function remove_package_default()
     {

@@ -15,7 +15,10 @@ class Paypal extends CI_Controller{
         // Get the transaction data
 
         $order_id = $this->uri->segment(3);
-
+        $order = $this->md->fetch('orders',[ 'id'=>$order_id ])[0];
+        $vendor = $this->md->fetch('vendor',[ 'id'=>$order['vendor_id'] ])[0];
+        $pay_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+        
         $paypalInfo = $this->input->get();
 
         $data['item_name']      = $paypalInfo['item_name'];
@@ -34,6 +37,25 @@ class Paypal extends CI_Controller{
                 'note' => 'paid using paypal (Payment Amt: '.$data['payment_amt'].')'
             ] 
         );
+
+
+        $msg = "Dear Sir,<br>";
+            $msg .= "You have succefully paid ".$data['payment_amt']." for ".$data['item_name']." Store<br>";
+            $msg .= "You order ID: ".$order_id." <br>";
+            $msg .= "You Transaction ID: ".$data['txn_id']." <br>";
+            
+
+
+            $this->load->library('email');
+            $this->email->from($vendor['email'], $vendor['store_name']);
+            $this->email->to($post_data['user_email']);
+            $this->email->cc($pay_details['email']);
+            // $this->email->bcc('them@their-example.com');
+            $this->email->subject('Selly - Payment Successfull For '.$product['title'].' - '.$vendor['store_name']);
+            $this->email->message($msg);
+            $this->email->send();
+
+
 
         // Pass the transaction data to view
         $this->load->view('paypal/success', $data);

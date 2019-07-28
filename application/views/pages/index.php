@@ -74,7 +74,7 @@
                         echo $year;
                       }
                       else{
-                       echo " Opps no year earning ";
+                       echo " Opps no yearly earning ";
                       }
                         ?>
                                   </div>
@@ -102,9 +102,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-              <input id="myInput"  class="form-control" type="text" placeholder="Search..">
-              <br> 
-                <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped table-bordered" id="myDT" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>No#</th>
@@ -142,12 +140,9 @@
       <!-- End of Main Content -->
       <script>
 $(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#dataTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
+    
+    $('#myDT').dataTable();
+
 });
 </script>
 

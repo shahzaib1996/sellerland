@@ -91,17 +91,37 @@ class Main extends CI_Controller
              $this->md->insert('orders',
                 [
                     'title' => $product['title'].' - '.$vendor['store_name'],
+                    'price' => $product['price'],
                     'total' => $total_price,
                     'qty'   => $post_data['qty'],
                     'product_id' => $product['id'],    
                     'vendor_id' => $vendor['id'],
                     'user_id' => $user['id'],
                     'user_email' => $post_data['user_email'],
-                    'status' => "pending"
+                    'status' => "pending",
+                    'payment_type' => 'coinpayment'
                 ]
 
             );
+
             $data['order_id'] = $this->db->insert_id();
+
+            $msg = "Dear Sir,<br>";
+            $msg .= "You have Order ".$product['title']." From ".$vendor['store_name']." Store<br>";
+            $msg .= "You order ID: ".$data['order_id']." <br>";
+            $msg .= "<table> <tr> <td> Product </td> <td> Price </td> <td> Quantity </td> <td> Total </td> <td> Payment Method </td> </tr> </table>";
+            $msg .= "<table> <tr> <td> ".$product['title']." </td> <td> $".$product['price']." </td> <td> ".$post_data['qty']." </td> <td> $".$total_price." </td> <td> coinpayment </td> </tr> </table>";
+
+
+            $this->load->library('email');
+            $this->email->from($vendor['email'], $vendor['store_name']);
+            $this->email->to($post_data['user_email']);
+            $this->email->cc($cp_details['email']);
+            // $this->email->bcc('them@their-example.com');
+            $this->email->subject('You bought at Selly - '.$product['title'].' - '.$vendor['store_name']);
+            $this->email->message($msg);
+            $this->email->send();
+
 
             $data['single_product'] = $this->md->single_product_with_vendor($this->uri->segment(5) );
             $data['cp_details'] = $cp_details;
@@ -115,7 +135,35 @@ class Main extends CI_Controller
             }else{
                 redirect('Main/view/signin');
             }
-        } else{
+        }else if($page == 'vendor_products') {
+
+            $vendor_id = $this->uri->segment(4);
+            // echo $vendor_id;
+            // die();
+            if(isset($_GET['search']) ) {
+                // print_r($_GET['search']);
+                // die();
+                $data['vendor_products'] = $this->md->search_vendor_products($_GET['search'],$vendor_id); 
+            } else {
+                $data['vendor_products'] = $this->md->search_vendor_products('',$vendor_id); 
+            }
+
+            $data['vendor'] =$this->md->fetch('vendor',[ 'id'=>$vendor_id ]);
+
+            // print_r(count( $data['vendor'] ));
+            // die();
+            if( count( $data['vendor'] ) == 0 ) {
+                Echo "<h1> <center> Vendor Doesn't Exist! </center> </h1>";
+                die();
+            }
+
+
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/vendor_products');
+            $this->load->view('selly/footer');
+               
+        }
+         else{
             $this->load->view('selly/header');
             $this->load->view('selly/'.$page);
             $this->load->view('selly/footer');
@@ -360,8 +408,35 @@ class Main extends CI_Controller
             ] 
         );
 
+    $msg = "Dear Vendor,<br>";
+    $msg .= "Order ID: ".$order[0]['id']."<br>";
+    $msg .= "User (".$order[0]['user_email']." has paid for the ) ".$product['title'].' - '.$vendor['store_name']."<br>";
+
+    $this->load->library('email');
+            $this->email->from($cp_details['email'], $cp_details['username']);
+            $this->email->to($vendor['email']);
+            $this->email->cc($cp_details['email']);
+            // $this->email->bcc('them@their-example.com');
+            $this->email->subject('Selly - Customer Paid for'.$product['title'].' - '.$vendor['store_name']);
+            $this->email->message($msg);
+            $this->email->send();
+
+
     die('IPN OK'); 
 
+    }
+
+
+    public function test_email() {
+        $this->load->library('email');
+        $this->email->from('shahzaibtesting@dispostable.com', 'Your Name');
+        $this->email->to('shahzaibtesting@dispostable.com');
+        $this->email->cc('another@another-example.com');
+        $this->email->bcc('them@their-example.com');
+        $this->email->subject('Email Test xYx');
+        $this->email->message('Testing the email class.');
+        $this->email->send();
+        echo "sent";
     }
 
 

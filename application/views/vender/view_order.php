@@ -15,7 +15,7 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="myDT" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Order No</th>
@@ -23,37 +23,25 @@
                       <th>Price</th>
                       <th>Quantity</th>
                       <th>User Email</th>
-                      <th>Status</th>
                       <th>Total Bill</th>
-                      <th>User Id</th>
+                      <th>Payment Status</th>
+                      <th>Date Created</th>
                       <th>Action</th>
 
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Order No</th>
-                      <th>Title</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>User Email</th>
-                      <th>Status</th>
-                      <th>Total Bill</th>
-                      <th>User Id</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
                   <?php $x; $x=1; foreach ($orders as $k=>$v) {?>
                     <tr>
-                      <td><?= $x++ ?></td>
+                      <td><?= $v['id'] ?></td>
                       <td><?= $v['title']?></td>
                       <td><?= $v['price']?></td>
                       <td><?= $v['qty']?></td>
-                      <td><?=$v['email']?></td>
+                      <td><?=$v['user_email']?></td>
+                      <td><?= $v['total']?></td>
                       <td><?= $v['status']?></td>
-                      <td><?= $v['price']*$v['qty']?></td>
-                      <td><?=$v['id']?></td>
+                      <!-- <td><?=$v['id']?></td> -->
+                      <td><?=$v['created_at']?></td>
                       <td>
                         <a href="<?= site_url('vender/view/update_order/'.$v['id'])?>"><span class="btn btn-success">Update</span>&nbsp;</a>
                         <a href="<?= site_url('vender/delete_order/'.$v['id'])?>"><span class="btn btn-danger">Delete </span>&nbsp;</a>
@@ -62,6 +50,21 @@
                       
                   <?php }?>
                   </tbody>
+                  
+                  <!-- <tfoot>
+                    <tr>
+                      <th>Order No</th>
+                      <th>Title</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>User Email</th>
+                      <th>Total Bill</th>
+                      <th>Payment Status</th>
+                      <th>Date Created</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot> -->
+
                 </table>
               </div>
             </div>
@@ -73,3 +76,8 @@
       </div>
       <!-- End of Main Content -->
 
+      <script>
+        $(document).ready(function() {
+            $('#myDT').dataTable();
+        } );
+      </script>

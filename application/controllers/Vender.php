@@ -203,6 +203,9 @@ class Vender extends CI_Controller
     {
         $id=$this->uri->segment(3);
         $data=$this->input->post();
+        $data['total'] = $data['price']*$data['qty'];
+        // print_r($data);
+        // die();
         $this->md->update(array('id'=>$id),'orders',$data);
         redirect("vender/view/view_order");
     }

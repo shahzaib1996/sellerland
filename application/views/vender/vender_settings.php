@@ -42,23 +42,18 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-8">
-                                <label >Wallet Code</label>
+                                <label >Merchant ID</label>
                                 <input type="text" class="form-control" name="vendor_merchant_id" placeholder="Enter your wallet address" value="<?= $vendor_payment[0]['coinpayment_wallet_address'] ?>" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-8">
-                                <label >Coin</label>
-                                <select name="coin" class="form-control" required>
-                                  <option value="">Select Coin</option>
-                                  <?php if(count($vendor_coin) != 0){ foreach($vendor_coin as $coin) { ?>
-                                    <option value="<?= $coin['acronym']?>"><?= $coin['name'] ?></option>
-                                  <?php } } ?>
-
-                                </select>
+                                <label >IPN Secret</label>
+                                <input type="text" class="form-control" name="ipn_secret" placeholder="Enter your wallet address" value="<?= $vendor_payment[0]['ipn_secret'] ?>" required>
                             </div>
                         </div>
+
                         
                         <div class="form-row">
                             <div class="form-group col-md-8">
