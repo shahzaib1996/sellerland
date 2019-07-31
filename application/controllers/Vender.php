@@ -141,18 +141,21 @@ class Vender extends CI_Controller
         $default_package = $this->md->fetch('package', [ 'is_default'=>1 ]);
         if($this->form_validation->run() == true){
             $data= $this->input->post();
-            $data['status'] = 'active';
+            $data['status'] = 'inactive';
             $data['account_type'] = $default_package[0]['id'];
             $this->md->insert('vendor',$data);
             $v_id = $this->db->insert_id();
-            $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_merchant_id'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );
+            $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_wallet_address'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );
 
 
-            //Verification email link
-            $user_id = $this->db->insert_id();
-            $user_details = $this->md->fetch('vendor',[ 'id' => $user_id ])[0]['email'];
+            // Email verification link generation 
+            $emailLink = site_url().'/';
+            
+            $user_details = $this->md->fetch('vendor',[ 'id' => $v_id ])[0];
+            $verificationCode = hash('ripemd160', $user_details['created_at'] );
+            die();
 
-            print_r($user_details);
+            print_r($emailLink);
             die();
 
 
