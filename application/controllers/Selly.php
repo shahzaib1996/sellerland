@@ -182,6 +182,14 @@ class Selly extends CI_Controller
     {
         $id=$this->uri->segment(3);
         $data=$this->input->post();
+
+        if( isset($data['is_default']) ) {
+            $data['is_default'] = 1;
+            $this->md->remove_package_default();
+        } else {
+            $data['is_default'] = 0;
+        }
+
         $this->md->update(array('id'=>$id),'package',$data);
         redirect("selly/dashboard/view_package");
     }
