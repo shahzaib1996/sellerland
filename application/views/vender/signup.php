@@ -14,10 +14,21 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
-				<?= form_open('vender/add_store')?>
-					<span class="login100-form-title p-b-51">
+					<span class="login100-form-title" style="padding-bottom: 20px;">
 						Signup
 					</span>
+
+				<?php if(!empty($this->session->flashdata('vendersignup')) ) { ?>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="alert alert-info" style="color:red;font-weight: bold;text-align: center;padding-bottom:10px;">
+                              <?= $this->session->flashdata('vendersignup') ?> 
+                          </div>
+                      </div>
+                  </div>
+             	 <?php } ?>
+
+				<?= form_open('vender/add_store')?>
 				<div class="wrap-input100 validate-input m-b-16" data-validate = "Store Name is required">
 					<input class="input100" type="text" name="store_name" placeholder="Enter Store Name" value="<?= set_value('username') ?>" >
 					<span class="focus-input100"></span>
@@ -41,12 +52,15 @@
 					<div class="container-login100-form-btn m-t-17">
 						<input class="login100-form-btn" value="SignUp" type="submit">
 					</div>
-				<?= form_error('store_name') ?>
-				<?= form_error('username') ?>
-				<?= form_error('email') ?>
-				<?= form_error('password') ?>
-				<?= form_error('phone') ?>
-                <?= form_close()?>
+
+					<div style="color: red;">
+						<?= form_error('store_name') ?>
+						<?= form_error('username') ?>
+						<?= form_error('email') ?>
+						<?= form_error('password') ?>
+						<?= form_error('phone') ?>
+		                <?= form_close()?>
+					</div>
                 <p class="text-center account" style="padding-top: 10px; color:#3b81ff;">Already have an account? <a href="<?= site_url('vender/login')?>"> Log In</a</p>
 			</div>
 		</div>

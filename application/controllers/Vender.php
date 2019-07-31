@@ -146,8 +146,20 @@ class Vender extends CI_Controller
             $this->md->insert('vendor',$data);
             $v_id = $this->db->insert_id();
             $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_merchant_id'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );
+
+
+            //Verification email link
+            $user_id = $this->db->insert_id();
+            $user_details = $this->md->fetch('vendor',[ 'id' => $user_id ])[0]['email'];
+
+            print_r($user_details);
+            die();
+
+
+
             $this->login();
         } else{
+            $this->session->set_flashdata('vendersignup','Error While signup.');
             $this->signup();
         }
     }
