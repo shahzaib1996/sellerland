@@ -143,7 +143,7 @@ class Vender extends CI_Controller
         $default_package = $this->md->fetch('package', [ 'is_default'=>1 ]);
         if($this->form_validation->run() == true){
             $data= $this->input->post();
-            $data['status'] = 'inactive';
+            $data['status'] = 'active';
             $data['account_type'] = $default_package[0]['id'];
             $this->md->insert('vendor',$data);
             $v_id = $this->db->insert_id();
