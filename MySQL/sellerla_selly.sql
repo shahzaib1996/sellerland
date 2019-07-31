@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2019 at 02:06 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: Aug 01, 2019 at 01:20 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -396,16 +396,16 @@ CREATE TABLE `vendor` (
   `status` char(100) NOT NULL,
   `store_name` char(100) NOT NULL,
   `img` varchar(1000) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email_verified` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vendor`
 --
 
-INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`, `created_at`) VALUES
-(4, 'ken', 'usamaasif4190@gmail.com', 'ken', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png', '2019-07-31 10:53:47'),
-(6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', '1', 'active', 'abc', 'img.png', '2019-07-31 10:53:47');
+INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`, `created_at`, `email_verified`) VALUES
+(4, 'ken', 'usamaasif4190@gmail.com', 'ken', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png', '2019-07-31 10:53:47', 1);
 
 -- --------------------------------------------------------
 
@@ -430,9 +430,7 @@ CREATE TABLE `vendor_payment_details` (
 --
 
 INSERT INTO `vendor_payment_details` (`id`, `vendor_id`, `coinpayment_wallet_address`, `ipn_secret`, `coinpayment_status`, `paypal_status`, `paypal_email`, `created_at`, `updated_at`) VALUES
-(2, 4, 'thisIsWalletAddress', 'vendoripn', 1, 1, 'examplesss@paypal.com', '2019-07-24 09:10:15', '2019-07-28 10:07:48'),
-(3, 19, 'abadbadbasdad', NULL, 1, 1, 'myemail@paypal.com', '2019-07-24 14:09:26', '2019-07-24 14:09:57'),
-(4, 20, 'asbdadabdadadasda', NULL, 1, 1, 'myemail@paypal.com', '2019-07-24 14:11:47', '2019-07-24 14:12:02');
+(8, 4, 'your merchant id', 'secret', 1, 1, 'example@paypal.com', '2019-07-31 23:18:30', '2019-07-31 23:18:45');
 
 --
 -- Indexes for dumped tables
@@ -627,13 +625,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `vendor_payment_details`
 --
 ALTER TABLE `vendor_payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
