@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2019 at 02:07 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.4
+-- Generation Time: Jul 31, 2019 at 02:06 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.2.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -245,7 +245,7 @@ CREATE TABLE `package` (
 --
 
 INSERT INTO `package` (`id`, `title`, `type`, `price`, `is_default`) VALUES
-(1, 'basic', 'Free', 0, 0);
+(1, 'basic', 'Free', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -395,16 +395,17 @@ CREATE TABLE `vendor` (
   `account_type` char(100) NOT NULL,
   `status` char(100) NOT NULL,
   `store_name` char(100) NOT NULL,
-  `img` varchar(1000) NOT NULL
+  `img` varchar(1000) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vendor`
 --
 
-INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`) VALUES
-(4, 'ken', 'usamaasif4190@gmail.com', 'lora', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png'),
-(6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', '1', 'active', 'abc', 'img.png');
+INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`, `created_at`) VALUES
+(4, 'ken', 'usamaasif4190@gmail.com', 'ken', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png', '2019-07-31 10:53:47'),
+(6, 'abc', 'abc@gmail.com', 'abc', '', '', '939283298323', 'male', '', '1', 'active', 'abc', 'img.png', '2019-07-31 10:53:47');
 
 -- --------------------------------------------------------
 
