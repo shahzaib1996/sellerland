@@ -99,11 +99,13 @@ class Vender extends CI_Controller
         if($this->form_validation->run() == true){
             $data = $this->input->post();
             $data['status'] = 'active';
+            $data['email_verified'] = 1;
             $data = $this->md->fetch('vendor',$data);
             if(!empty($data)){
                 $this->session->set_userdata('login',$data);
                 $this->view();
             }else{
+                $this->session->set_flashdata('loginerror',' Error Login! ');
                 $this->login();
             }
         }else{
@@ -149,18 +151,32 @@ class Vender extends CI_Controller
 
 
             // Email verification link generation 
-            $emailLink = site_url().'/';
             
             $user_details = $this->md->fetch('vendor',[ 'id' => $v_id ])[0];
             $verificationCode = hash('ripemd160', $user_details['created_at'] );
-            die();
 
-            print_r($emailLink);
-            die();
+            $veriLink = site_url().'/vender/verify_vendor/'.$v_id.'/'.$verificationCode;
 
+            $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $msg = "Dear ".$data['username'].",<br>";
+            $msg .= "Please Verify your email by clicking the link below:<br>";
+            $msg .= "Email Verification Link: ".$veriLink."<br>";
+            $msg .= "Thank You ! <br>";
+            $msg .= "Selly Admin.<br>";
 
+                $this->load->library('email');
+                $this->email->from($cp_details['email'], 'Selly Admin');
+                $this->email->to($data['email']);
+                $this->email->cc($cp_details['email']);
+                // $this->email->bcc('them@their-example.com');
+                $this->email->subject('Selly - Your Email Verification Link');
+                $this->email->message($msg);
+                $this->email->send();
 
-            $this->login();
+            $data['status'] = 2;
+            $data['message'] = $user_details['username'].", Please check your email for verification";
+            $this->load->view('pages/email_verification',$data);
+            // $this->login();
         } else{
             $this->session->set_flashdata('vendersignup','Error While signup.');
             $this->signup();
@@ -282,6 +298,34 @@ class Vender extends CI_Controller
             $this->md->insert('client_query_reply',$data_insert);
         }
         redirect('vender/view/client_query_reply/'.$this->uri->segment(3));
+    }
+
+    public function verify_vendor() {
+        
+       $v_id = $this->uri->segment(3);
+       $veri_hash = $this->uri->segment(4);
+       $user_details = $this->md->fetch('vendor',[ 'id' => $v_id ]);
+       // print_r(count($user_details));
+       // die();
+       if(count($user_details) == 1) {
+            $created_at = $user_details[0]['created_at'];
+            $ca_hash = hash('ripemd160', $created_at );
+            if( $ca_hash == $veri_hash ) {
+                $data['status'] = 1;
+                $data['message'] = $user_details[0]['username'].", Your Email has been verified!";
+
+                $this->md->update( 
+                    [ 'id'=> $v_id ],
+                    'vendor', 
+                    [ 'email_verified'=> 1 ] 
+                );
+
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Failed to verify your email!";
+            }
+       }
+       $this->load->view('pages/email_verification',$data);
     }
 
 }
