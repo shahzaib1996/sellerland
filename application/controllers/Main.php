@@ -430,9 +430,9 @@ class Main extends CI_Controller
     public function test_email() {
         $this->load->library('email');
         $this->email->from('shahzaibtesting@dispostable.com', 'Your Name');
-        $this->email->to('shahzaibtesting@dispostable.com');
-        $this->email->cc('another@another-example.com');
-        $this->email->bcc('them@their-example.com');
+        $this->email->to('shahzaibmehfooz420@gmail.com');
+        $this->email->cc('shahzaibmehfooz420@gmail.com');
+        $this->email->bcc('shahzaibmehfooz420@gmail.com');
         $this->email->subject('Email Test xYx');
         $this->email->message('Testing the email class.');
         $this->email->send();
