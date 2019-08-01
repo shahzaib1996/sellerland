@@ -15,11 +15,13 @@
                         <h5 class="card-header text-light p-4" style="background:#5390ff; "><?= $single_product[0]['title'] ?></h5>
                         <div class="card-body">
                             <div class="" style="text-align: center;">
-                                <img src="<?= base_url();?>image/<?= $single_product[0]['image'] ?>" class="img-responsive" style="width: 80%;">
+                                <img src="<?= base_url();?>image/product_image/<?= $single_product[0]['image'] ?>" class="img-responsive" style="width: 80%;">
                             </div>
                           <p class="card-text" style="margin-top: 20px;">
                             <h3>Description</h3>
-                               <?= $single_product[0]['des'] ?>
+                                <div style="padding: 10px;font-size: 16px;text-align: justify;">
+                                    <?= $single_product[0]['des'] ?>
+                                </div>
                           </p>
                         </div>
                 </div>
@@ -46,6 +48,7 @@
                                             <!-- "<?= site_url('Main/view/coin_checkout/'.$this->uri->segment(4).'/'.$this->uri->segment(5)) ?>" -->
                                             <form action="" method="POST" id="coin_checkout_form">
                                                 <input type="hidden" id="qty" name="qty" pattern="[0-9]*" value="1" > 
+                                                <input type="hidden" id="form_coupon" name="coupon" value="" >
                                                 <input type="email" name="user_email" class="form-control" id="user_email" style="font-size: 12px;" placeholder="Enter your email to proceed." required>
                                             </form>
 
@@ -125,16 +128,22 @@
                                     $('#click_coupon').click(function () {
                                         var x = $('#coupon').val();
                                         var arr = [];
+                                        var arrD = [];
+                                        var checkif = false;
                                         <?php foreach ($single_coupons as $k=>$v){ ?>
                                         arr.push("<?= $v['codes'] ?>");
+                                        arrD.push("<?= $v['discount'] ?>");
                                         <?php } ?>
                                         for(var i =0;i<=<?= count($single_coupons) ?>;i++) {
                                             if (x === arr[i]) {
                                                 $('#apply').css('display','none');
                                                 $('#add_coupon').html(x);
-                                                //$('#discount').html('Discount : $<?//= ['discount'] ?>//.00');
-                                                //$('#total').html('Total Amount: $<?//= $v['price'] ?>//.00');
+                                                $('#form_coupon').val(x);
+                                                checkif = true;
                                             }
+                                        }
+                                        if(!(checkif)) {
+                                            alert('Invalid Coupon!');
                                         }
                                     });
                                 });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2019 at 01:20 AM
+-- Generation Time: Aug 01, 2019 at 02:48 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.4
 
@@ -68,7 +68,8 @@ CREATE TABLE `client_query` (
 
 INSERT INTO `client_query` (`id`, `title`, `email`, `message`, `vendor_id`, `user_id`) VALUES
 (8, 'Title', 'xyz@gmail.com', 'This is my message', '4', 37),
-(9, 'This is NEW Query Title', 'xyzxyz@gmail.com', 'This is message new', '4', 37);
+(9, 'This is NEW Query Title', 'xyzxyz@gmail.com', 'This is message new', '4', 37),
+(10, 'this is test', 'shahzaib@gmail.com', 'This is my message', '4', 37);
 
 -- --------------------------------------------------------
 
@@ -93,7 +94,8 @@ INSERT INTO `client_query_reply` (`id`, `client_query_id`, `reply`, `user_id`, `
 (13, 8, 'This is vender reply', 0, 4, '2019-07-22 22:05:36'),
 (14, 8, 'This is user reply', 37, 0, '2019-07-22 22:05:50'),
 (15, 9, 'This is my reply\r\n', 37, 0, '2019-07-22 22:10:33'),
-(16, 9, 'This is vender Reply', 0, 4, '2019-07-22 22:10:55');
+(16, 9, 'This is vender Reply', 0, 4, '2019-07-22 22:10:55'),
+(17, 10, 'testing ', 0, 4, '2019-08-01 17:03:50');
 
 -- --------------------------------------------------------
 
@@ -124,9 +126,9 @@ INSERT INTO `coinpayment_accept_coins` (`id`, `acronym`, `name`) VALUES
 
 CREATE TABLE `coupons` (
   `id` int(11) NOT NULL,
-  `codes` int(11) NOT NULL,
+  `codes` varchar(20) NOT NULL,
   `vender_id` char(100) NOT NULL,
-  `discount` char(100) NOT NULL
+  `discount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -134,8 +136,7 @@ CREATE TABLE `coupons` (
 --
 
 INSERT INTO `coupons` (`id`, `codes`, `vender_id`, `discount`) VALUES
-(1, 1001, '4', '20'),
-(2, 1002, '4', '30');
+(8, 'get20', '4', 20);
 
 -- --------------------------------------------------------
 
@@ -215,17 +216,6 @@ CREATE TABLE `orders` (
   `payment_type` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `product_id`, `title`, `price`, `total`, `qty`, `vendor_id`, `user_id`, `user_email`, `status`, `date`, `transaction_id`, `created_at`, `updated_at`, `coupon_used`, `note`, `payment_type`) VALUES
-(7, 13, 'suama2323 - khan', 12, 24, 2, 4, 37, 'shahzaibmehfooz420@gmail.com', 'pending', '', NULL, '2019-07-27 16:17:59', '2019-07-28 09:50:05', NULL, NULL, NULL),
-(27, 14, 'Shoes - khan', 12, 12, 1, 4, NULL, 'shahzaibmehfooz@gmail.com', 'pending', '', NULL, '2019-07-28 09:30:43', NULL, NULL, NULL, NULL),
-(28, 14, 'Shoes - khan', 12, 12, 1, 4, NULL, 'sadasdsadsad@gmail.com', 'pending', '', NULL, '2019-07-28 09:32:00', NULL, NULL, NULL, 'paypal'),
-(29, 14, 'Shoes - khan', 12, 12, 1, 4, 37, 'status@gmail.com', 'pending', '', NULL, '2019-07-28 09:32:25', NULL, NULL, NULL, 'coinpayment'),
-(30, 13, 'suama2323 - khan', 12, 24, 2, 4, 37, 'shahzaibtesting@dispostable.com', 'pending', '', NULL, '2019-07-28 11:45:00', NULL, NULL, NULL, 'coinpayment');
-
 -- --------------------------------------------------------
 
 --
@@ -279,7 +269,7 @@ CREATE TABLE `product` (
   `image` varchar(255) NOT NULL,
   `date` varchar(100) NOT NULL,
   `user_id` char(100) NOT NULL,
-  `des` varchar(1000) NOT NULL,
+  `des` text NOT NULL,
   `account_type` char(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -295,7 +285,9 @@ INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `i
 (24, 'shoes', 1000, 1000, 4, '15.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
 (25, 'tyu', 100, 80, 2, '15.jpg', '2019-07-11', '4', 'this is a product', 'vender'),
 (38, 'sssssdsdsdsds', 12121221, 2147483647, 121212, '15.jpg', '2019-07-25', '4', '', ''),
-(39, 'test vendor id', 101, 202, 303, '15.jpg', '2019-07-25', '4', '', '');
+(39, 'test vendor id', 101, 202, 303, 'fb-add-post.png', '2019-07-25', '4', '', ''),
+(40, 'This is test', 100, 90, 99, 'cool-profile-pictures3.jpg', '2019-08-01 12:46:43', '4', '', ''),
+(41, 'DHool', 120, 100, 99, 'bg1.jpg', '2019-08-01 01:36:34', '4', ' This is just testing <br>\r\nnothing else', '');
 
 -- --------------------------------------------------------
 
@@ -357,24 +349,23 @@ CREATE TABLE `user` (
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `status` char(100) NOT NULL,
-  `ip_address` char(100) NOT NULL
+  `ip_address` char(100) NOT NULL,
+  `email_verified` tinyint(4) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `email`, `password`, `status`, `ip_address`) VALUES
-(35, 'Bilal', 'mohammedbilalmansoor@gmail.com', 'bilal123456', 'Active', '185.89.250.131'),
-(37, 'xyz', 'xyz@gmail.com', '111111', 'Active', '202.47.35.83'),
-(38, 'user', 'usamaasif8809@gmail.com', '111111', 'Active', '202.47.35.83'),
-(39, 'usasjaksj', 'abc@gmail.com', '1234567890', 'Active', '202.47.35.83'),
-(40, 'saosaiso', 'omer@gmail.com', '1234567890', 'Active', '202.47.35.83'),
-(41, 'Slacker', 'slackerisinsane@gmail.com', 'slacker12345678', 'Active', '202.47.35.83'),
-(42, 'Jawwy', 'muhammadjawad0090@gmail.com', 'jawwy12345678', 'Active', '185.205.204.159'),
-(43, 'Jawwy123', 'muhammadjawad00@yahoo.com', 'jawwy12345678', 'Active', '185.205.204.159'),
-(44, 'Jawwad123', 'muhammadjawwad00@hotmail.com', 'jawwad12345678', 'Active', '136.0.99.239'),
-(45, 'Codegasm', 'info@codegasm.co.uk', 'codegasm123', 'Active', '136.0.99.239');
+INSERT INTO `user` (`id`, `username`, `email`, `password`, `status`, `ip_address`, `email_verified`, `created_at`) VALUES
+(35, 'Bilal', 'mohammedbilalmansoor@gmail.com', 'bilal123456', 'Active', '185.89.250.131', 0, '2019-08-01 12:16:27'),
+(37, 'xyz', 'xyz@gmail.com', '111111', 'Active', '202.47.35.83', 1, '2019-08-01 12:16:27'),
+(38, 'user', 'usamaasif8809@gmail.com', '111111', 'Active', '202.47.35.83', 0, '2019-08-01 12:16:27'),
+(48, 'newuser', 'nnnnn@gmail.com', '1111111111', 'Active', '', 0, '2019-08-01 12:16:27'),
+(49, 'adad', 'adad@gmail.com', '1111111111', 'Active', '', 0, '2019-08-01 12:16:50'),
+(50, 'xxxx', 'xxxx@gmail.com', 'xxxxxxxxxx', 'Active', '::1', 0, '2019-08-01 12:18:59'),
+(52, 'aaaaa', 'aaaa@gmail.com', 'aaaaaaaaaa', 'Active', '::1', 1, '2019-08-01 12:20:23');
 
 -- --------------------------------------------------------
 
@@ -405,7 +396,8 @@ CREATE TABLE `vendor` (
 --
 
 INSERT INTO `vendor` (`id`, `username`, `email`, `password`, `address`, `cnic`, `phone`, `gender`, `join_date`, `account_type`, `status`, `store_name`, `img`, `created_at`, `email_verified`) VALUES
-(4, 'ken', 'usamaasif4190@gmail.com', 'ken', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png', '2019-07-31 10:53:47', 1);
+(4, 'ken', 'usamaasif4190@gmail.com', 'ken', '', '', '203923092303920', 'male', '', '1', 'active', 'khan', 'img.png', '2019-07-31 10:53:47', 1),
+(5, 'this', 'this@gmail.com', '1111111111', '', '', '123123123123', '', '', '1', 'active', 'this is', '', '2019-08-01 08:04:20', 1);
 
 -- --------------------------------------------------------
 
@@ -430,7 +422,8 @@ CREATE TABLE `vendor_payment_details` (
 --
 
 INSERT INTO `vendor_payment_details` (`id`, `vendor_id`, `coinpayment_wallet_address`, `ipn_secret`, `coinpayment_status`, `paypal_status`, `paypal_email`, `created_at`, `updated_at`) VALUES
-(8, 4, 'your merchant id', 'secret', 1, 1, 'example@paypal.com', '2019-07-31 23:18:30', '2019-07-31 23:18:45');
+(8, 4, 'your merchant id', 'secret', 1, 1, 'example@paypal.com', '2019-07-31 23:18:30', '2019-07-31 23:18:45'),
+(9, 5, 'update your merchant id', NULL, 1, 1, 'example@paypal.com', '2019-08-01 08:04:20', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -464,7 +457,8 @@ ALTER TABLE `coinpayment_accept_coins`
 -- Indexes for table `coupons`
 --
 ALTER TABLE `coupons`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codes` (`codes`);
 
 --
 -- Indexes for table `feedback`
@@ -518,7 +512,8 @@ ALTER TABLE `store`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `vendor`
@@ -547,13 +542,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `client_query`
 --
 ALTER TABLE `client_query`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `client_query_reply`
 --
 ALTER TABLE `client_query_reply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `coinpayment_accept_coins`
@@ -565,7 +560,7 @@ ALTER TABLE `coinpayment_accept_coins`
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -583,7 +578,7 @@ ALTER TABLE `my_message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `package`
@@ -601,7 +596,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `purchase`
@@ -619,19 +614,19 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `vendor`
 --
 ALTER TABLE `vendor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `vendor_payment_details`
 --
 ALTER TABLE `vendor_payment_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

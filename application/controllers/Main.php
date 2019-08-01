@@ -87,6 +87,16 @@ class Main extends CI_Controller
             $product = $this->md->fetch('product',[ 'id'=>$this->uri->segment(5) ])[0];
             $user = $this->md->fetch('user',[ 'id'=>$this->session->userdata('web_login')[0]['id'] ])[0];
             $total_price = $post_data['qty']*$product['price'];
+            $coupon_used = $this->md->fetch('coupons',[ 'codes'=> $post_data['coupon'] ]);
+
+            $cu = '';
+            if( count($coupon_used) == 1 ) {
+                if( $coupon_used[0]['discount'] < $total_price ) {
+                    $cu = $coupon_used[0]['codes'];
+                    $total_price = $total_price - $coupon_used[0]['discount'];
+                }
+            }
+
             //creating order
              $this->md->insert('orders',
                 [
@@ -99,7 +109,8 @@ class Main extends CI_Controller
                     'user_id' => $user['id'],
                     'user_email' => $post_data['user_email'],
                     'status' => "pending",
-                    'payment_type' => 'coinpayment'
+                    'payment_type' => 'coinpayment',
+                    'coupon_used' => $cu
                 ]
 
             );
@@ -109,14 +120,14 @@ class Main extends CI_Controller
             $msg = "Dear Sir,<br>";
             $msg .= "You have Order ".$product['title']." From ".$vendor['store_name']." Store<br>";
             $msg .= "You order ID: ".$data['order_id']." <br>";
-            $msg .= "<table> <tr> <td> Product </td> <td> Price </td> <td> Quantity </td> <td> Total </td> <td> Payment Method </td> </tr> </table>";
+            $msg .= "<table border='1' cellpadding='10'> <tr> <td> Product </td> <td> Price </td> <td> Quantity </td> <td> Total </td> <td> Payment Method </td> </tr> </table>";
             $msg .= "<table> <tr> <td> ".$product['title']." </td> <td> $".$product['price']." </td> <td> ".$post_data['qty']." </td> <td> $".$total_price." </td> <td> coinpayment </td> </tr> </table>";
 
 
             $this->load->library('email');
             $this->email->from($vendor['email'], $vendor['store_name']);
             $this->email->to($post_data['user_email']);
-            $this->email->cc($cp_details['email']);
+            // $this->email->cc($cp_details['email']);
             // $this->email->bcc('them@their-example.com');
             $this->email->subject('You bought at Selly - '.$product['title'].' - '.$vendor['store_name']);
             $this->email->message($msg);
@@ -173,12 +184,57 @@ class Main extends CI_Controller
         $this->session->unset_userdata('web_login');
         redirect('Main/index');
     }
+
+    function getUserIpAddr(){
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            //ip from share internet
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            //ip pass from proxy
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
     public function signup(){
         $data['username'] = $this->input->post('username');
         $data['email'] = $this->input->post('email');
         $data['password'] = $this->input->post('password');
+        $data['status'] = 'Active';
+        $data['ip_address'] = $this->getUserIpAddr();
         $this->md->insert('user',$data);
-        redirect('Main/view/signin');
+        $u_id = $this->db->insert_id();
+        // Email verification link generation 
+            
+            $user_details = $this->md->fetch('user',[ 'id' => $u_id ])[0];
+            $verificationCode = hash('ripemd160', $user_details['created_at'] );
+
+            $veriLink = site_url().'/main/verify_user/'.$u_id.'/'.$verificationCode;
+
+            $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $msg = "Dear ".$data['username'].",<br>";
+            $msg .= "Please Verify your email by clicking the link below:<br>";
+            $msg .= "Email Verification Link: ".$veriLink."<br>";
+            $msg .= "Thank You ! <br>";
+            $msg .= "Selly Admin.<br>";
+
+                $this->load->library('email');
+                $this->email->from($cp_details['email'], 'Selly Admin');
+                $this->email->to($data['email']);
+                // $this->email->cc($cp_details['email']);
+                // $this->email->bcc('them@their-example.com');
+                $this->email->subject('Selly - Your Email Verification Link');
+                $this->email->message($msg);
+                $this->email->send();
+
+            $data['status'] = 2;
+            $data['message'] = $user_details['username'].", Please check your email for verification";
+
+            $this->load->view('pages/email_verification',$data);
+
+        // redirect('Main/view/signin');
     }
     public function login(){
       $data = $this->md->fetch('user',$this->input->post());
@@ -206,6 +262,31 @@ class Main extends CI_Controller
         $data['vendor_id']= $this->uri->segment(3);
         $data['user_id']= $this->session->userdata('web_login')[0]['id'];
         $this->md->insert('client_query',$data);
+
+        //email 
+        $vendor = $this->md->fetch('vendor', $data['vendor_id'] )[0];
+        $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+        $msg = "Dear ".$vendor['username'].",<br>";
+
+            $msg .= "User created a query.<br>";
+            $msg .= "User Email: ".$data['email']." <br>";
+            $msg .= "Query Title: ".$data['title']." <br>";
+            $msg .= "Query Message: ".$data['message']." <br>";
+            $msg .= "Click here to reply: ".site_url('vender/view/client_query/'.$vendor['id'])." <br>";
+            $msg .= " Regards, <br>";
+            $msg .= " Selly Admin <br>";
+
+
+            $this->load->library('email');
+            $this->email->from($cp_details['email'], 'Selly Admin');
+            $this->email->to($vendor['email']);
+            // $this->email->cc($cp_details['email']);
+            // $this->email->bcc('them@their-example.com');
+            $this->email->subject('Selly - User Created Query');
+            $this->email->message($msg);
+            $this->email->send();
+        // end email
+
         redirect('Main/view/vendor-contact/'.$this->uri->segment(3));
     }
 
@@ -413,9 +494,9 @@ class Main extends CI_Controller
     $msg .= "User (".$order[0]['user_email']." has paid for the ) ".$product['title'].' - '.$vendor['store_name']."<br>";
 
     $this->load->library('email');
-            $this->email->from($cp_details['email'], $cp_details['username']);
+            $this->email->from($cp_details['email'], 'Selly Admin');
             $this->email->to($vendor['email']);
-            $this->email->cc($cp_details['email']);
+            // $this->email->cc($cp_details['email']);
             // $this->email->bcc('them@their-example.com');
             $this->email->subject('Selly - Customer Paid for'.$product['title'].' - '.$vendor['store_name']);
             $this->email->message($msg);
@@ -465,6 +546,34 @@ class Main extends CI_Controller
             $this->load->view('selly/header',$data);
             $this->load->view('selly/vendor_products');
             $this->load->view('selly/footer');    
+    }
+
+
+    public function verify_user() {
+        
+       $v_id = $this->uri->segment(3);
+       $veri_hash = $this->uri->segment(4);
+       $user_details = $this->md->fetch('user',[ 'id' => $v_id ]);
+
+       if(count($user_details) == 1) {
+            $created_at = $user_details[0]['created_at'];
+            $ca_hash = hash('ripemd160', $created_at );
+            if( $ca_hash == $veri_hash ) {
+                $data['status'] = 1;
+                $data['message'] = $user_details[0]['username'].", Your Email has been verified!";
+
+                $this->md->update( 
+                    [ 'id'=> $v_id ],
+                    'user', 
+                    [ 'email_verified'=> 1 ] 
+                );
+
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Failed to verify your email!";
+            }
+       }
+       $this->load->view('pages/email_verification',$data);
     }
 
 

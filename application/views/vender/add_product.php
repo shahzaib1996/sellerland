@@ -1,4 +1,4 @@
-
+  
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -41,6 +41,12 @@
                 <label for="inputEmail4">Quantity</label>
                 <input type="number" class="form-control" name="quantity" placeholder="Stock">
               </div>
+
+              <div class="form-group col-md-8" style="padding: 0 10px 0 0 ">
+                <label for="inputEmail4">Description</label>
+                <textarea class="form-control" name="des"> </textarea>
+              </div>
+
 
 
 

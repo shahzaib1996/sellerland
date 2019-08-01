@@ -59,6 +59,30 @@ class Vender extends CI_Controller
                 $this->load->view('vender/footer');
             }else{ $this->login(); } // end if close
 
+        }else if( $page=='view_coupons' ) {
+            //required by vender header
+            $data['user_info']  = $this->session->userdata('login');
+            $data['login'] = $this->session->userdata('login');
+            $data['vendor_coupons']=$this->md->fetch('coupons',array('vender_id'=>$data['login'][0]['id'] ));
+
+            if(!empty($this->session->userdata('login'))){ // if start
+                $this->load->view('vender/header',$data);
+                $this->load->view('vender/'.$page);
+                $this->load->view('vender/footer');
+            }else{ $this->login(); } // end if close
+        
+        } else if( $page=='add_coupons' ) {
+            //required by vender header
+            $data['user_info']  = $this->session->userdata('login');
+            $data['login'] = $this->session->userdata('login');
+            $data['vendor_id'] = $data['login'][0]['id'];
+
+            if(!empty($this->session->userdata('login'))){ // if start
+                $this->load->view('vender/header',$data);
+                $this->load->view('vender/'.$page);
+                $this->load->view('vender/footer');
+            }else{ $this->login(); } // end if close
+        
         } else{ // else if there is session go to index
 //            var_dump($this->session->userdata('login'));die;
             $id=$this->uri->segment(4);
@@ -167,7 +191,7 @@ class Vender extends CI_Controller
                 $this->load->library('email');
                 $this->email->from($cp_details['email'], 'Selly Admin');
                 $this->email->to($data['email']);
-                $this->email->cc($cp_details['email']);
+                // $this->email->cc($cp_details['email']);
                 // $this->email->bcc('them@their-example.com');
                 $this->email->subject('Selly - Your Email Verification Link');
                 $this->email->message($msg);
@@ -175,6 +199,7 @@ class Vender extends CI_Controller
 
             $data['status'] = 2;
             $data['message'] = $user_details['username'].", Please check your email for verification";
+            
             $this->load->view('pages/email_verification',$data);
             // $this->login();
         } else{
@@ -218,6 +243,13 @@ class Vender extends CI_Controller
         $data=$this->input->post();
         $this->md->delete(array('id'=>$id),"product",$data);
         redirect('vender/view/view_product');
+    }
+
+    public function del_coupon()
+    {
+        $id=$this->uri->segment(3);
+        $this->md->delete(array('id'=>$id),"coupons",$data);
+        redirect('vender/view/view_coupons');
     }
 
     public function add_order()
@@ -280,10 +312,9 @@ class Vender extends CI_Controller
     }
     public function add_coupons(){
         $data = $this->input->post();
-//        var_dump($data);die;
-        $data['vender_id'] = $this->uri->segment(3);
+        $data['codes'] = strtolower($data['codes']);
         $this->md->insert('coupons',$data);
-        redirect('vender/view/add_coupons/'.$this->uri->segment(3));
+        redirect('vender/view/view_coupons');
     }
 
     public function add_vendor_reply() {

@@ -35,8 +35,15 @@ class Products extends CI_Controller{
         $pay_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
         $total_price = $product['price']*$qty;
 
-        // echo $total_price;
-        // die();
+        $coupon_used = $this->md->fetch('coupons',[ 'codes'=> $post_data['coupon'] ]);
+
+            $cu = '';
+            if( count($coupon_used) == 1 ) {
+                if( $coupon_used[0]['discount'] < $total_price ) {
+                    $cu = $coupon_used[0]['codes'];
+                    $total_price = $total_price - $coupon_used[0]['discount'];
+                }
+            }
 
         //creating order
         $this->md->insert('orders',
@@ -49,7 +56,8 @@ class Products extends CI_Controller{
                     'vendor_id' => $product['user_id'],
                     'user_email' => $post_data['user_email'],
                     'status' => "pending",
-                    'payment_type' => 'paypal'
+                    'payment_type' => 'paypal',
+                    'coupon_used' => $cu
                 ]
 
             );

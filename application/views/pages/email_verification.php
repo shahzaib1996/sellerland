@@ -51,7 +51,7 @@
 				
 
 
-                <p class="text-center account" style="padding-top: 10px; color:#3b81ff;"> <a href="<?= site_url('vender/')?>"> Login Here </a></p>
+                <!-- <p class="text-center account" style="padding-top: 10px; color:#3b81ff;"> <a href="<?= site_url('vender/')?>"> Login Here </a></p> -->
 			</div>
 		</div>
 	</div>

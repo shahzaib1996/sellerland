@@ -31,11 +31,15 @@
         </div>
         <div class="card-body">
             <div class="container">
-                <?= form_open('vender/add_coupons/'.$this->uri->segment(4)) ?>
+                <?= form_open('vender/add_coupons') ?>
+                <input type="hidden" value="<?= $vendor_id ?>" name="vender_id">
+
                 <div class="form-row">
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-4">
                         <label for="inputEmail4">Code</label>
-                        <div class="row">
+                        <input type="text" class="form-control" value="" name="codes" maxlength="20" placeholder="Max 20 characters long" style="text-transform: uppercase;">
+
+                        <!-- <div class="row">
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="string" name="codes" placeholder="Coupon Code">
                                 <span id="statement"></span>
@@ -43,16 +47,16 @@
                             <div class="col-sm-4">
                                 <span class="btn btn-success" id="generate">Generate</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-4">
                         <label for="inputEmail4">Discount</label>
-                        <input type="number" class="form-control" value="1" name="discount" min="1" max="100" placeholder="Percent %">
+                        <input type="number" class="form-control" value="" name="discount" min="1" max="100" placeholder="USD ($)">
                     </div>
                 </div>
-                <div class="form-row">
+                <!-- <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">Product</label>
                         <select name="pro_id" class="form-control" id="">
@@ -62,8 +66,8 @@
                             <?php } ?>
                         </select>
                     </div>
-                </div>
-                <div class="form-group col-md-12 text-center">
+                </div> -->
+                <div class="form-group col-md-4 text-center">
                     <button type="submit"  class="btn btn-primary form-control">Add Coupons</button>
                 </div>
                 <?= form_close(); ?>

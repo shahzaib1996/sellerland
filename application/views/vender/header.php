@@ -158,6 +158,14 @@ https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js -->
             </a>
         </li>
 
+        <li class="nav-item">
+            <?php //var_dump($user_info);die; ?>
+            <a class="nav-link collapsed" href="<?= site_url('Vender/view/view_coupons') ?>">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Coupons</span>
+            </a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider">
 
