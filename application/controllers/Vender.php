@@ -305,8 +305,7 @@ class Vender extends CI_Controller
        $v_id = $this->uri->segment(3);
        $veri_hash = $this->uri->segment(4);
        $user_details = $this->md->fetch('vendor',[ 'id' => $v_id ]);
-       // print_r(count($user_details));
-       // die();
+
        if(count($user_details) == 1) {
             $created_at = $user_details[0]['created_at'];
             $ca_hash = hash('ripemd160', $created_at );
@@ -327,5 +326,12 @@ class Vender extends CI_Controller
        }
        $this->load->view('pages/email_verification',$data);
     }
+
+
+    public function showStore($storeName) {
+        echo $storeName;
+    }
+
+
 
 }

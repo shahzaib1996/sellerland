@@ -439,6 +439,34 @@ class Main extends CI_Controller
         echo "sent";
     }
 
+    public function show_store($storeName) {
+            // $vendor_id = $this->uri->segment(4);
+            $vendor_id = $storeName;
+            // echo $vendor_id;
+            // die();
+            if(isset($_GET['search']) ) {
+                // print_r($_GET['search']);
+                // die();
+                $data['vendor_products'] = $this->md->search_vendor_products($_GET['search'],$vendor_id); 
+            } else {
+                $data['vendor_products'] = $this->md->search_vendor_products('',$vendor_id); 
+            }
+
+            $data['vendor'] =$this->md->fetch('vendor',[ 'username'=>$vendor_id ]);
+
+            // print_r(count( $data['vendor'] ));
+            // die();
+            if( count( $data['vendor'] ) == 0 ) {
+                Echo "<h1> <center> Vendor Doesn't Exist! </center> </h1>";
+                die();
+            }
+
+
+            $this->load->view('selly/header',$data);
+            $this->load->view('selly/vendor_products');
+            $this->load->view('selly/footer');    
+    }
+
 
 
 }

@@ -15,6 +15,7 @@
     <meta charset="UTF-8">
     <!-- Site Title -->
     <title>Seller Land</title>
+    <link href="<?= base_url();?>bootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--    CSS    ============================================= -->
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/linearicons.css">
@@ -27,13 +28,32 @@
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/owl.carousel.css">
     <link rel="stylesheet" href="<?= base_url() ?>theme/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        .mlogo {
+            font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        text-transform: uppercase;
+        }
+        .logo-smiley {
+                transform: rotate(-15deg);
+        }
+    </style>
 </head>
 <body style="overflow-x:hidden">
 <header id="header" id="home">
     <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">
             <div id="logo">
-                <a href="<?= site_url('main/view/all-products') ?>"><img src="<?= base_url() ?>theme/img/logo.png" alt="your logo" title="" ></a>
+
+                <a class=" d-flex align-items-center justify-content-center" href="<?= site_url() ?>" style="font-size: 20px;">
+                    <div class="sidebar-brand-icon logo-smiley">
+                        <i class="fas fa-laugh-wink" style="color: #fff !important;"></i>
+                    </div>
+                 
+                    <div class="sidebar-brand-text mx-3 mlogo">Selly.io <sup></sup></div>
+                </a>
+                <!-- <a href="<?= site_url('main/view/all-products') ?>"><img src="<?= base_url() ?>theme/img/logo.png" alt="your logo" title="" ></a> -->
             </div>
             <nav id="nav-menu-container">
                 <ul class="nav-menu">

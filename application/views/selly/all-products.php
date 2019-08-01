@@ -60,7 +60,7 @@
                                 </center>
                                   <div class="card-body">
                                       <h3 class="card-text vendor-product-details text-center" style="font-size:18px;color: #1f82f7"><?= $v['title'] ?></h3>
-                                    <p class="card-text vendor-product-details text-center" style="margin-top: 10px;font-size: 13px; color:black;">Vendor <?= $v['store_name'] ?> </p>
+                                    <p class="card-text vendor-product-details text-center" style="margin-top: 10px;font-size: 13px; color:black;"> "<?= $v['store_name'] ?>" </p>
                                     <span class="vendor-product-price" style="color:black; font-size:13px">$<?= $v['price'] ?></span>
                                     <span class="vendor-product-stock" style="float:right;  font-size:13px"><?= $v['quantity'] ?> in stock</span>
                                   </div>

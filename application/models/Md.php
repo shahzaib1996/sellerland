@@ -262,7 +262,8 @@ class Md extends CI_Model
         $this->db->select('p.*,v.store_name');
         $this->db->from('product p');
         $this->db->join('vendor as v',' p.user_id = v.id ');
-        $this->db->where('p.user_id', $vendor);
+        // $this->db->where('p.user_id', $vendor);
+        $this->db->where('v.username', $vendor);
         if( $search != '' ) {
             $this->db->like('p.title', $search , 'both');
         } 
