@@ -298,4 +298,19 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function fetch_user_login($tablename,$where=NULL)
+    {
+        $this->db->select();
+        $this->db->from($tablename);
+        if($where!=NULL)
+        {
+            foreach ($where as $k=>$v) {
+                $this->db->where($k,$v);
+            }
+        }
+        $this->db->where('email_verified',1);
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 }

@@ -237,7 +237,7 @@ class Main extends CI_Controller
         // redirect('Main/view/signin');
     }
     public function login(){
-      $data = $this->md->fetch('user',$this->input->post());
+      $data = $this->md->fetch_user_login('user',$this->input->post());
       if(!empty($data)){
           $this->session->set_userdata('web_login',$data);
           redirect('Main/view/all-products');

@@ -6,7 +6,7 @@ class Products extends CI_Controller{
         parent::__construct();
 
         // Load paypal library & product model
-        $this->load->library('paypal_lib');
+        $this->load->library('Paypal_lib');
         $this->load->model('product');
     }
 
