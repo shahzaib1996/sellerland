@@ -226,15 +226,31 @@ class Vender extends CI_Controller
     }
 
 
+    // public function update_product()
+    // {
+    //     $id=$this->uri->segment(3);
+    //     $data=$this->input->post();
+    //     $images['image'] = $this->do_upload('image');
+    //     $data['image'] = $images['image']['upload_data']['file_name'] ;
+    //     $this->md->update(array('id'=>$id),'product',$data);
+    //     redirect("vender/view/view_product");
+    // }
+
+
     public function update_product()
     {
         $id=$this->uri->segment(3);
         $data=$this->input->post();
-        $images['image'] = $this->do_upload('image');
-        $data['image'] = $images['image']['upload_data']['file_name'] ;
+
+        if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+            $images['image'] = $this->do_upload('image');
+            $data['image'] = $images['image']['upload_data']['file_name'] ;
+        }
+
         $this->md->update(array('id'=>$id),'product',$data);
         redirect("vender/view/view_product");
     }
+
 
 
     public function del_product()
