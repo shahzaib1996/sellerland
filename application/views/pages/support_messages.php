@@ -783,7 +783,7 @@ Website: http://emilcarlsson.se/
                                                 <li class="contact ">
                                                     <div class="wrap">
                                                         <!-- <span class="contact-status busy"></span> -->
-                                                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                                        <img src="<?= base_url();?>/image/profile_image/<?= $v['img'] ?>" alt="Profile Image" height="40" weight="40" />
                                                         <div class="meta">
                                                             <p class="name"><?= $v['username']  ?></p>
         <!--                                          <p class="preview text-right">--><?//= $v['message'] ?><!--</p>-->
@@ -810,7 +810,7 @@ Website: http://emilcarlsson.se/
                     <?php if(!empty($this->uri->segment(4))){ ?>
                         <div class="content">
                             <div class="contact-profile">
-                                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                <img src="<?= base_url();?>/image/profile_image/<?= $wh_vendor[0]['img'] ?>>" alt="" />
                                 <p><?= $wh_vendor[0]['username'] ?></p>
                             </div>
                             <div class="messages" id="messages" style="width: 100%">
@@ -835,8 +835,7 @@ Website: http://emilcarlsson.se/
                             <div class="message-input">
                                 <div class="wrap">
                                     <input type="text" name="message" placeholder="Write your message..." />
-                                    <i class="fa fa-paperclip attachment" aria-hidden="true">
-                                    </i>
+                                        
                                     <button type="submit" class="submit"><i class="fa fa-paper-plane"  aria-hidden="true"></i></button>
                                 </div>
                             </div>

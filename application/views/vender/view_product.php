@@ -49,7 +49,7 @@
                       <td><?= $v['price']?></td>
                       <td><?= $v['wholesale_price']?></td>
                       <td><?= $v['quantity']?></td>
-                        <td><img src="<?= base_url('image/product_image/').$v['image']?>" alt="" style="width: 120px"></td>
+                        <td align="center"><img src="<?= base_url('image/product_image/').$v['image']?>" alt="" style="height: 60px;width: auto;"></td>
                         <td><?=date("d-m-Y",strtotime($v['date']))?></td>
 
                         <td>

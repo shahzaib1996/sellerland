@@ -23,6 +23,26 @@ class Selly extends CI_Controller
 
     }
 
+    public function do_upload_vendor($file)
+    {
+        $config['upload_path']          = './image/profile_image';
+        $config['allowed_types']        = 'JPEG|PNG|JPG|jpg|png|jpeg';
+
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload($file))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            return $error;
+        }
+        else
+        {
+            $data = array('upload_data' => $this->upload->data());
+            return $data;
+        }
+
+    }
+
     public function profile_picture_upload($file)
     {
         $config['upload_path']          = './image/profile_image';
@@ -84,7 +104,8 @@ class Selly extends CI_Controller
         $data['admin_message'] =  $this->session->userdata('vender_message');
         $data['store']=$this->md->fetch("store");
         $data['package']=$this->md->fetch("package");
-        $data['my_message']=$this->md->fetch('my_message');
+        // $data['my_message']=$this->md->fetch('my_message');
+        $data['my_message']=$this->md->messages_with_img();
         $data['message'] = $this->md->ascending('my_message',array('id'=>'ASC'),array('user_id'=>$this->uri->segment(4)));
         $data['wh_store']=$this->md->fetch("store",array('id'=>$id));
         $data['wh_package']=$this->md->fetch("package",array('id'=>$id));
@@ -223,6 +244,103 @@ class Selly extends CI_Controller
         $this->email->send();
         echo 'email send';
     }
+
+    public function vender_forgot_password() {
+        $this->load->view('pages/forgotpassword');
+    }
+
+    public function vender_forgot_password_sent() {
+        $email = $this->input->post('email');
+
+        $check_user = $this->md->fetch('vendor',[ 'email' => $email ] );
+        
+        // print_r(count($check_user));
+        // die();
+
+        if( count($check_user) != 1 ) {
+            $this->session->set_flashdata('fperror','Email does not exist.');
+            $this->load->view('pages/forgotpassword'); 
+        } else {
+
+
+            $verificationCode = hash('ripemd160', $check_user[0]['created_at'] );
+
+            $veriLink = site_url().'/selly/vender_reset_password/'.$check_user[0]['id'].'/'.$verificationCode;
+
+            $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $msg = "Dear ".$check_user[0]['username'].",<br>";
+            $msg .= "Your reset password link:<br>";
+            $msg .= "Email Verification Link: ".$veriLink."<br>";
+            $msg .= "Thank You ! <br>";
+            $msg .= "Selly Admin.<br>";
+
+                $this->load->library('email');
+                $this->email->from($cp_details['email'], 'Selly Admin');
+                $this->email->to($email);
+                // $this->email->cc($cp_details['email']);
+                // $this->email->bcc('them@their-example.com');
+                $this->email->subject('Selly - Reset Password');
+                $this->email->message($msg);
+                $this->email->send();
+
+
+            $this->session->set_flashdata('fpsuccess','Email has been sent.');
+            $this->load->view('pages/forgotpassword');
+        }
+
+    }
+
+    public function vender_reset_password() {
+        $v_id = $this->uri->segment(3);
+        $veri_hash = $this->uri->segment(4);
+
+
+
+        $user_details = $this->md->fetch('vendor',[ 'id' => $v_id ]);
+
+        // print_r($user_details);
+        // die();
+
+       if(count($user_details) == 1) {
+            $created_at = $user_details[0]['created_at'];
+            $ca_hash = hash('ripemd160', $created_at );
+            if( $ca_hash == $veri_hash ) {
+                
+                $this->load->view('pages/vender_reset_password',[ 'vendor_id' => $v_id ]);
+
+            } else {
+                echo "<center> <h1> Invalid Link </h1> </center>";
+            }
+       } else {
+
+            echo "<center> <h1> User not found! </h1> </center>";
+
+       }
+
+    }
+
+    public function vender_fp_update() {
+
+        $data = $this->input->post();
+
+        if( $data['password'] != $data['cpassword'] ) {
+            $this->session->set_flashdata('rserror','Password not matched.');
+            $this->load->view('pages/vender_reset_password',[ 'vendor_id'=> $data['vendor_id'] ]);
+        } else {
+
+            $this->md->update( 
+                    [ 'id'=> $data['vendor_id'] ],
+                    'vendor', 
+                    [ 'password'=> $data['password'] ]
+                );
+
+            $this->session->set_flashdata('loginsuccess','Your Password has been changed!');
+            redirect('vender/view/signin');
+
+        }
+
+    }
+
     public function up_email(){
         $this->form_validation->set_rules('cur_email','Current Email','required');
         $this->form_validation->set_rules('email','New Email','required|is_unique[user.email]');
@@ -366,6 +484,21 @@ class Selly extends CI_Controller
             [ 'img'=>$imageName ] 
         );
         redirect('selly/dashboard/reset');
+    }
+
+    public function update_vendor_profile_image()
+    {
+        $id=$this->session->userdata('login')[0]['id'];
+        $data=$this->input->post();
+
+        if (isset($_FILES['vendor_image']) && is_uploaded_file($_FILES['vendor_image']['tmp_name'])) {
+            $images['vendor_image'] = $this->do_upload_vendor('vendor_image');
+            $data['img'] = $images['vendor_image']['upload_data']['file_name'] ;
+        }
+
+        $this->md->update(array('id'=>$id),'vendor',$data);
+        $this->session->set_flashdata('vendor_pp','Profile Image updated!');
+        redirect('vender/view/vender_settings');
     }
 
 }

@@ -35,6 +35,7 @@ class Vender extends CI_Controller
             //required by vender header
             $data['user_info']  = $this->session->userdata('login');
             $data['login'] = $this->session->userdata('login');
+            $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
 
             $query_id = $this->uri->segment(4);
             $data['client_query_detail'] = $this->md->fetch_query_detail( $query_id );
@@ -47,8 +48,9 @@ class Vender extends CI_Controller
 
         }else if( $page=='vender_settings' ) {
             //required by vender header
-            $data['user_info']  = $this->session->userdata('login');
-            $data['login'] = $this->session->userdata('login');
+            $data['user_info']  =  $this->session->userdata('login');
+            // $data['login'] = $this->session->userdata('login');
+            $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
             $data['vendor_payment']=$this->md->fetch('vendor_payment_details',array('vendor_id'=>$data['login'][0]['id'] ));
             $data['vendor_coin']=$this->md->fetch('coinpayment_accept_coins');
             // print_r($data['vendor_payment']);
@@ -62,7 +64,8 @@ class Vender extends CI_Controller
         }else if( $page=='view_coupons' ) {
             //required by vender header
             $data['user_info']  = $this->session->userdata('login');
-            $data['login'] = $this->session->userdata('login');
+            // $data['login'] = $this->session->userdata('login');
+            $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
             $data['vendor_coupons']=$this->md->fetch('coupons',array('vender_id'=>$data['login'][0]['id'] ));
 
             if(!empty($this->session->userdata('login'))){ // if start
@@ -74,7 +77,8 @@ class Vender extends CI_Controller
         } else if( $page=='add_coupons' ) {
             //required by vender header
             $data['user_info']  = $this->session->userdata('login');
-            $data['login'] = $this->session->userdata('login');
+            // $data['login'] = $this->session->userdata('login');
+            $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
             $data['vendor_id'] = $data['login'][0]['id'];
 
             if(!empty($this->session->userdata('login'))){ // if start
@@ -88,6 +92,7 @@ class Vender extends CI_Controller
             $id=$this->uri->segment(4);
             $data['user_info']  = $this->session->userdata('login');
             $data['login'] = $this->session->userdata('login');
+            // $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
             $data['message'] = $this->md->ascending('my_message',array('id'=>'ASC'),array('user_id'=>$this->uri->segment(4)));
             $data['admin_message'] = $this->session->userdata('admin_message');
             // print_r($data['login']);
@@ -123,13 +128,21 @@ class Vender extends CI_Controller
         if($this->form_validation->run() == true){
             $data = $this->input->post();
             $data['status'] = 'active';
-            $data['email_verified'] = 1;
+            // $data['email_verified'] = 1;
             $data = $this->md->fetch('vendor',$data);
+            // print_r($data);
+            // die();
             if(!empty($data)){
-                $this->session->set_userdata('login',$data);
-                $this->view();
+                if( $data[0]['email_verified'] == 1 ) {
+                    $this->session->set_userdata('login',$data);
+                    $this->view();
+                } else {
+                    $this->session->set_flashdata('loginerror',' Please Verify Your Email ');
+                    $this->login();
+                }
+            
             }else{
-                $this->session->set_flashdata('loginerror',' Error Login! ');
+                $this->session->set_flashdata('loginerror',' username/password incorrect! ');
                 $this->login();
             }
         }else{
@@ -158,17 +171,40 @@ class Vender extends CI_Controller
 //     }
 
     public function add_store(){
-        $this->form_validation->set_rules('username', 'Username', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[vendor.email]');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[10]');
+        $this->form_validation->set_rules('username', 'Username', 'required|is_unique[vendor.username]',
+            array(
+                'is_unique'     => 'This %s already exists.'
+            )
+        );
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[vendor.email]',
+            array(
+                'is_unique'     => 'This %s already exists.'
+            )
+        );
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
         $this->form_validation->set_rules('phone', 'Number', 'required|min_length[11]');
-        $this->form_validation->set_rules('store_name', 'Store Name', 'required|is_unique[vendor.store_name]');
+        $this->form_validation->set_rules('store_name', 'Store Name', 'required|is_unique[vendor.store_name]',
+            array(
+                'is_unique'     => 'This %s already exists.'
+            )
+        );
 //        $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+
+
         $default_package = $this->md->fetch('package', [ 'is_default'=>1 ]);
         if($this->form_validation->run() == true){
             $data= $this->input->post();
             $data['status'] = 'active';
             $data['account_type'] = $default_package[0]['id'];
+            $data['img'] = 'user.png';
+
+            if( $data['password'] != $data['cpassword'] ) {
+                $this->session->set_flashdata('vendersignup',' Password not matched! ');
+                $this->signup();
+            }
+
+            unset($data['cpassword']);
+
             $this->md->insert('vendor',$data);
             $v_id = $this->db->insert_id();
             $this->md->insert('vendor_payment_details',['vendor_id'=>$v_id, 'coinpayment_wallet_address'=>'update your merchant id','paypal_email'=>'example@paypal.com'] );

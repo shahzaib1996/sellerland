@@ -24,7 +24,14 @@
 	                              <?= $this->session->flashdata('loginerror') ?>
 	                        
 	                  </div>
+	              <?php } else if(!empty($this->session->flashdata('loginsuccess')) ){ ?>
+	                  <div style="text-align: center;color: green;font-size: 20px;padding-bottom: 20px;">
+	                      
+	                              <?= $this->session->flashdata('loginsuccess') ?>
+	                        
+	                  </div>
 	              <?php } ?>
+
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
 						<input class="input100" type="text" style="border-bottom-color:red" name="username" value="<?= set_value('username') ?>" placeholder="Username" >
 						<span class="focus-input100"></span>
@@ -36,13 +43,13 @@
 				<div class="container-login100-form-btn m-t-17">
 						<input class="login100-form-btn" value="Login" type="submit">
 					</div>
-				<a href="<?= site_url('selly/index/forgotpassword')?>" class="btn btn-primary">
+				<a href="<?= site_url('selly/vender_forgot_password')?>" class="btn btn-primary">
 					Forgot-password
 				</a>
 				<?= form_error('username'); ?>
 				<?= form_error('password'); ?>
 				<?= form_close() ?>
-                <p class="text-center account" style="padding-top: 10px; color:#3b81ff;">Don't have an account yet? <a href="<?= site_url('vender/signup')?>"> Signup now</a</p>
+                <p class="text-center account" style="padding-top: 10px; color:#3b81ff;">Don't have an account yet? <a href="<?= site_url('vender/signup')?>"> Signup now</a></p>
 			</div>
 		</div>
 	</div>

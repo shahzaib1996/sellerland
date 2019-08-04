@@ -21,7 +21,6 @@
                       <div class="col-lg-6">
                           <div class="alert alert-info">
                               <?= $this->session->flashdata('coinpayment') ?>
-                              <?= $this->session->flashdata('paypal') ?>
                           </div>
                       </div>
                   </div>
@@ -129,6 +128,60 @@
 
             </div>
           </div>
+
+           <!-- Page Heading -->
+          <h1 class="h3 mb-2 text-gray-800">Vender Profile Image</h1>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary"> Profile Image </h6>
+            </div>
+            <div class="card-body">
+                
+              <?php if(!empty($this->session->flashdata('vendor_pp')) ){ ?>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="alert alert-info">
+                              <?= $this->session->flashdata('vendor_pp') ?>
+                          </div>
+                      </div>
+                  </div>
+              <?php } ?>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <?= form_open_multipart('selly/update_vendor_profile_image')?>
+
+                    <div class="container">
+
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label >Choose Profile Image &nbsp;</label> 
+                                <input type="file" class="" name="vendor_image" class="form-control" >
+                            </div>
+                        </div>
+
+                        
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input type="submit" class="form-control btn btn-success" value="Update">
+                            </div>
+                        </div>
+                        <!--container ended-->
+                    </div>
+
+                    <?=form_close()?>
+                </div>
+                
+            </div>
+
+
+
+            </div>
+          </div>
+
 
         </div>
         <!-- /.container-fluid -->

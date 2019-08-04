@@ -313,4 +313,29 @@ class Md extends CI_Model
         return $data;
     }
 
+
+    public function check_user_signup($username,$email)
+    {
+        $this->db->select();
+        $this->db->from('user');
+        $this->db->where('username',$username);
+        $this->db->or_where('email',$email);
+
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+    // messages_with_img
+
+    public function messages_with_img()
+    {
+        $this->db->select('mm.*,v.img');
+        $this->db->from('my_message mm');
+        $this->db->join('vendor as v',' mm.user_id = v.id ','LEFT');
+
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
+
 }

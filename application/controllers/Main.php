@@ -202,9 +202,35 @@ class Main extends CI_Controller
         $data['username'] = $this->input->post('username');
         $data['email'] = $this->input->post('email');
         $data['password'] = $this->input->post('password');
+        $data['cpassword'] = $this->input->post('cpassword');
         $data['status'] = 'Active';
         $data['ip_address'] = $this->getUserIpAddr();
+
+        $check_user = $this->md->check_user_signup( $data['username'], $data['email'] );
+
+        if( $data['password'] != $data['cpassword'] ) {
+            $this->session->set_flashdata('signuperror',' Password not matched! ');
+            redirect('Main/view/signup');
+        }
+
+
+        if( count($check_user) > 0  ) {
+
+            if( $check_user[0]['username'] == $data['username'] ) {
+                $this->session->set_flashdata('signuperror',' Username Already Exist! ');
+            } else if( $check_user[0]['email'] == $data['email'] ) {
+                $this->session->set_flashdata('signuperror',' Email Already Exist! ');
+            } else {
+                $this->session->set_flashdata('signuperror',' Something went wrong! ');
+            }
+
+            redirect('Main/view/signup');
+        }   
+
+
         $this->md->insert('user',$data);
+
+
         $u_id = $this->db->insert_id();
         // Email verification link generation 
             
@@ -242,7 +268,8 @@ class Main extends CI_Controller
           $this->session->set_userdata('web_login',$data);
           redirect('Main/view/all-products');
       }else{
-          redirect('Main/view/signin');
+            $this->session->set_flashdata('loginerror',' username/password incorrect. ');
+            redirect('Main/view/signin');
       }
     }
     public function feedback($pro_id,$user_id,$vendor_id){
@@ -574,6 +601,104 @@ class Main extends CI_Controller
             }
        }
        $this->load->view('pages/email_verification',$data);
+    }
+
+
+
+    public function user_forgot_password() {
+        $this->load->view('pages/user_forgotpassword');
+    }
+
+    public function user_forgot_password_sent() {
+        $email = $this->input->post('email');
+
+        $check_user = $this->md->fetch('user',[ 'email' => $email ] );
+        
+        // print_r(count($check_user));
+        // die();
+
+        if( count($check_user) != 1 ) {
+            $this->session->set_flashdata('fperror','Email does not exist.');
+            $this->load->view('pages/user_forgotpassword'); 
+        } else {
+
+
+            $verificationCode = hash('ripemd160', $check_user[0]['created_at'] );
+
+            $veriLink = site_url().'/main/user_reset_password/'.$check_user[0]['id'].'/'.$verificationCode;
+
+            $cp_details = $this->md->fetch('admin',[ 'id'=>1 ])[0];
+            $msg = "Dear ".$check_user[0]['username'].",<br>";
+            $msg .= "Your reset password link:<br>";
+            $msg .= "Email Verification Link: ".$veriLink."<br>";
+            $msg .= "Thank You ! <br>";
+            $msg .= "Selly Admin.<br>";
+
+                $this->load->library('email');
+                $this->email->from($cp_details['email'], 'Selly Admin');
+                $this->email->to($email);
+                // $this->email->cc($cp_details['email']);
+                // $this->email->bcc('them@their-example.com');
+                $this->email->subject('Selly - Reset Password');
+                $this->email->message($msg);
+                $this->email->send();
+
+
+            $this->session->set_flashdata('fpsuccess','Email has been sent.');
+            $this->load->view('pages/user_forgotpassword');
+        }
+
+    }
+
+    public function user_reset_password() {
+        $v_id = $this->uri->segment(3);
+        $veri_hash = $this->uri->segment(4);
+
+
+
+        $user_details = $this->md->fetch('user',[ 'id' => $v_id ]);
+
+        // print_r($user_details);
+        // die();
+
+       if(count($user_details) == 1) {
+            $created_at = $user_details[0]['created_at'];
+            $ca_hash = hash('ripemd160', $created_at );
+            if( $ca_hash == $veri_hash ) {
+                
+                $this->load->view('pages/user_reset_password',[ 'user_id' => $v_id ]);
+
+            } else {
+                echo "<center> <h1> Invalid Link </h1> </center>";
+            }
+       } else {
+
+            echo "<center> <h1> User not found! </h1> </center>";
+
+       }
+
+    }
+
+    public function user_fp_update() {
+
+        $data = $this->input->post();
+
+        if( $data['password'] != $data['cpassword'] ) {
+            $this->session->set_flashdata('rserror','Password not matched.');
+            $this->load->view('pages/user_reset_password',[ 'user_id'=> $data['user_id'] ]);
+        } else {
+
+            $this->md->update( 
+                    [ 'id'=> $data['user_id'] ],
+                    'user', 
+                    [ 'password'=> $data['password'] ]
+                );
+
+            $this->session->set_flashdata('loginsuccess','Your Password has been changed!');
+            redirect('main/view/signin');
+
+        }
+
     }
 
 

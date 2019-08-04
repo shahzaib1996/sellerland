@@ -15,27 +15,28 @@
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
 				<?php $attributes = array('class' => 'login100-form validate-form flex-sb flex-w'); ?>
-				<?= form_open('selly/vender_forgot_password_sent',$attributes)?>
+				<?= form_open('main/user_fp_update',$attributes)?>
 					<span class="login100-form-title p-b-51">
-						Vender Forgot Password
+						User Reset Password
 					</span>
 
-					<?php if(!empty($this->session->flashdata('fperror')) ){ ?>
+
+					<?php if(!empty($this->session->flashdata('rserror')) ){ ?>
 	                  <div style="text-align: center;color: red;font-size: 20px;padding-bottom: 20px;">
 	                      
-	                              <?= $this->session->flashdata('fperror') ?>
-	                        
-	                  </div>
-	              <?php } else if(!empty($this->session->flashdata('fpsuccess')) ){ ?>
-	                  <div style="text-align: center;color: green;font-size: 20px;padding-bottom: 20px;">
-	                      
-	                              <?= $this->session->flashdata('fpsuccess') ?>
+	                              <?= $this->session->flashdata('rserror') ?>
 	                        
 	                  </div>
 	              <?php } ?>
+					
+	              	<input type="hidden" name="user_id" value="<?= $user_id ?>" >
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "">
+						<input class="input100" type="password" name="password" placeholder="Enter New Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+						<span class="focus-input100"></span>
+					</div>
 
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
-						<input class="input100" type="email" name="email" placeholder="Enter your email" required>
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "">
+						<input class="input100" type="password" name="cpassword" placeholder="Confirm New Password" required>
 						<span class="focus-input100"></span>
 					</div>
 					

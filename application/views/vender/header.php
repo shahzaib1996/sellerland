@@ -210,7 +210,7 @@ https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?= $login[0]['username'] ?> </span>
-                            <img class="img-profile rounded-circle" src="<?= base_url();?>/image/profile_image/user.png">
+                            <img class="img-profile rounded-circle" src="<?= base_url();?>/image/profile_image/<?= $login[0]['img'] ?>">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

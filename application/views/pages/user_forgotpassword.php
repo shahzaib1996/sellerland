@@ -15,9 +15,9 @@
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
 				<?php $attributes = array('class' => 'login100-form validate-form flex-sb flex-w'); ?>
-				<?= form_open('selly/vender_forgot_password_sent',$attributes)?>
+				<?= form_open('main/user_forgot_password_sent',$attributes)?>
 					<span class="login100-form-title p-b-51">
-						Vender Forgot Password
+						User Forgot Password
 					</span>
 
 					<?php if(!empty($this->session->flashdata('fperror')) ){ ?>

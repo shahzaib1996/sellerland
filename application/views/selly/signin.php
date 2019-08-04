@@ -19,14 +19,29 @@
 					<span class="login100-form-title p-b-51">
 						Login
 					</span>
+
+					<?php if(!empty($this->session->flashdata('loginerror')) ){ ?>
+	                  <div style="text-align: center;color: red;font-size: 20px;padding-bottom: 20px;">
+	                      
+	                              <?= $this->session->flashdata('loginerror') ?>
+	                        
+	                  </div>
+	              <?php } else if(!empty($this->session->flashdata('loginsuccess')) ){ ?>
+	                  <div style="text-align: center;color: green;font-size: 20px;padding-bottom: 20px;">
+	                      
+	                              <?= $this->session->flashdata('loginsuccess') ?>
+	                        
+	                  </div>
+	              <?php } ?>
+
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
-						<input class="input100" type="text" name="username" placeholder="Username">
+						<input class="input100" type="text" name="username" placeholder="Username" required>
 						<span class="focus-input100"></span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-						<input class="input100" type="password" name="password" placeholder="Password">
+						<input class="input100" type="password" name="password" placeholder="Password" required>
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -37,6 +52,9 @@
 							Login
 						</button>
 					</div>
+					<a href="<?= site_url('main/user_forgot_password')?>" class="btn btn-primary">
+					Forgot-password
+				</a>
 
 				</div>
                 <?= form_close();?>
