@@ -213,6 +213,7 @@ class Main extends CI_Controller
             redirect('Main/view/signup');
         }
 
+        unset($data['cpassword']);
 
         if( count($check_user) > 0  ) {
 

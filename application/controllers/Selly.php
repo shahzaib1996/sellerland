@@ -343,8 +343,7 @@ class Selly extends CI_Controller
 
     public function up_email(){
         $this->form_validation->set_rules('cur_email','Current Email','required');
-        $this->form_validation->set_rules('email','New Email','required|is_unique[user.email]');
-        $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+        $this->form_validation->set_rules('email','New Email','required|is_unique[admin.email]');
         if($this->form_validation->run()==true){
         $this->session->set_flashdata('email','Update Email');
         //  echo var_dump( $this->session->userdata('id')); die();
@@ -361,25 +360,107 @@ class Selly extends CI_Controller
             redirect('selly/dashboard/reset');
         }
     }
-    public function up_password(){
-        $this->form_validation->set_rules('cur_password','Current Password','required');
-        $this->form_validation->set_rules('password','New Password','required');
-        $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+
+
+    public function update_vendor_email() {
+        $this->form_validation->set_rules('cur_email','Current Email','required');
+        $this->form_validation->set_rules('email','New Email','required|is_unique[vendor.email]');
         if($this->form_validation->run()==true){
-        $this->session->set_flashdata('password','Update Password');
-        if($this->session->userdata('id') != null){
-          //  echo var_dump( $this->session->userdata('id')[0]['email']); die();
-            $this->md->update(array('password'=>$this->input->post('cur_password')),'admin',array('password'=>$this->input->post('password')),$this->session->userdata('id')[0]['email']);
-            redirect('selly/dashboard/reset');
+        // $this->session->set_flashdata('vendor_email','Update Email');
+        //  echo var_dump( $this->session->userdata('id')); die();
+         if($this->session->userdata('login') != null){
+
+            $vendor = $this->md->fetch( 'vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
+
+            if( $vendor[0]['email'] == $this->input->post('cur_email') ) {
+
+                $this->md->update( [ 'id'=> $this->session->userdata('login')[0]['id']  ],'vendor',[ 'email'=>$this->input->post('email') ] );
+                $this->session->set_flashdata('vendor_email','Update Email');
+                redirect('Vender/view/vender_settings');
+
+            } else {
+                $this->session->set_flashdata('vendor_e_error','Current email does not matched!');
+                redirect('Vender/view/vender_settings');
+            }
+
          }
-         else{
-            $this->md->update(array('password'=>$this->input->post('cur_password')),'user',array('password'=>$this->input->post('password')));
-            redirect('selly/dashboard/reset');        
-         }
-    }else{
-            redirect('selly/dashboard/reset');
+        }else{
+            $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+            redirect('Vender/view/vender_settings');
         }
     }
+
+
+    public function update_vendor_password() {
+        
+        $data = $this->input->post();
+
+         if($this->session->userdata('login') != null){
+
+            $vendor = $this->md->fetch( 'vendor', [ 'id'=> $this->session->userdata('login')[0]['id'], 'password'=> $data['old_password'] ] );
+
+            // print_r($vendor);
+            // die();
+
+            if( count($vendor) == 1 ) {
+
+                if( $data['new_password'] == $data['new_c_password'] ) {
+
+                    $this->md->update( [ 'id'=> $this->session->userdata('login')[0]['id']  ],'vendor',[ 'password'=> $data['new_password'] ] );
+                    $this->session->set_flashdata('vendor_pass','Password updated!');
+                    redirect('Vender/view/vender_settings');
+
+                } else {
+                    $this->session->set_flashdata('vendor_p_error','Password does not matched!');
+                    redirect('Vender/view/vender_settings');
+                }
+
+            } else {
+                $this->session->set_flashdata('vendor_p_error','Incorrect Password!');
+                redirect('Vender/view/vender_settings');
+            }
+
+         }
+        
+    }
+
+
+    public function up_password(){
+
+        $data = $this->input->post();
+
+         if($this->session->userdata('id') != null){
+
+            $admin = $this->md->fetch( 'admin', [ 'id'=> $this->session->userdata('id')[0]['id'], 'password'=> $data['old_password'] ] );
+
+            // print_r($vendor);
+            // die();
+
+            if( count($admin) == 1 ) {
+
+                if( $data['new_password'] == $data['new_c_password'] ) {
+
+                    $this->md->update( [ 'id'=> $this->session->userdata('id')[0]['id']  ],'admin',[ 'password'=> $data['new_password'] ] );
+                    $this->session->set_flashdata('password','Password updated!');
+                    redirect('selly/dashboard/reset');
+
+                } else {
+                    $this->session->set_flashdata('password','Password does not matched!');
+                    redirect('selly/dashboard/reset');
+                }
+
+            } else {
+                $this->session->set_flashdata('password','Incorrect Password!');
+                redirect('selly/dashboard/reset');
+            }
+
+         }
+
+
+
+    }
+
+
     public function destroy(){
      $this->session->unset_userdata('admin_message');
      $this->session->unset_userdata('vender_message');
@@ -477,7 +558,7 @@ class Selly extends CI_Controller
 
         $images['image'] = $this->profile_picture_upload('profile_image');
         $imageName = $images['image']['upload_data']['file_name'] ;
-        print_r($imageName);
+        // print_r($imageName);
         $this->md->update( 
             [ 'id'=> $this->session->userdata('id')[0]['id'] ] ,
             'admin', 
