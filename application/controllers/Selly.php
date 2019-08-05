@@ -365,6 +365,7 @@ class Selly extends CI_Controller
         $this->form_validation->set_rules('cur_email','Current Email','required');
         $this->form_validation->set_rules('email','New Email','required|is_unique[admin.email]');
         if($this->form_validation->run()==true){
+
          if($this->session->userdata('id') != null){
 
             $vendor = $this->md->fetch( 'admin', [ 'id'=> $this->session->userdata('id')[0]['id'] ] );
@@ -381,8 +382,10 @@ class Selly extends CI_Controller
             }
 
          }
-        }else{
-            $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+
+        }
+        else{
+            $this->session->set_flashdata('email_er','Email already exists!');
             redirect('selly/dashboard/reset');
         }
     }
@@ -411,7 +414,7 @@ class Selly extends CI_Controller
 
          }
         }else{
-            $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+            $this->session->set_flashdata('vendor_e_error','Email Already Exist!');
             redirect('Vender/view/vender_settings');
         }
     }
