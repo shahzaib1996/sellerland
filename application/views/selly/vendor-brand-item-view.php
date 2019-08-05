@@ -1,7 +1,7 @@
 <?php //var_dump($vendor_product);echo '<br><br>';var_dump($single_vendor);die; ?>
 <?php //var_dump($web_login);die; ?>
         <nav class="navbar navbar-expand-lg navbar-light " style="background:linear-gradient(90deg,#0b58f1 0%,#3fc1ff 100%); padding: 15px;">
-            <a class="navbar-brand text-light" href="#">Navbar</a>
+            <!-- <a class="navbar-brand text-light" href="#">Navbar</a> -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
