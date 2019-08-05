@@ -341,19 +341,45 @@ class Selly extends CI_Controller
 
     }
 
+    // public function up_email(){
+    //     $this->form_validation->set_rules('cur_email','Current Email','required');
+    //     $this->form_validation->set_rules('email','New Email','required|is_unique[admin.email]');
+    //     if($this->form_validation->run()==true){
+    //     $this->session->set_flashdata('email','Update Email');
+    //     //  echo var_dump( $this->session->userdata('id')); die();
+    //      if($this->session->userdata('id') != null){
+    //         $this->md->update(array('email'=>$this->input->post('cur_email')),'admin',array('email'=>$this->input->post('email')));
+    //         $this->session->set_flashdata('email','Update Email');
+
+    //         redirect('selly/dashboard/reset');
+    //      }
+         
+    //     }else{
+    //         $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');
+    //         redirect('selly/dashboard/reset');
+    //     }
+    // }
+
+
     public function up_email(){
         $this->form_validation->set_rules('cur_email','Current Email','required');
         $this->form_validation->set_rules('email','New Email','required|is_unique[admin.email]');
         if($this->form_validation->run()==true){
-        $this->session->set_flashdata('email','Update Email');
-        //  echo var_dump( $this->session->userdata('id')); die();
          if($this->session->userdata('id') != null){
-            $this->md->update(array('email'=>$this->input->post('cur_email')),'admin',array('email'=>$this->input->post('email')));
-            redirect('selly/dashboard/reset');
-         }
-         else{
-            $this->md->update(array('email'=>$this->input->post('cur_email')),'user',array('email'=>$this->input->post('email')));
-            redirect('selly/dashboard/reset');         
+
+            $vendor = $this->md->fetch( 'admin', [ 'id'=> $this->session->userdata('id')[0]['id'] ] );
+
+            if( $vendor[0]['email'] == $this->input->post('cur_email') ) {
+
+                $this->md->update( [ 'id'=> $this->session->userdata('id')[0]['id']  ],'admin',[ 'email'=>$this->input->post('email') ] );
+                $this->session->set_flashdata('email','Update Email');
+                redirect('selly/dashboard/reset');
+
+            } else {
+                $this->session->set_flashdata('email_er','Current email does not matched!');
+                redirect('selly/dashboard/reset');
+            }
+
          }
         }else{
             $this->form_validation->set_error_delimiters('<div class="alert alert-warning ">', '</div>');

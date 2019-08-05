@@ -211,7 +211,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <?= form_open_multipart('selly/update_vendor_email')?>
+                    <?= form_open('selly/update_vendor_email')?>
 
                     <div class="container">
 

@@ -1,11 +1,12 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-            <?php if(!empty($this->session->flashdata('email')) OR !empty($this->session->flashdata('password'))){ ?>
+            <?php if(!empty($this->session->flashdata('email')) OR !empty($this->session->flashdata('password')) OR !empty($this->session->flashdata('email_er')) ){ ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-info">
                             <?= $this->session->flashdata('email') ?>
+                            <?= $this->session->flashdata('email_er') ?>
                             <?= $this->session->flashdata('password') ?>
                         </div>
                     </div>
