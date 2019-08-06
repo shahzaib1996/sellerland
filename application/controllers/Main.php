@@ -49,17 +49,17 @@ class Main extends CI_Controller
                 if( $testWebUser['status'] != 'Active' ) {
                     $this->load->view('selly/header',$data);
                     echo "<nav class='navbar navbar-expand-lg navbar-light' style='background:linear-gradient(90deg,#0b58f1 0%,#3fc1ff 100%);padding:15px;height:60px !important;'>
-          </nav> <center> <h1 style='margin:100px;'> You have been banned! </h1> </center>";
+                        </nav> <center> <h1 style='margin:100px;'> You have been banned! </h1> </center>";    
+                    $this->load->view('selly/footer');
+                } else {
+                    if( count( $data['single_product'] ) == 0  && $page == 'vendor-brand-item-view') {
+                        redirect('Main/view/all-products');
+                    }
+
+                    $this->load->view('selly/header',$data);
+                    $this->load->view('selly/'.$page);
                     $this->load->view('selly/footer');
                 }
-
-                if( count( $data['single_product'] ) == 0  && $page == 'vendor-brand-item-view') {
-                    redirect('Main/view/all-products');
-                }
-
-                $this->load->view('selly/header',$data);
-                $this->load->view('selly/'.$page);
-                $this->load->view('selly/footer');
             }else{
                 redirect('Main/view/signin');
             }
