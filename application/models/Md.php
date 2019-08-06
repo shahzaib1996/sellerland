@@ -337,5 +337,19 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function fetchh_products($where=NULL){
+        $this->db->select('p.*,pg.group_name AS "product_group"');
+        $this->db->order_by('p.title','asc');
+        $this->db->from('product p');
+        $this->db->join('product_group pg',' pg.id = p.product_group_id ');
+        if($where!=NULL){
+            foreach ($where as $k=>$v) {
+                $this->db->where($k,$v);
+            }
+            }
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
+
 
 }

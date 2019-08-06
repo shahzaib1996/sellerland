@@ -87,6 +87,20 @@ class Vender extends CI_Controller
                 $this->load->view('vender/footer');
             }else{ $this->login(); } // end if close
         
+        }else if( $page=='product_group' ) {
+            //required by vender header
+            $data['user_info']  = $this->session->userdata('login');
+            // $data['login'] = $this->session->userdata('login');
+            $data['login'] = $this->md->fetch('vendor', [ 'id'=> $this->session->userdata('login')[0]['id'] ] );
+            $data['vendor_id'] = $data['login'][0]['id'];
+            $data['vendor_product_groups'] = $this->md->fetch('product_group', [ 'vendor_id'=>$data['vendor_id'] ] );
+
+            if(!empty($this->session->userdata('login'))){ // if start
+                $this->load->view('vender/header',$data);
+                $this->load->view('vender/'.$page);
+                $this->load->view('vender/footer');
+            }else{ $this->login(); } // end if close
+        
         } else{ // else if there is session go to index
 //            var_dump($this->session->userdata('login'));die;
             $id=$this->uri->segment(4);
@@ -97,11 +111,12 @@ class Vender extends CI_Controller
             $data['admin_message'] = $this->session->userdata('admin_message');
             // print_r($data['login']);
             // die();
-            $data['product']=$this->md->fetchh('product');
+            // $data['product']=$this->md->fetchh('product');
+            $data['product']=$this->md->fetchh_products( [ 'user_id'=>$data['login'][0]['id'] ] ); // optional param where array
             $data['wh_product']=$this->md->fetch('product',array('id'=>$id));
             $data['code_product']=$this->md->fetch('product',array('user_id'=>$id));
             $data['user']=$this->md->fetch('user');
-            $data['product']=$this->md->fetch('product',array('user_id'=>$data['login'][0]['id']));
+            // $data['product']=$this->md->fetch('product',array('user_id'=>$data['login'][0]['id']));
             // var_dump($data['login'][0]['id']);
             // $data['feedback']=$this->md->fetch('feedback',array('vendor_id'=>$data['login'][0]['id']));
             $data['feedback']=$this->md->feedback_join_product($data['login'][0]['id']); //arg vendor_id
@@ -115,6 +130,9 @@ class Vender extends CI_Controller
             $data['soldperday']=$this->md->productSoldPerDay($data['login'][0]['id']);
             $data['wh_vendor']=$this->md->fetch("vendor",array('id'=>$data['login'][0]['id']));
             $data['client_query'] = $this->md->fetch('client_query',array('vendor_id'=>$data['login'][0]['id']));
+
+            $data['vendor_product_groups'] = $this->md->fetch('product_group', [ 'vendor_id'=>$data['login'][0]['id'] ] );
+
             if(!empty($this->session->userdata('login'))){ // if start
                 $this->load->view('vender/header',$data);
                 $this->load->view('vender/'.$page);
@@ -413,6 +431,33 @@ class Vender extends CI_Controller
 
     public function showStore($storeName) {
         echo $storeName;
+    }
+
+    public function add_product_group(){
+        $data = $this->input->post();
+        try {
+            $this->md->insert('product_group',$data);
+            $this->session->set_flashdata('product_group',' <div class="alert alert-info text-center">Product Group Added</div> ');
+        } catch (Exception $e) {
+            $this->session->set_flashdata('product_group',' <div class="alert alert-danger text-center">Something went wrong!</div> ');
+        }
+
+        redirect('vender/view/product_group');
+    }
+
+    public function del_product_group()
+    {
+        $id=$this->uri->segment(3);
+        
+        $check = $this->md->fetch('product', [ 'product_group_id'=>$id ] );
+
+        if( count($check) == 0 ) {
+            $this->md->delete(array('id'=>$id),"product_group");
+            $this->session->set_flashdata('product_group',' <div class="alert alert-info text-center">Product Group Deleted!</div> ');
+        } else {
+            $this->session->set_flashdata('product_group',' <div class="alert alert-danger text-center">Cannot Delete Already in Use!</div> ');
+        }
+        redirect('vender/view/product_group');
     }
 
 

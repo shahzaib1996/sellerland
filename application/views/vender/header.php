@@ -152,6 +152,14 @@ https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js -->
 
         <li class="nav-item">
             <?php //var_dump($user_info);die; ?>
+            <a class="nav-link collapsed" href="<?= site_url('Vender/view/product_group') ?>">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Product Groups</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <?php //var_dump($user_info);die; ?>
             <a class="nav-link collapsed" href="<?= site_url('Vender/view/vender_settings') ?>">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Settings</span>
