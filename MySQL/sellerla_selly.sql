@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2019 at 02:48 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.4
+-- Generation Time: Aug 06, 2019 at 11:20 AM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -83,7 +83,7 @@ CREATE TABLE `client_query_reply` (
   `reply` text NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `vendor_id` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `feedback` (
   `pro_id` char(100) NOT NULL,
   `message` varchar(1000) NOT NULL,
   `client_id` char(100) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -209,10 +209,10 @@ CREATE TABLE `orders` (
   `status` varchar(20) NOT NULL,
   `date` varchar(100) NOT NULL,
   `transaction_id` varchar(256) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `coupon_used` varchar(100) DEFAULT NULL,
-  `note` text,
+  `note` text DEFAULT NULL,
   `payment_type` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -227,7 +227,7 @@ CREATE TABLE `package` (
   `title` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
-  `is_default` int(11) NOT NULL DEFAULT '0'
+  `is_default` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -251,7 +251,7 @@ CREATE TABLE `payment` (
   `payment_amount` double(10,2) NOT NULL,
   `payment_currency` varchar(255) NOT NULL,
   `txn_id` varchar(255) NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -270,24 +270,36 @@ CREATE TABLE `product` (
   `date` varchar(100) NOT NULL,
   `user_id` char(100) NOT NULL,
   `des` text NOT NULL,
-  `account_type` char(100) NOT NULL
+  `account_type` char(100) NOT NULL,
+  `product_group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `image`, `date`, `user_id`, `des`, `account_type`) VALUES
-(13, 'suama2323', 12, 10, 2, '15.jpg', '2019-07-03', '4', 'lorem ', 'vender'),
-(14, 'Shoes', 12, 10, 3, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
-(15, 'qwe', 120, 123, 123, '15.jpg', '2019-07-11', '4', 'lotem', 'vender'),
-(21, 'abc', 1000, 0, 4, '15.jpg', '2019-07-11', '4', 'this a product', 'vender'),
-(24, 'shoes', 1000, 1000, 4, '15.jpg', '2019-07-11', '4', 'dfkdlfkvkdlk', 'vender'),
-(25, 'tyu', 100, 80, 2, '15.jpg', '2019-07-11', '4', 'this is a product', 'vender'),
-(38, 'sssssdsdsdsds', 12121221, 2147483647, 121212, '15.jpg', '2019-07-25', '4', '', ''),
-(39, 'test vendor id', 101, 202, 303, 'fb-add-post.png', '2019-07-25', '4', '', ''),
-(40, 'This is test', 100, 90, 99, 'cool-profile-pictures3.jpg', '2019-08-01 12:46:43', '4', '', ''),
-(41, 'DHool', 120, 100, 99, 'bg1.jpg', '2019-08-01 01:36:34', '4', ' This is just testing <br>\r\nnothing else', '');
+INSERT INTO `product` (`id`, `title`, `price`, `wholesale_price`, `quantity`, `image`, `date`, `user_id`, `des`, `account_type`, `product_group_id`) VALUES
+(44, 'shoes rbk', 100, 50, 99, '15.png', '2019-08-06 08:59:24', '4', ' this', '', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_group`
+--
+
+CREATE TABLE `product_group` (
+  `id` int(11) NOT NULL,
+  `group_name` varchar(50) NOT NULL,
+  `vendor_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_group`
+--
+
+INSERT INTO `product_group` (`id`, `group_name`, `vendor_id`) VALUES
+(3, 'Garments', 5),
+(5, 'shoes', 4);
 
 -- --------------------------------------------------------
 
@@ -351,7 +363,7 @@ CREATE TABLE `user` (
   `status` char(100) NOT NULL,
   `ip_address` char(100) NOT NULL,
   `email_verified` tinyint(4) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -387,7 +399,7 @@ CREATE TABLE `vendor` (
   `status` char(100) NOT NULL,
   `store_name` char(100) NOT NULL,
   `img` varchar(1000) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `email_verified` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -410,11 +422,11 @@ CREATE TABLE `vendor_payment_details` (
   `vendor_id` int(11) NOT NULL,
   `coinpayment_wallet_address` varchar(256) DEFAULT NULL,
   `ipn_secret` varchar(10) DEFAULT NULL,
-  `coinpayment_status` int(11) NOT NULL DEFAULT '1',
-  `paypal_status` int(11) NOT NULL DEFAULT '1',
+  `coinpayment_status` int(11) NOT NULL DEFAULT 1,
+  `paypal_status` int(11) NOT NULL DEFAULT 1,
   `paypal_email` varchar(191) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -494,6 +506,13 @@ ALTER TABLE `payment`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_group_id` (`product_group_id`);
+
+--
+-- Indexes for table `product_group`
+--
+ALTER TABLE `product_group`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -513,13 +532,17 @@ ALTER TABLE `store`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `vendor`
 --
 ALTER TABLE `vendor`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `store_name` (`store_name`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `vendor_payment_details`
@@ -596,7 +619,13 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `product_group`
+--
+ALTER TABLE `product_group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `purchase`
@@ -627,6 +656,16 @@ ALTER TABLE `vendor`
 --
 ALTER TABLE `vendor_payment_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`product_group_id`) REFERENCES `product_group` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
