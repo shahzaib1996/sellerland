@@ -4,7 +4,7 @@
   
 </style>
 
-        <section class="banner-area relative banner-vendor" id="home">	
+        <section class="banner-area relative banner-vendor" style="background: url(<?= base_url() ?>/theme/img/feature-bg.jpg) !important;" id="home">	
             <div class="overlay overlay-bg"></div>
             <div class="container">				
                 <div class="row d-flex align-items-center justify-content-center">

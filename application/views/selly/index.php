@@ -11,7 +11,7 @@
 							<p class="text-white lead">
 									E-commerce is easy with Selly. Create your own customizable online store today.
 							</p>
-							<a href="<?= site_url('Main/view/signin') ?>" class="primary-btn header-btn text-uppercase">Get Started</a>
+							<a href="<?= site_url('vender/view/signin') ?>" class="primary-btn header-btn text-uppercase">Get Started</a>
 						</div>
 						<div class="banner-img col-lg-6 col-md-6">
 							<img class="img-fluid" src="<?= base_url() ?>theme/img/banner-img.svg" alt="">
