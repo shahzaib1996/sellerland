@@ -173,6 +173,10 @@
     <section class="content-section container">
         <div class="col-md-12 p-2" >
          <h5 class="card-header text-light p-3" style="background:#5390ff; ">Give Your Feedback</h5>
+
+            <?php if( $user_order['status'] == 'paid' ) { ?>
+
+
             <?= form_open('Main/feedback/'.$single_product[0]['id'].'/'.$web_login[0]['id'].'/'.$this->uri->segment(4)) ?>
                 <div class="card">
                         <div class="card-body">
@@ -185,6 +189,18 @@
                         <?php } ?>
                 </div>
             <?= form_close(); ?>
+
+            <?php } else { ?>
+                <div class="card">
+                        <div class="card-body">
+                                <textarea class="form-control" name="message" rows="3" style="font-size: 14px; resize:none;"> </textarea>
+                        </div>
+                        <p class="text-center"><button class="btn text-light post-btn" disabled>Purchase product to give feedback!</button></p>
+                        
+                </div>
+            <?php } ?>
+
+
         </div>
      </section>
 <!-- give customer feedback END-->

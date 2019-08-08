@@ -56,7 +56,8 @@
                             <input type="hidden" name="currency" value="USD">
                             <input type="hidden" name="amountf" value="" id="total_price">
                             <input type="hidden" name="want_shipping" value="0">
-                            <input type="hidden" name="success_url" value="<?= site_url('Main/coin_transaction_complete') ?>">
+                            <!-- <input type="hidden" name="success_url" value="<?= site_url('Main/coin_transaction_complete') ?>"> -->
+                            <input type="hidden" name="success_url" value="<?= site_url('Main/view/vendor-brand-item-view') ?>/<?= $this->uri->segment(4)?>/<?= $this->uri->segment(5) ?>?fb=1">
                             <input type="hidden" name="cancel_url" value="<?= site_url('Main/view/vendor-brand-item-view') ?>/<?= $this->uri->segment(4)?>/<?= $this->uri->segment(5) ?>">
                             <input type="hidden" name="ipn_url" value="<?= site_url('Main/coin_ipn_handler') ?>/<?= $order_id ?>">
                             <input type="image" src="https://www.coinpayments.net/images/pub/buynow-wide-blue.png" alt="Buy Now with CoinPayments.net">

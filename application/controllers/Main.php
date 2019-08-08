@@ -43,8 +43,21 @@ class Main extends CI_Controller
             if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
 
-                // print_r($data['web_login']);
+                $data['check_user_order'] =  $this->md->fetch( 'orders', [ 'user_id'=> $data['web_login'][0]['id'] ,'product_id'=>$this->uri->segment(5) ] );
+
+                // print_r($data['check_user_order']);
                 // die();
+
+                if( count($data['check_user_order']) > 0 ) {
+                    $data['user_order'] = $data['check_user_order'][0];
+                } else {
+                    $data['user_order'] = '';
+                }
+                unset($data['check_user_order']);
+
+                // print_r($data['user_order']);
+                // die();
+
                 $testWebUser = $this->md->fetch('user', [ 'id'=>$data['web_login'][0]['id'] ] )[0];
                 if( $testWebUser['status'] != 'Active' ) {
                     $this->load->view('selly/header',$data);
