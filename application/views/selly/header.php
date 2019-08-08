@@ -58,18 +58,20 @@
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu-active"><a href="<?= site_url('main/view/index') ?>">Home</a></li>
-                    <li class="menu-has-children"><a href="">Products</a>
+                    <li class="menu-has-children"><a href="">Services</a>
                         <ul>
                             <li><a href="<?= site_url('main/view/ecommerce') ?>">E-commerce <br> <p class="lead" style="font-size:11px;">Sell Digital Goods</p></a></li>
                             <li><a href="<?= site_url('main/view/payments') ?>">Payments<br> <p class="lead" style="font-size: 11px;">Payment Processing for a wide range</p></a></li>
                         </ul>
                     </li>
                     <li><a href="<?= site_url('main/view/prices') ?>">Pricing</a></li>
+                    <li><a href="<?= site_url('main/view/all-stores') ?>">Stores</a></li>
+                    <li><a href="<?= site_url('main/view/all-products') ?>">Products</a></li>
                     <?php if(empty($web_login)){ ?>
                     <li><a href="<?= site_url('main/view/signin') ?>" class="btn btn-light btn-large text-dark">Sign in</a></li>
                     <li><a href="<?= site_url('main/view/signup') ?>" class="btn">Sign up </a></li>
                     <?php } else { ?>
-                    <li><a href="<?= site_url('main/view/all-products') ?>">Products</a></li>
+                    <!-- <li><a href="<?= site_url('main/view/all-products') ?>">Products</a></li> -->
                     <li class="menu-has-children"><a href="#"><?= $web_login[0]['username'] ?></a>
                         <ul>
                             <li> <a href="<?= site_url('/Main/view/myqueries')?>" >My Queries</a> </li>

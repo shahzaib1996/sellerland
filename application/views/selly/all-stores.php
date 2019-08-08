@@ -19,13 +19,12 @@
                     <?php foreach ($vendor as $k=>$v){ ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 vdp-plr">
                             <div class="card">
-                              <a href="<?= site_url('Main/view/vendor/'.$v['id']) ?>">
-                                  <img class="card-img-top vendor-product-img" src="<?= base_url() ?>theme/img/banner-img.svg" alt="Card image cap">
+                              <a href="<?= site_url('Main/view/vendor_products/'.$v['id']) ?>" style="margin-top: 20px;text-align: center;" >
+                                  <img class="card-img-top vendor-product-img" src="<?= base_url() ?>/image/profile_image/<?= $v['img'] ?>" alt="Vendor Image" style="height: 120px;width: 120px; margin: auto;" >
                                   <div class="card-body">
-                                      <h3 class="card-text vendor-product-details text-center" style="color: #1f82f7"><?= $v['store_name'] ?></h3>
-                                    <p class="card-text vendor-product-details" style="font-size: 13px; color:black;">Terms of service(Read before buying)</p>
-<!--                                    <span class="vendor-product-price" style="color:black; font-size:13px">$0.002</span>-->
-<!--                                    <span class="vendor-product-stock" style="float:right;  font-size:13px">1 in stock</span>-->
+                                      <h3 class="card-text vendor-product-details text-center" style="color: #1f82f7;text-transform: uppercase;margin-bottom: 10px;"><?= $v['store_name'] ?></h3>
+                                    <center> <button class="btn btn-success">View Products</button> </center>
+
                                   </div>
                                 </div>
 
@@ -35,22 +34,7 @@
                     <?php } ?>
                 </div>
 
-                <!-- pagination for pages-->
-                <nav aria-label="...">
-                        <ul class="pagination">
-                          <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                          </li>
-                          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item ">
-                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                          </li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                          </li>
-                        </ul>
-                      </nav>    
+                   
 
         </section>
 

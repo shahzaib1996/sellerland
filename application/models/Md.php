@@ -272,6 +272,20 @@ class Md extends CI_Model
         return $data;
     }
 
+    public function search_vendor_products_by_vid($search='',$vendor)
+    {
+        $this->db->select('p.*,v.store_name');
+        $this->db->from('product p');
+        $this->db->join('vendor as v',' p.user_id = v.id ');
+        // $this->db->where('p.user_id', $vendor);
+        $this->db->where('v.id', $vendor);
+        if( $search != '' ) {
+            $this->db->like('p.title', $search , 'both');
+        } 
+        
+        $data=$this->db->get()->result_array();
+        return $data;
+    }
 
 
     public function remove_package_default()

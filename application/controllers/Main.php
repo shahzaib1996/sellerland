@@ -18,6 +18,8 @@ class Main extends CI_Controller
             $data['product'] = $this->md->products_with_vendor();
         }
 
+
+
         $data['web_login'] = $this->session->userdata('web_login');
         $data['vendor'] = $this->md->fetch('vendor');
         // $data['product'] = $this->md->fetch('product');
@@ -40,9 +42,18 @@ class Main extends CI_Controller
         if($page == 'signin' OR $page== 'signup'){
             $this->load->view('selly/'.$page);
         }elseif($page == 'vendor-groups' OR $page == 'vendor' OR $page=='vendor-brand-item-view' OR $page=='all-products' OR $page == 'vendor-contact' OR $page == 'vendor-store' OR $page=='all-stores' OR $page=='vendor-feedback' ){
-            if(!empty($this->session->userdata('web_login'))) {
+
+            if( $page == 'all-stores' || $page=='all-products' ) {
+                $data = $this->data();
+                $this->load->view('selly/header',$data);
+                $this->load->view('selly/'.$page);
+                $this->load->view('selly/footer');
+
+
+            } else if(!empty($this->session->userdata('web_login'))) {
                 $data = $this->data();
 
+                $data['vendor'] = $this->md->fetch('vendor', ['status'=>'active'] );
                 $data['check_user_order'] =  $this->md->fetch( 'orders', [ 'user_id'=> $data['web_login'][0]['id'] ,'product_id'=>$this->uri->segment(5) ] );
 
                 // print_r($data['check_user_order']);
@@ -177,10 +188,15 @@ class Main extends CI_Controller
             if(isset($_GET['search']) ) {
                 // print_r($_GET['search']);
                 // die();
-                $data['vendor_products'] = $this->md->search_vendor_products($_GET['search'],$vendor_id); 
+                // $data['vendor_products'] = $this->md->search_vendor_products($_GET['search'],$vendor_id); 
+                $data['vendor_products'] = $this->md->search_vendor_products_by_vid($_GET['search'],$vendor_id); 
             } else {
-                $data['vendor_products'] = $this->md->search_vendor_products('',$vendor_id); 
+                // $data['vendor_products'] = $this->md->search_vendor_products('',$vendor_id); 
+                $data['vendor_products'] = $this->md->search_vendor_products_by_vid('',$vendor_id); 
             }
+
+            // print_r($data['vendor_products']);
+            // die();
 
             $data['vendor'] =$this->md->fetch('vendor',[ 'id'=>$vendor_id ]);
 
@@ -596,6 +612,7 @@ class Main extends CI_Controller
 
             $this->load->view('selly/header',$data);
             $this->load->view('selly/vendor_products');
+            // $this->load->view('selly/vendor');
             $this->load->view('selly/footer');    
     }
 
